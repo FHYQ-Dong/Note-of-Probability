@@ -1,0 +1,44 @@
+name: Build and Release LaTeX document
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+    - 'v*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build_release_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          lfs: true
+      
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          root_file: |
+            Probability-Notes.tex
+            HW/*.tex
+          
+      - name: Stash PDF
+        id: stash-pdf
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          mkdir build
+          mv *.pdf build/
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: build/*
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: ${{ github.event.head_commit.message }}
+          make_latest: true
+ 

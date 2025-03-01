@@ -1,0 +1,53 @@
+# LaTeX build files
+*.aux
+*.log
+*.toc
+*.out
+*.synctex.gz
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.bcf
+*.glg
+*.glo
+*.gls
+*.ist
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.nlg
+*.nlo
+*.slg
+*.slo
+*.stg
+*.stt
+*.xdy
+*.tdo
+*.xml
+
+# Generated files
+*.dvi
+*.ps
+*.pdf
+
+# Editor and IDE files
+*.swp
+*~
+#*
+*.bak
+*.backup
+*.sav
+*.tmproj
+*.tmproj.*
+*.sublime-workspace
+*.sublime-project
+vscode/
+idea/
+
+# fuck mac 
+.DS_Store
+__MACOSX

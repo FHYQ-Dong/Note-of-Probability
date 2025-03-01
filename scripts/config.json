@@ -1,0 +1,17 @@
+{
+    "track_filetypes": [
+        ".tex",
+        ".txt",
+        ".py",
+        ".json",
+        ".md"
+    ],
+    "exclude_dirs": [
+        "node_modules",
+        ".git",
+        ".vscode"
+    ],
+    "exclude_files": [
+        "secrets.json"
+    ]
+}

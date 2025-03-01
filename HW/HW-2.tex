@@ -1,0 +1,141 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+% \usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+
+
+\title{Problem Set 2}
+\author{ FHYQ-Dong, Class *****, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 2}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+    citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\begin{question}
+    You enter a special kind of chess tournament, in which you play one game with each of three opponents, but you get to choose the order in which you play your opponents, knowing the probability of a win against each. You win the tournament if you win two games in a row, and you want to maximize the probability of winning. Show that it is optimal to play the weakest opponent second, and that the order of playing the other two opponents does not matter.
+\end{question}
+\begin{answer}
+    Let the three opponents be $a_1$, $a_2$ and $a_3$ and the probability we win against them be $p_1$, $p_2$ and $p_3$ respectively. 
+    
+    Let $A^* = \left(a^*_1, a^*_2, a^*_3\right)$ be a permutation of $\left(a_1, a_2, a_3\right)$ with win-probability $\left(p^*_1, p^*_2, p^*_3\right)$ respectively. The sample space of the outcome of each game is 
+    \begin{align*}
+        \Omega^* = \left\{\left(o^*_1, o^*_2, o^*_3\right) : o^*_i \in \left\{0, 1\right\}\right\}
+    \end{align*}
+    where $o^*_i = 1$ denotes we win against $a^*_i$ and $o^*_i = 0$ denotes we lose. The $\sigma$-algebra $\mathcal{F^*}$ is the power set of $\Omega^*$. The probability measure $\mathbf{P^*}$ on $\mathcal{F^*}$ is defined as 
+    \begin{align*}
+        \mathbf{P^*}\left(\left\{\left(o^*_1, o^*_2, o^*_3\right)\right\}\right) = \Pi_{i = 1}^{3} \left(p^*_i o^*_i + \left(1 - p^*_i\right) \left(1 - o^*_i\right)\right)
+    \end{align*}
+    The preferred outcomes are $O^* = \left\{\left(1, 1, 0\right), \left(0, 1, 1\right), \left(1, 1, 1\right)\right\}$, whose probability is
+    \begin{align*}
+        \mathbf{P^*}\left(O^*\right) &= p^*_1 p^*_2 \left(1 - p^*_3\right) + \left(1 - p^*_1\right) p^*_2 p^*_3 + p^*_1 p^*_2 p^*_3 \\
+        &= p^*_2 \left(p^*_1 + p^*_3 \right) - p^*_1 p^*_2 p^*_3
+    \end{align*}
+    Given $\left(p^*_1 + p^*_3 \right) + p^*_2 = 1 = \mathrm{const.}$, the product $p^*_2 \left(p^*_1 + p^*_3 \right)$ is maximized when $| p^*_2 - \left(p^*_1 + p^*_3 \right) |$ is minimized, i.e., $p^*_2$ should be the largest among $p_1$, $p_2$ and $p_3$. Therefore, it is optimal to play the weakest opponent second. What's more, in $\mathbf{P^*}\left(O^*\right)$, $p^*_1$ and $p^*_3$ are symmetric, so the order of $a^*_1$ and $a^*_3$ does not matter.
+\end{answer}
+
+
+\begin{question}
+    Show that a countable intersection of events with probability 1 still has probability 1.
+\end{question}
+\begin{answer}
+    Let $\left\{A_i\right\}_{i = 1}^{\infty}$ be a sequence of events with $\mathbf{P}\left(A_i\right) = 1$ for all $i$. The probability of $\bigcap_{i = 1}^{\infty} A_i$ is
+    \begin{align*}
+        \mathbf{P}\left(\bigcap_{i = 1}^{\infty} A_i\right) &= 1 - \mathbf{P}\left(\bigcup_{i = 1}^{\infty} A_i^c\right) \\
+        &\geq 1 - \sum_{i = 1}^{\infty} \mathbf{P}\left(A_i^c\right) \\
+        &= 1 - \sum_{i = 1}^{\infty} \left(1 - \mathbf{P}\left(A_i\right)\right) \\
+        &= 1 - \sum_{i = 1}^{\infty} 0 \\
+        &= 1
+    \end{align*}
+    Therefore, a countable intersection of events with probability 1 still has probability 1.
+\end{answer}
+
+\begin{question}
+    We are given three coins: one has heads in both faces, the second has tails in both faces, and the third has a head in one face and a tail in the other. We choose a coin at random, toss it, and the result is heads. What is the probability that the opposite face is tails?
+\end{question}
+\begin{answer}
+    It is equivalent to find the probability of the choosing coin is the third coin. Let $H$ be the event that the result is heads and $C_i$ denote we choose the $i$-th coin. Then $\mathbf{P}\left(C_i\right) = 1/3, \forall i$ and $\mathbf{P}\left(H\right) = 1/3 \times 1 + 1/3 \times 0 + 1/3 \times 1/2 = 1/2$. The answer is 
+    \begin{align*}
+        \mathbf{P}\left(C_3 | H\right) = \frac{\mathbf{P}\left(C_3 \cap H\right)}{\mathbf{P}\left(H\right)} = \frac{1/6}{1/2} = \frac{1}{3}
+    \end{align*}
+    
+\end{answer}
+
+
+\begin{question}
+    Each of $k$ jars contains $m$ white and $n$ black balls. A ball is randomly chosen from jar 1 and transferred to jar 2, then a ball is randomly chosen from jar 2 and transferred to jar 3, etc. Finally, a ball is randomly chosen from jar $k$. Show that the probability that the last ball is white is the same as the probability that the first ball is white, i.e., it is $m/\left(m + n\right)$.
+\end{question}
+\begin{answer}
+    We prefer to solve this problem by mathematical induction. 
+    \begin{enumerate}
+        \item For jar 1 and jar 2, after transferring a ball from jar 1 to jar 2, the probability that the ball in jar 2 is white is 
+        \begin{align*}
+            \mathbf{P_2}\left(\text{white}\right) &= \mathbf{P_1}\left(\text{white}\right) \cdot \frac{m + 1}{m + n + 1} + \mathbf{P_1}\left(\text{black}\right) \cdot \frac{m}{m + n + 1} \\ 
+            &= \frac{m}{m + n} \cdot \frac{m + 1}{m + n + 1} + \frac{n}{m + n} \cdot \frac{m}{m + n + 1} \\ 
+            &= \frac{m\left(m + n + 1\right)}{\left(m + n\right)\left(m + n + 1\right)} = \frac{m}{m + n}
+        \end{align*}
+        \item If jar $i$ satisfies the conditio that $\mathbf{P_i}\left( \text{white} \right) = m/\left(m + n\right)$, then for jar $i + 1$, the probability that the ball in jar $i + 1$ is white is
+        \begin{align*}
+            \mathbf{P_{i+1}}\left(\text{white}\right) &= \mathbf{P_i}\left(\text{white}\right) \cdot \frac{m + 1}{m + n + 1} + \mathbf{P_i}\left(\text{black}\right) \cdot \frac{m}{m + n + 1} \\ 
+            &= \frac{m}{m + n} \cdot \frac{m + 1}{m + n + 1} + \frac{n}{m + n} \cdot \frac{m}{m + n + 1} \\ 
+            &= \frac{m\left(m + n + 1\right)}{\left(m + n\right)\left(m + n + 1\right)} = \frac{m}{m + n}
+        \end{align*}
+        \item Therefore, by mathematical induction, the probability that the last ball is white is 
+        \begin{align*}
+            \mathbf{P}_k\left(\text{white}\right) = \mathbf{P}_{k-1}\left(\text{white}\right) = \cdots = \mathbf{P}_1\left(\text{white}\right) = \frac{m}{m + n}
+        \end{align*}
+    \end{enumerate}
+\end{answer}
+
+
+\begin{question}
+    Suppose we would like to represent an infinite sequence of binary observations, where each observation is a zero or one with equal probability. For example, the experiment could consist of repeatedly flipping a fair coin, and recording a one each time it shows heads and a zero each time it shows tails. Then an outcome $\omega$ would be an infinite sequence, $\omega = \left(\omega_1, \omega_2, \omega_3\right)$, such that for each $i \geq 1$, $\omega_i \in \left\{0, 1\right\}$. Let $\Omega$ be the set of all such $\omega$'s. The associated $\sigma$-algebra $\mathcal{F}$ satisfies that any set that can be defined in terms of finitely many of the observations is in $\mathcal{F}$. In particular, for any binary sequence $\left(b_1, b_2, \ldots, b_k\right)$ of some finite length $k$, the set $\left\{\omega \in \Omega : \omega_i = b_i for 1 \leq i \leq k\right\}$ should be in $\mathcal{F}$ with a probability of $2^{-k}$. Suppose that there are two players who take turns performing the coin flips, with the first one to get heads wins. Let $F$ be the event that the player going first wins. Show that $F \in \mathcal{F}$ and find $\mathbf{P}\left(F\right)$.
+\end{question}
+\begin{answer}
+    The sequence $\left\{a_i\right\}_{i=1}$ recording the result of each flip when the player going first wins is finite because the player going first does win (which means $\left\{a_n\right\}$ has a last item $a_n$ which is 1). Thus, due to ``any set that can be defined in terms of finitely many of the observations is in $\mathcal{F}$'', $\left\{a_i\right\}_{i=1}^{n} \in \mathcal{F}$. Due to $F = \bigcup_{n = 1}^{\infty} \left\{a_i\right\}_{i=1}^{2n-1}$, is countable, $F \in \mathcal{F}$. The probability of the player going first wins is
+    \begin{align*}
+        \mathbf{P}\left(F\right) = \sum_{n = 1}^{\infty} \left(\frac{1}{2}\right)^{2n-1} = \frac{2}{3}
+    \end{align*}
+\end{answer}
+
+\end{document}

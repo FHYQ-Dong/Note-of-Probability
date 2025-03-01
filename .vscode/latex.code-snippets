@@ -1,0 +1,147 @@
+{
+	"common used packages": {
+		"scope": "latex",
+		"prefix": "\\usepackage",
+		"body": [
+			"\\documentclass[normal]{elegantnote}",
+			"\\usepackage{amsmath}",
+			"\\usepackage{amssymb}",
+			"\\usepackage{graphicx}",
+			"\\usepackage{subcaption}",
+			"\\usepackage{float}",
+			"\\usepackage{hyperref}",
+			"\\usepackage[svgnames]{xcolor}",
+			"\\usepackage{ctex}",
+			"\\usepackage{circuitikz}",
+			"\\usepackage{tikz}",
+			"\\usepackage{geometry}",
+			"\\usepackage{pdfpages}",
+			"\\usepackage{caption}"
+		],
+		"description": "common used packages"
+	},
+	"document prefix": {
+		"scope": "latex",
+		"prefix": "\\doc",
+		"body": [
+			"\\title{$1}",
+			"\\author{$2}",
+			"\\date{$3}",
+			"",
+			"\\geometry{a4paper, scale=0.8}",
+			"",
+			"",
+			"\\begin{document}",
+			"\\maketitle",
+			"\newpage",
+			"",
+			"\\tableofcontents",
+			"\\newpage",
+			"",
+			"$4",
+			"",
+			"\\end{document}"
+		],
+		"description": "document prefix"
+	},
+	"0.6 textwidth image": {
+		"scope": "latex",
+		"prefix": "\\img",
+		"body": [
+			"\\begin{figure}[h!]",
+			"\\begin{center}",
+			"\t\\includegraphics[width=0.6\\textwidth]{$1}",
+			"\t\\caption{$2}",
+			"\t\\label{fig:$3}",
+			"\\end{center}",
+			"\\end{figure}"
+		],
+		"description": "0.6 textwidth image"
+	},
+	"double column": {
+		"scope": "latex",
+		"prefix": "\\dcolumn",
+		"body": [
+			"\\begin{minipage}[h]{0.5\\linewidth}",
+			"    ${1:some text}",
+			"\\end{minipage}",
+			"\\hfill",
+			"\\begin{minipage}[h]{0.3\\linewidth}",
+			"    \\includegraphics[width=\\linewidth]{${2:image}}",
+			"    \\captionof{figure}{${3:caption}}",
+			"    \\label{fig:${4:label}}",
+			"\\end{minipage}",
+		]
+	},
+	"red text": {
+		"scope": "latex",
+		"prefix": "\\red",
+		"body": [
+			"\\textcolor{Red}{$1}"
+		]
+	},
+	"blue text": {
+		"scope": "latex",
+		"prefix": "\\blue",
+		"body": [
+			"\\textcolor{Blue}{$1}"
+		]
+	},
+	"green text": {
+		"scope": "latex",
+		"prefix": "\\green",
+		"body": [
+			"\\textcolor{Green}{$1}"
+		]
+	},
+	"yellow text": {
+		"scope": "latex",
+		"prefix": "\\yellow",
+		"body": [
+			"\\textcolor{Goldenrod}{$1}"
+		]
+	},
+	"purple text": {
+		"scope": "latex",
+		"prefix": "\\purple",
+		"body": [
+			"\\textcolor{Purple}{$1}"
+		]
+	},
+	"theorem": {
+		"scope": "latex",
+		"prefix": "\\thm",
+		"body": [
+			"\\begin{theorem}[${1:theorem name}]",
+			"\t${2:theorem content}",
+			"\\end{theorem}"
+		]
+	},
+	"example": {
+		"scope": "latex",
+		"prefix": "\\eg",
+		"body": [
+			"\\begin{example}[${1:example name}]",
+			"\t${2:example content}",
+			"\\end{example}"
+		]
+	},
+	"definition": {
+		"scope": "latex",
+		"prefix": "\\def",
+		"body": [
+			"\\begin{definition}[${1:definition name}]",
+			"\t${2:definition content}",
+			"\\end{definition}"
+		]
+	},
+	"corollary": {
+		"scope": "latex",
+		"prefix": "\\cor",
+		"body": [
+			"\\begin{corollary}[${1:corollary name}]",
+			"\t${2:corollary content}",
+			"\\end{corollary}"
+		]
+	},
+}
