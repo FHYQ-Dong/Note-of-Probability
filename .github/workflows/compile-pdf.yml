@@ -18,6 +18,11 @@ jobs:
         with:
           lfs: true
       
+      - name: Move images
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          cp HW/images/* images/ -r
+
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         if: startsWith(github.ref, 'refs/tags/')
