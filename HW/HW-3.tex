@@ -1,0 +1,285 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+
+
+\title{Problem Set 3}
+\author{ FHYQ-Dong, Class **********, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 3}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+    citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\begin{question}[Communication through a noisy channel]
+    A source transmits a message (a string of symbols) through a noisy communication channel. Each symbol is 0 or 1 with probability $p$ and $1-p$, respectively, and is received incorrectly with probability $\epsilon_0$ and $\epsilon_1$, respectively (see Figure \ref{fig:3.1.1}). Errors in different symbol transmissions are independent.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{images/image3.1.1.png}
+        \caption{Communication through a noisy channel.}
+        \label{fig:3.1.1}
+    \end{figure}
+    \begin{enumerate}[label=(\alph*)]
+        \item What is the probability that the $k$-th symbol is received correctly?
+        \item What is the probability that the string of symbols 1011 is received correctly?
+        \item \label{q:1.c} In an effort to improve reliability, each symbol is transmitted three times and the received string is decoded by majority rule. In other words, a 0 (or 1) is transmitted as 000 (or 111, respectively), and it is decoded at the receiver as a 0 (or 1) if and only if the received three-symbol string contains at least two 0s (or 1s, respectively). What is the probability that a 0 is correctly decoded?
+        \item For what values of $\epsilon_0$ is there an improvement in the probability of correct decoding of a 0 when the scheme of part \ref{q:1.c} is used?
+        \item Suppose that the scheme of part \ref{q:1.c} is used. What is the probability that a symbol was 0 given that the received string is 101?
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+\begin{enumerate}[label=(\alph*)]
+    \item It is natural to say that the probability that each symbol is received correctly is independent of other symbols. Denote $C_k$ as the event that the $k$-th symbol is received correctly, $A_k$ as the event that the $k$-th symbol is transmitted as 0 and $B_k$ as the event that the $k$-th symbol is transmitted as 1. Then we have
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{P}(C_k) &= \mathbf{P}\left(C_k \cap (A_k \cup B_k)\right) \\
+        &= \mathbf{P}(C_k \cap A_k) + \mathbf{P}(C_k \cap B_k) \\
+        &= \mathbf{P}(C_k | A_k) \mathbf{P}(A_k) + \mathbf{P}(C_k | B_k) \mathbf{P}(B_k) \\
+        &= (1-\epsilon_0)p + (1-\epsilon_1)(1-p)
+    \end{aligned}
+    \end{equation}
+    \item \label{a:1.b} Denote $C_0$ as the event that a symbol 0 is received correctly, $C_1$ as the event that a symbol 1 is received correctly. Then $\mathbf{P}(C_0) = 1-\epsilon_0, \mathbf{P}(C_1) = 1-\epsilon_1$.
+    Thus, the probability that the string of symbols 1011 is received correctly is
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{P}(\text{1011 is received correctly}) &= \mathbf{P}(C_1) \mathbf{P}(C_0) \mathbf{P}(C_1) \mathbf{P}(C_1) \\
+        &= (1-\epsilon_1)^3(1-\epsilon_0)
+    \end{aligned}
+    \end{equation}
+    \item Three 0s are sent. Using the notation defined in \ref{a:1.b}, and let $Z_2$ be the event that two symbols out of all three symbols are decoded as 0, $Z_3$ be the event that all three symbols are decoded as 0. Then we have
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{P}(Z_2) &= \binom{3}{2}  \mathbf{P}(C_0)^2 \mathbf{P}(C_1) = 3(1-\epsilon_0)^2(1-\epsilon_1), \\
+        \mathbf{P}(Z_3) &= \mathbf{P}(C_0)^3 = (1-\epsilon_0)^3
+    \end{aligned}
+    \end{equation}
+    Thus, the probability that a 0 is correctly decoded is
+    \begin{equation}
+    \begin{aligned}
+        \label{eq:a.1.c}
+        \mathbf{P}(\text{0 is correctly decoded}) &= \mathbf{P}(Z_2) + \mathbf{P}(Z_3) \\
+        &= 3(1-\epsilon_0)^2(1-\epsilon_1) + (1-\epsilon_0)^3
+    \end{aligned}
+    \end{equation}
+    P.S. We do not take the situation into consideration that the sender sends 1 and the receiver decodes it as 0.
+    \item Let $\mathbf{P}(\text{0 is correctly decoded})$ in formula (\ref{eq:a.1.c}) be larger than $\mathbf{P}(C_0) = 1-\epsilon_0$, i.e.
+    \begin{equation}
+    \begin{aligned}
+        3(1-\epsilon_0)^2(1-\epsilon_1) + (1-\epsilon_0)^3 > 1-\epsilon_0 \\ 
+        \Rightarrow 0 \leq \epsilon_0 < \frac{5-3\epsilon_1 -\sqrt{9\epsilon_1^2 - 18\epsilon_1 + 13}}{2}
+    \end{aligned}
+    \end{equation}
+    \item Denote $D$ as the event that 101 is received, $S_0$ as the event that the symbol is 0 and $S_1$ as the event that the symbol is 1. Then 
+    \begin{equation}
+        \mathbf{P}(S_0) = p,~ \mathbf{P}(S_1) = 1-p,~ \mathbf{P}(D | S_0) = \epsilon_0^2(1-\epsilon_0),~ \mathbf{P}(D | S_1) = \epsilon_1(1-\epsilon_1)^2
+    \end{equation}
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{P}(S_0 | D) &= \frac{\mathbf{P}(S_0 \cap D)}{\mathbf{P}(D)} = \frac{\mathbf{P}(D | S_0) \mathbf{P}(S_0)}{\mathbf{P}(D)} \\ 
+        &= \frac{\mathbf{P}(D | S_0) \mathbf{P}(S_0)}{\mathbf{P}(D | S_0) \mathbf{P}(S_0) + \mathbf{P}(D | S_1) \mathbf{P}(S_1)} \\ 
+        &= \frac{\epsilon_0^2(1-\epsilon_0)p}{\epsilon_0^2(1-\epsilon_0)p + \epsilon_1(1-\epsilon_1)^2(1-p)}
+    \end{aligned}
+    \end{equation}
+\end{enumerate}
+\end{answer}
+
+
+\begin{question}
+    A and B play a series of games. Each game is independently won by A with probability $p$ and by B with probability $1-p$. They stop when the total number of wins of one of the players is two greater than that of the other player. The player with the greater number of total wins is declared the winner of the series.
+    \begin{enumerate}[label=(\alph*)]
+        \item Find the probability that a total of 4 games are played. 
+        \item Find the probability that A is the winner of the series.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item Either A wins 3 games and B wins 1 game or A wins 1 game and B wins 3 games. Thus
+        \begin{equation}
+            \mathbf{P}(\text{4 games are played}) = \binom{4}{3} p^3(1-p) + \binom{4}{1} p(1-p)^3 = 4p(1-p)(p^2 + (1-p)^2)
+        \end{equation}
+        \item Denote $W_A$ as the event that A wins the series, $C(i,j)$ as the event that A wins $j$-more games than B after $i$ games, $j \in \{-2, -1, 0, 1, 2\}$. \\ 
+        Observe the properties of $\mathbf{P}(C(i,j))$
+        \begin{equation}
+        \begin{aligned}
+            &\mathbf{P}(C(i,0)) = p \cdot \mathbf{P}(C(i-1,-1)) + (1-p) \cdot \mathbf{P}(C(i-1,1)) \\
+            &\mathbf{P}(C(i,1)) = p \cdot \mathbf{P}(C(i-1,0)) \\
+            &\mathbf{P}(C(i,-1)) = (1-p) \cdot \mathbf{P}(C(i-1,0)) \\
+            &\mathbf{P}(C(i,2)) = p \cdot \mathbf{P}(C(i-1,1)) \\
+            &\mathbf{P}(C(i,-2)) = (1-p) \cdot \mathbf{P}(C(i-1,-1)) \\ 
+            &\mathbf{P}(C(0,0)) = 1,~ \mathbf{P}(C(0,1)) = 0,~ \mathbf{P}(C(0,-1)) = 0,~ \mathbf{P}(C(0,2)) = 0,~ \mathbf{P}(C(0,-2)) = 0
+        \end{aligned}
+        \end{equation}
+        Thus, for $\mathbf{P}(C(2k,0)),~k\in\mathbb{Z^*}$
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{P}(C(i,0)) &= p(1-p) \cdot \mathbf{P}(C(i-2,0)) + (1-p)p \cdot \mathbf{P}(C(i-2,0)) \\ 
+            &= 2p(1-p) \cdot \mathbf{P}(C(i-2,0)) \\
+            \Rightarrow \mathbf{P}(C(2k,0)) &= (2p(1-p))^k,~ \mathbf{P}(C(2k+1,0)) = 0,~ k\in\mathbb{Z^*}
+        \end{aligned}
+        \end{equation}
+        For $\mathbf{P}(C(2k,2)),~k\in\mathbb{Z^*}$
+        \begin{equation}
+        \begin{aligned}
+        &\begin{aligned}
+            \mathbf{P}(C(2k,2)) &= p \cdot \mathbf{P}(C(2k-1,1)) \\
+            &= p^2 \cdot \mathbf{P}(C(2k-2,0)) \\
+            &= p^2 \cdot (2p(1-p))^{k-1}
+        \end{aligned} \\
+        &\begin{aligned}
+            \mathbf{P}(C(2k+1,2)) = 0,~ k\in\mathbb{Z^*}
+        \end{aligned}
+        \end{aligned}
+        \end{equation}
+        which means that A can only win the series of games when the total number of games is even. Thus
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{P}(W_A) &= \sum_{k=1}^{\infty} \mathbf{P}(C(2k,2)) \\
+            &= \sum_{k=1}^{\infty} p^2 \cdot (2p(1-p))^{k-1} \\
+            &= \frac{p^2}{1-2p(1-p)}
+        \end{aligned}
+        \end{equation}
+    \end{enumerate}
+\end{answer}
+
+
+\begin{question} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item Show that the conditional independence of $A$ and $B$ given $C$ neither implies, nor is implied by, the independence of $A$ and $B$.
+        \item For which event $C$ is it the case that, for arbitrary events $A$ and $B$, $A$ and $B$ are independent if and only if they are conditionally independent given $C$?
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item 
+            \begin{itemize}
+                \item Assume that $A$ and $B$ are independent in Figure \ref{fig:3.3.1.a}. But obviously, $A$ and $B$ are not conditionally independent given $C$ because they are disjoint given $C$.
+                \item Assume each small block in Figure \ref{fig:3.3.1.b} has the same probability. Then $A$ and $B$ are conditionally independent given $C$ but not independent.
+            \end{itemize}
+        \item If $C$ is sample space $\Omega$.
+    \end{enumerate}
+    \begin{figure}[H]
+        \centering
+        \subfigure[independence but not conditional independence]{
+            \label{fig:3.3.1.a}
+            \includegraphics[width=0.3\textwidth]{images/image3.3.1.a.png}
+        }
+        \quad
+        \subfigure[conditional independence but not independence]{
+            \label{fig:3.3.1.b}
+            \includegraphics[width=0.3\textwidth]{images/image3.3.1.b.png}
+        }
+        \caption{Examples of conditional independence and independence.}
+        \label{fig:3.3.1}
+    \end{figure}
+\end{answer}
+
+
+\begin{question}
+    Jane has three children, each of which is equally likely to be a boy or a girl independently of the others. Define the events
+    \begin{align*}
+        A &= \{\text{all the children are of the same sex}\} \\
+        B &= \{\text{there is at most one boy}\} \\ 
+        C &= \{\text{the family includes a boy and a girl}\}
+    \end{align*}
+    \begin{enumerate}[label=(\alph*)]
+        \item Show that $A$ is independent of $B$, and that $B$ is independent of $C$. 
+        \item Is $A$ independent of $C$?
+        \item Do these results hold if boys and girls are not equally likely? 
+        \item Do these results hold if Jane has four children?
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{a:4.a} $\mathbf{P}(A) = 2 \times 1/8 = 1/4$, $\mathbf{P}(B) = 1/8 + 3/8 = 1/2$, $\mathbf{P}(C) = 3 \times 1/8 + 3 \times 1/8 = 3/4$, $\mathbf{P}(A \cap B) = 1/8$ (all children are girls), $\mathbf{P}(B \cap C) = 3/8$ (only one boy). Thus, $A$ and $B$ are independent, $B$ and $C$ are independent.
+        \item \label{a:4.b} No. When $A$ occurs, $C$ cannot occur.
+        \item The result does not hold for \ref{a:4.a}, but holds for \ref{a:4.b}.
+        \item The result does not hold for \ref{a:4.a}, but holds for \ref{a:4.b}.
+    \end{enumerate}
+\end{answer}
+
+
+\begin{question}
+    Consider an infinite sequence of trials. The probability of success at the $i$-th trial is a positive number $p_i$, which satisfies $0 < p_i < 1$ and $\sum_{i=1}^\infty p_i = \infty$. Assume that the trials are independent. Let $N$ be the event that there is no success, and let $I$ be the event that there is an infinite number of successes.
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{q:5.a} Let $n$ be a positive integer. Prove that $\mathbf{P}(N) \leq \prod_{i=1}^n (1-p_i)$.
+        \item Prove that $\mathrm{P}(N) = 0$. \\
+        \textit{Hint:} (1) Take logarithms on both sides of \ref{q:5.a}. (2) For $x < 1$, $\log(1-x) \leq -x$.
+        \item Let $L_n$ be the event that there is a finite number of successes and the last success occurs at
+        the $n$-th trial. Prove that $\mathrm{P}(L_n) = 0$.
+        \item Prove that $\mathrm{P}(I) = 1$. \\
+        \textit{Hint:} Prove $P(I^c) = 0$ by expressing $I^c$ as a union of disjoint events.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{a:5.a} Let $M_i$ be the event that there is no success until the $i$-th trial. Then $N \subseteq M_i,~\forall i \in \mathbb{Z^*}$ and $\mathbf{P}(M_i) = \prod_{j=1}^i (1-p_j)$. Thus
+        \begin{equation}
+            \mathbf{P}(N) \leq \mathbf{P}(M_n) = \prod_{i=1}^n (1-p_i) ~~ \forall n \in \mathbb{Z^*}
+        \end{equation}
+        \item \label{a:5.b} Take logarithms on both sides of \ref{a:5.a}, we have
+        \begin{equation}
+            \log(\mathbf{P}(N)) \leq \sum_{i=1}^n \log(1-p_i) \leq -\sum_{i=1}^n p_i
+        \end{equation}
+        Let $ n \to \infty $, we have 
+        \begin{equation}
+            \log(\mathbf{P}(N)) \leq -\sum_{i=1}^\infty p_i = -\infty \Rightarrow \mathbf{P}(N) = 0
+        \end{equation}
+        \item Let $N_i$ be the event that there is no success after the $i$-th trial. Then, similar to \ref{a:5.a} and \ref{a:5.b}, we have
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{P}(N_k) &\leq \prod_{i=k}^n (1-p_i) \\
+            \log(\mathbf{P}(N_k)) &\leq -\sum_{i=k}^\infty p_i = -\infty \\ 
+            \Rightarrow \mathbf{P}(N_k) &= 0
+        \end{aligned}
+        \end{equation}
+        Notice that $L_n \subseteq N_n$, we have $\mathbf{P}(L_n) = 0$.
+        \item $I^c$ means that $\exists n \in \mathbb{Z^*}$ s.t. there are no successes after the $n$-th trial. Thus
+        \begin{equation}
+            I^c = \bigcup_{n=1}^\infty L_n
+        \end{equation}
+        Since $I^c$ is a countable union of events with probability 0, we have $\mathbf{P}(I^c) = 0 \Rightarrow \mathbf{P}(I) = 1$.
+    \end{enumerate}
+\end{answer}
+\end{document}
