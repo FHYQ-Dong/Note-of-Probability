@@ -15,6 +15,8 @@ for root, dirs, files in os.walk(os.getcwd()):
         with open(os.path.join(root, file), 'r', encoding='utf-8') as f:
             content = f.read()
         for k, v in secrets.items():
-            content = content.replace(k, v)
-        with open(os.path.join(root, file), 'w', encoding='utf-8') as f:
-            f.write(content)
+            new_content = content.replace(k, v)
+        if new_content != content:
+            print(f'Updating {os.path.join(root, file)}')
+            with open(os.path.join(root, file), 'w', encoding='utf-8') as f:
+                f.write(new_content)
