@@ -91,7 +91,7 @@
     \item Three 0s are sent. Using the notation defined in \ref{a:1.b}, and let $Z_2$ be the event that two symbols out of all three symbols are decoded as 0, $Z_3$ be the event that all three symbols are decoded as 0. Then we have
     \begin{equation}
     \begin{aligned}
-        \mathbf{P}(Z_2) &= \binom{3}{2}  \mathbf{P}(C_0)^2 \mathbf{P}(C_1) = 3(1-\epsilon_0)^2(1-\epsilon_1), \\
+        \mathbf{P}(Z_2) &= \binom{3}{2}  \mathbf{P}(C_0)^2 \left(1 - \mathbf{P}(C_0)\right) = 3(1-\epsilon_0)^2\epsilon_0, \\
         \mathbf{P}(Z_3) &= \mathbf{P}(C_0)^3 = (1-\epsilon_0)^3
     \end{aligned}
     \end{equation}
@@ -100,17 +100,19 @@
     \begin{aligned}
         \label{eq:a.1.c}
         \mathbf{P}(\text{0 is correctly decoded}) &= \mathbf{P}(Z_2) + \mathbf{P}(Z_3) \\
-        &= 3(1-\epsilon_0)^2(1-\epsilon_1) + (1-\epsilon_0)^3
+        &= 3(1-\epsilon_0)^2\epsilon_0 + (1-\epsilon_0)^3 \\ 
+        &= 2\epsilon_0^3 - 3\epsilon_0^2 + 1
     \end{aligned}
     \end{equation}
     P.S. We do not take the situation into consideration that the sender sends 1 and the receiver decodes it as 0.
     \item Let $\mathbf{P}(\text{0 is correctly decoded})$ in formula (\ref{eq:a.1.c}) be larger than $\mathbf{P}(C_0) = 1-\epsilon_0$, i.e.
     \begin{equation}
     \begin{aligned}
-        3(1-\epsilon_0)^2(1-\epsilon_1) + (1-\epsilon_0)^3 > 1-\epsilon_0 \\ 
-        \Rightarrow 0 \leq \epsilon_0 < \frac{5-3\epsilon_1 -\sqrt{9\epsilon_1^2 - 18\epsilon_1 + 13}}{2}
+        2\epsilon_0^3 - 3\epsilon_0^2 + 1 > 1-\epsilon_0 \\ 
+        \Rightarrow \epsilon_0 \in (-\infty, 1) \cup (2, +\infty)
     \end{aligned}
     \end{equation}
+    which means $\forall \epsilon_0 in (0, 1)$, there is always an improvement when the scheme of part \ref{q:1.c} is used.
     \item Denote $D$ as the event that 101 is received, $S_0$ as the event that the symbol is 0 and $S_1$ as the event that the symbol is 1. Then 
     \begin{equation}
         \mathbf{P}(S_0) = p,~ \mathbf{P}(S_1) = 1-p,~ \mathbf{P}(D | S_0) = \epsilon_0^2(1-\epsilon_0),~ \mathbf{P}(D | S_1) = \epsilon_1(1-\epsilon_1)^2
