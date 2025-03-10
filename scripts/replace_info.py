@@ -11,11 +11,12 @@ for root, dirs, files in os.walk(os.getcwd()):
             continue
         if file in conf['exclude_files']:
             continue
-        content = ''
+        content, new_content = '', ''
         with open(os.path.join(root, file), 'r', encoding='utf-8') as f:
             content = f.read()
+            new_content = content
         for k, v in secrets.items():
-            new_content = content.replace(k, v)
+            new_content = new_content.replace(k, v)
         if new_content != content:
             print(f'Updating {os.path.join(root, file)}')
             with open(os.path.join(root, file), 'w', encoding='utf-8') as f:
