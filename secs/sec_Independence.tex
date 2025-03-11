@@ -1,0 +1,53 @@
+\section{Independence}
+\subsection{Independence}
+\begin{definition}[Independence]
+    Event $A$ and $B$ are independent if:
+    \begin{equation}
+        \mathbf{P}(A \cap B) = \mathbf{P}(A) \cdot \mathbf{P}(B)
+    \end{equation}
+    or equivalently, when $\mathbf{P}(B) \neq 0$:
+    \begin{equation}
+        \mathbf{P}(A|B) = \mathbf{P}(A)
+    \end{equation}
+\end{definition}
+Occurrence of $B$ does not provides no information about the occurrence of $A$.
+\begin{remark}
+    Disjoint events are not independent.
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{P}(A \cap B) &= 0 \\
+        \mathbf{P}(A \cap B) &= \mathbf{P}(A) \cdot \mathbf{P}(B)
+    \end{aligned}
+    \end{equation}
+    Only if $\mathbf{P}(A) = 0$ or $\mathbf{P}(B) = 0$, the two equations can be both satisfied. E.g. when a student is in one class, it is unlikely that he is in another class.
+\end{remark}
+
+\subsection{Conditional Independence}
+\begin{definition}[Conditional Independence]
+    Event $A$ and $B$ are conditionally independent given $C$ if:
+    \begin{equation}
+        \mathbf{P}(A \cap B | C) = \mathbf{P}(A | C) \cdot \mathbf{P}(B | C)
+    \end{equation}
+\end{definition}
+\begin{remark}
+    Conditional independence does not imply independence. Information of the mainland of China does not imply the information of Tsinghua University.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{images/Note-3.1.png}
+    \caption{Conditional Independence}
+    \label{fig:conditional-independence}
+\end{figure}
+As shown in Figure \ref{fig:conditional-independence}, assume $A$ and $B$ are independent. Obviously, $A$ and $B$ are not independent given $C$ (they are disjoint in $C$).
+\end{remark}
+
+\subsection{Independence of Multiple Events}
+\begin{definition}[Independence of multiple events]
+    Events $A_1, A_2, \cdots, A_n$ are independent if
+    \begin{equation}
+        \mathbf{P}(A_{i_1} \cap A_{i_2} \cap \cdots \cap A_{i_k}) = \mathbf{P}(A_{i_1}) \cdot \mathbf{P}(A_{i_2}) \cdots \mathbf{P}(A_{i_k})
+    \end{equation}
+    for any subset $\{i_1, i_2, \cdots, i_k\} \subseteq \{A_1, A_2, \cdots, A_n\}$.
+\end{definition}
+\begin{remark}
+    Pair independence does not imply independence of multiple events. We should check if $\mathbf{P}(\bigcap_{i=1}^{n} A_i) = \prod_{i=1}^{n} \mathbf{P}(A_i)$.
+\end{remark}

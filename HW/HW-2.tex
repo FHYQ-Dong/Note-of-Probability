@@ -60,9 +60,9 @@
     
     Let $A^* = \left(a^*_1, a^*_2, a^*_3\right)$ be a permutation of $\left(a_1, a_2, a_3\right)$ with win-probability $\left(p^*_1, p^*_2, p^*_3\right)$ respectively. The sample space of the outcome of each game is 
     \begin{align*}
-        \Omega^* = \left\{\left(o^*_1, o^*_2, o^*_3\right) : o^*_i \in \left\{0, 1\right\}\right\}
+        \varOmega^* = \left\{\left(o^*_1, o^*_2, o^*_3\right) : o^*_i \in \left\{0, 1\right\}\right\}
     \end{align*}
-    where $o^*_i = 1$ denotes we win against $a^*_i$ and $o^*_i = 0$ denotes we lose. The $\sigma$-algebra $\mathcal{F^*}$ is the power set of $\Omega^*$. The probability measure $\mathbf{P^*}$ on $\mathcal{F^*}$ is defined as 
+    where $o^*_i = 1$ denotes we win against $a^*_i$ and $o^*_i = 0$ denotes we lose. The $\sigma$-algebra $\mathcal{F^*}$ is the power set of $\varOmega^*$. The probability measure $\mathbf{P^*}$ on $\mathcal{F^*}$ is defined as 
     \begin{align*}
         \mathbf{P^*}\left(\left\{\left(o^*_1, o^*_2, o^*_3\right)\right\}\right) = \Pi_{i = 1}^{3} \left(p^*_i o^*_i + \left(1 - p^*_i\right) \left(1 - o^*_i\right)\right)
     \end{align*}
@@ -129,7 +129,7 @@
 
 
 \begin{question}
-    Suppose we would like to represent an infinite sequence of binary observations, where each observation is a zero or one with equal probability. For example, the experiment could consist of repeatedly flipping a fair coin, and recording a one each time it shows heads and a zero each time it shows tails. Then an outcome $\omega$ would be an infinite sequence, $\omega = \left(\omega_1, \omega_2, \omega_3\right)$, such that for each $i \geq 1$, $\omega_i \in \left\{0, 1\right\}$. Let $\Omega$ be the set of all such $\omega$'s. The associated $\sigma$-algebra $\mathcal{F}$ satisfies that any set that can be defined in terms of finitely many of the observations is in $\mathcal{F}$. In particular, for any binary sequence $\left(b_1, b_2, \ldots, b_k\right)$ of some finite length $k$, the set $\left\{\omega \in \Omega : \omega_i = b_i for 1 \leq i \leq k\right\}$ should be in $\mathcal{F}$ with a probability of $2^{-k}$. Suppose that there are two players who take turns performing the coin flips, with the first one to get heads wins. Let $F$ be the event that the player going first wins. Show that $F \in \mathcal{F}$ and find $\mathbf{P}\left(F\right)$.
+    Suppose we would like to represent an infinite sequence of binary observations, where each observation is a zero or one with equal probability. For example, the experiment could consist of repeatedly flipping a fair coin, and recording a one each time it shows heads and a zero each time it shows tails. Then an outcome $\omega$ would be an infinite sequence, $\omega = \left(\omega_1, \omega_2, \omega_3\right)$, such that for each $i \geq 1$, $\omega_i \in \left\{0, 1\right\}$. Let $\varOmega$ be the set of all such $\omega$'s. The associated $\sigma$-algebra $\mathcal{F}$ satisfies that any set that can be defined in terms of finitely many of the observations is in $\mathcal{F}$. In particular, for any binary sequence $\left(b_1, b_2, \ldots, b_k\right)$ of some finite length $k$, the set $\left\{\omega \in \varOmega : \omega_i = b_i for 1 \leq i \leq k\right\}$ should be in $\mathcal{F}$ with a probability of $2^{-k}$. Suppose that there are two players who take turns performing the coin flips, with the first one to get heads wins. Let $F$ be the event that the player going first wins. Show that $F \in \mathcal{F}$ and find $\mathbf{P}\left(F\right)$.
 \end{question}
 \begin{answer}
     The sequence $\left\{a_i\right\}_{i=1}$ recording the result of each flip when the player going first wins is finite because the player going first does win (which means $\left\{a_n\right\}$ has a last item $a_n$ which is 1). Thus, due to ``any set that can be defined in terms of finitely many of the observations is in $\mathcal{F}$'', $\left\{a_i\right\}_{i=1}^{n} \in \mathcal{F}$. Due to $F = \bigcup_{n = 1}^{\infty} \left\{a_i\right\}_{i=1}^{2n-1}$, is countable, $F \in \mathcal{F}$. The probability of the player going first wins is

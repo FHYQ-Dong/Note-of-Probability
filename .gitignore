@@ -28,6 +28,7 @@
 *.xdy
 *.tdo
 *.xml
+*.synctex(busy)
 
 # Generated files
 *.dvi
