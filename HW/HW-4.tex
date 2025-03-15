@@ -1,0 +1,212 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+
+
+\title{Problem Set 4}
+\author{ FHYQ-Dong, Class **********, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 4}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+    citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+
+\begin{question}
+    An internet service provider uses 50 modems to serve the needs of 1000 customers. It is estimated that at a given time, each customer will need a connection with probability 0.01, independent of the other customers.
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{q:1.a} What is the PMF of the number of modems in use at the given time?
+        \item \label{q:1.b} Repeat part \ref{q:1.a} by approximating the PMF of the number of modems in use with a Poisson PMF.
+        \item What is the probability that there are more customers needing a connection than there are modems? Provide an exact, as well as an approximate formula based on the Poisson approximation of part \ref{q:1.b}.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item Let $X$ be the number of modems in use. Given that the number of modems is less than the the number of customers we have
+        \begin{equation}
+            p_X(x) = \left\{
+            \begin{aligned}
+                \binom{1000}{x} 0.01^x 0.99^{1000 - x}~~& \text{if } x = 0,1,2,\cdots,49 \\
+                \sum_{k=50}^{1000} \binom{1000}{k} 0.01^k 0.99^{1000 - k}~~& \text{if } x = 50
+            \end{aligned}\right.
+        \end{equation}
+        \item Let $\lambda = np = 1000 \times 0.01 = 10$, then the Poisson PMF is
+        \begin{equation}
+            p_X(x) = \left\{
+            \begin{aligned}
+                \frac{e^{-\lambda} \lambda^x}{x!}~~& \text{if } x = 0,1,2,\cdots,49 \\
+                1 - \sum_{k=0}^{49} \frac{e^{-\lambda} \lambda^k}{k!}~~& \text{if } x = 50
+            \end{aligned}\right.
+        \end{equation}
+        \item Exact formula:
+        \begin{equation}
+            p = \sum_{k=51}^{1000} \binom{1000}{k} (0.01)^k (0.99)^{1000 - k}
+        \end{equation}
+        Poisson approximation:
+        \begin{equation}
+            p = 1 - \sum_{k=0}^{50} \frac{e^{-\lambda} \lambda^k}{k!} = \sum_{k=51}^{1000} \frac{e^{-\lambda} \lambda^k}{k!}
+        \end{equation}
+    \end{enumerate}
+\end{answer}
+
+
+\begin{question}
+    Let $X$ be a random variable with PMF
+    \begin{equation}
+        p_X(x) = 
+        \begin{cases}
+            x^2/a & \text{if } x = -3,-2,-1,0,1,2,3 \\
+            0 & \text{otherwise}
+        \end{cases}
+    \end{equation}
+    \begin{enumerate}[label=(\alph*)]
+        \item Find $a$ and $\mathbf{E}[X]$.
+        \item \label{q:2.b} What is the PMF of the random variable $Z = (X - \mathbf{E}[X])^2$?
+        \item Using the result from part \ref{q:2.b}, find the variance of $X$.
+        \item Find the varianceof $X$ using the formula $\text{var}(X) = \sum_x (x - \mathbf{E}[X])^2 p_X(x)$.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item \begin{align}
+            \sum_{x=-3}^{3} p_X(x) &= \frac{9+4+1+0+1+4+9}{a} = 28/a = 1 \Rightarrow a = 28 \\
+            \mathbf{E}[X] &= \sum_{x=-3}^{3} x p_X(x) = \frac{1+4+9-9-4-1}{28} = 0
+        \end{align}
+        \item $\mathbf{E}[X] = 0 \Rightarrow Z = X^2$, given the domain and PMF of $X$ are both even:
+        \begin{align}
+            p_{Z}(z) = 
+            \begin{cases}
+                z/14 & \text{if } z = 0,1,4,9 \\
+                0 & \text{otherwise}
+            \end{cases}
+        \end{align}
+        \item \begin{align}
+            \text{var}(X) = \mathbf{E}[Z] = \sum_{z=0}^{9} z p_{Z}(z) = \frac{1+4+9}{14} = 7
+        \end{align}
+        \item Given $\mathbf{E}[X] = 0$:
+        \begin{align}
+            \text{var}(X) = \sum_x (x - \mathbf{E}[X])^2 p_X(x) = \sum_{x=-3}^{3} x^2 p_X(x) = \frac{9+4+1+1+4+9}{28} = 7
+        \end{align}
+    \end{enumerate}
+\end{answer}
+
+
+\begin{question}
+    Suppose that two teams play a series of games that ends when one of them has won 3 games. Suppose that each game played is, independently, won by team A with probability $p$. Find the expected number of games that are played. Also, show that this number is maximized when $p = 1/2$.
+\end{question}
+\begin{answer}
+    Let $X$ be the number of games played, then $X \in \{3, 4, 5\}$.
+    \begin{equation}
+    \begin{aligned}
+        p_{X}(3) &= p \cdot \binom{2}{2} p^2 + (1-p) \cdot \binom{2}{2} (1-p)^2 = p^3 + (1-p)^3 \\
+        p_{X}(4) &= p \cdot \binom{3}{2} p^2 (1-p) + (1-p) \cdot \binom{3}{2} (1-p)^2 p = 3p^3(1-p) + 3p(1-p)^3 \\
+        p_{X}(5) &= p \cdot \binom{4}{2} p^2 (1-p)^2 + (1-p) \cdot \binom{4}{2} (1-p)^2 p^2 = 6p^2(1-p)^2
+    \end{aligned}
+    \end{equation}
+    So the expected number of games played is
+    \begin{align}
+        \mathbf{E}[X] = 6p^4 - 12p^3 + 3p^2 + 3p + 3
+    \end{align}
+    and its derivative and second derivative are
+    \begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}\mathbf{E}[X]}{\mathrm{d}p} &= 24p^3 - 36p^2 + 6p + 3 = 3(p-\frac{1}{2})(p-4-4\sqrt{2})(p-4+4\sqrt{2}) \\ 
+        \frac{\mathrm{d}^2\mathbf{E}[X]}{\mathrm{d}p^2} &= 72p^2 - 72p + 6
+    \end{aligned}        
+    \end{equation}
+    The derivative of $\mathbf{E}[X]$ only has one root $p = 1/2$ in $[0,1]$, and the second derivative is positive at that point. So the expected number of games played is maximized when $p = 1/2$.
+\end{answer}
+
+
+\begin{question}
+    Let $X$ be a RV such that
+    \begin{equation}
+    \begin{cases}
+        p_{X}(1) = p \\ 
+        p_{X}(-1) = 1 - p
+    \end{cases}
+    \end{equation}
+    Find $c \neq 1$, such that $\mathbf{E}[c^X] = 1$.
+\end{question}
+\begin{answer}
+    Let $Z = c^X$, then the PMF of $Z$ is
+    \begin{equation}
+    \begin{cases}
+        p_{Z}(c) = p_{X}(1) = p \\
+        p_{Z}(1/c) = p_{X}(-1) = 1 - p
+    \end{cases}
+    \end{equation}
+    The expectation of $Z$ is
+    \begin{align}
+        \mathbf{E}[Z] = p \cdot c + (1-p) \cdot \frac{1}{c} = \frac{c^2p - p + 1}{c}
+    \end{align}
+    Let $\mathbf{E}[Z] = 1$, then
+    \begin{align}
+        c^2p - p + 1 = c \Rightarrow c = \frac{1 - p}{p}~~(\text{c = 1 has been discarded})
+    \end{align}
+\end{answer}
+
+
+\begin{question}
+    Let $L$ be a geometric random variable with parameter $p = 0.02$. Find its median $k$, i.e., find $k$ that satisfies $\mathbf{P}(L \geq k) \geq 0.5$ and $\mathbf{P}(L \leq k) \geq 0.5$ simultaneously.
+\end{question}
+\begin{answer}
+    \begin{align}
+        p_{L}(l) &= (1 - p)^{l-1} p = 0.02 \times 0.98^{l-1} 
+    \end{align}
+    \begin{align}
+    &\begin{aligned}
+        \mathbf{P}(L \geq k) &= \sum_{l=k}^{\infty} p_{L}(l) = 0.02 \sum_{l=k}^{\infty} 0.98^{l-1} = 0.98^{k-1} \geq 0.5 \\
+        &\Rightarrow k \leq 35
+    \end{aligned} \\ 
+    &\begin{aligned}
+        \mathbf{P}(L \leq k) &= \sum_{l=1}^{k} p_{L}(l) = 0.02 \sum_{l=1}^{k} 0.98^{l-1} = 1 - 0.98^{k} \geq 0.5 \\
+        &\Rightarrow k \geq 35
+    \end{aligned}
+    \end{align}
+    Thus, the median of $L$ is 35.
+\end{answer}
+
+\end{document}
