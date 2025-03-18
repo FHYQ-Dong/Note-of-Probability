@@ -1,0 +1,226 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+
+
+\title{Problem Set 5}
+\author{ FHYQ-Dong, Class **********, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 5}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+    citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+
+\begin{question}[D. Bernoulli's problem of joint lives]
+    Consider $2m$ persons forming $m$ couples who live together at a given time. Suppose that at some later time, the probability of each person being alive is $p$, independent of other persons. At that later time, let $A$ be the number of persons that are alive and let $S$ be the number of couples in which both partners are alive. For any survivor number $a$, find $\mathbf{E}[S | A = a]$.
+\end{question}
+\begin{answer} ~ \\ 
+    \textbf{Solution 1:} 
+    If there are $s$ couples in which both partners are alive, then there are at least 1 person died per couple in the rest $m - s$ couples. Therefore, the probability of $S = s$ given $A = a$ is
+    \begin{align}
+        \mathbf{P}(S = s | A = a) = \frac{\binom{m-s}{a-(m-s)}}{\binom{2m}{a}}
+    \end{align}
+    So the expectation of $S$ given $A = a$ is
+    \begin{align}
+        \mathbf{E}[S | A = a] = \sum_{s=0}^{m} s \cdot \mathbf{P}(S = s | A = a) = \sum_{s=0}^{m} s \cdot \frac{\binom{m-s}{a-(m-s)}}{\binom{2m}{a}}
+    \end{align}
+    (WTF??? This seems too complicated.) \\
+    \textbf{Solution 2:} 
+    Let $X_i$ be the RV that indicates the $i$-th couple is both alive. If the $i$-th couple is both alive, then $X_i = 1$, otherwise $X_i = 0$. For each couple, the probability that both partners are alive given $A = a$ is
+    \begin{align}
+        \mathbf{P}(X_i = 1 | A = a) = \frac{\binom{2m-2}{a-2}}{\binom{2m}{a}} = \frac{a(a-1)}{2m(2m-1)}
+    \end{align}
+    Then $S = X_1 + X_2 + \cdots + X_m$. So the expectation of $S$ given $A = a$ is
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{E}[S | A = a] &= \sum_{i=1}^m \mathbf{\text{P}}(X_i = 1 | A = a) \\ 
+        &= \frac{a(a-1)}{2(2m-1)}
+    \end{aligned}
+    \end{equation}
+\end{answer}
+
+
+\begin{question}
+    Every package of some intrinsically dull commodity includes a small and exciting plastic object. There are $c$ different types of object, and each package is equally likely to contain any given type. You buy one package each day.
+    \begin{enumerate}[label=(\alph*)]
+        \item Find the mean number of days which elapse between the acquisitions of the $j$-th new type of object and the $(j + 1)$-th new type.
+        \item Find the mean number of days which elapse before you have a full set of objects.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{a:2.a} The number of days satisfy the geometry distribution. If the $j$-th new type of object has been acquired, then the probability of acquiring the $(j+1)$-th new type of object is $1 - j/c$. So the mean number of days is $c/(c-j)$.
+        \item We only need to sum the number we got in \ref{a:2.a} from $j = 0$ to $c-1$. So the mean number of days is
+        \begin{align}
+            \sum_{j=0}^{c-1} \frac{c}{c-j} = c \sum_{j=1}^{c} \frac{1}{j} = cH_c
+        \end{align}
+        where $H_c$ is the $c$-th harmonic number.
+    \end{enumerate}
+\end{answer}
+
+
+\begin{question}
+    Each trial may result in any of $t$ given outcomes, the $i$-th outcome having probability $p_i$. Let $N_i$ be the number of occurrences of the $i$-th outcome in $n$ independent trials.
+    \begin{enumerate}[label=(\alph*)]
+        \item Show that
+        \begin{align}
+            \mathbf{P}(N_i = n_i~\text{for}~1 \leq i \leq t) = \frac{n!}{n_1!n_2!\cdots n_t!} p_1^{n_1} p_2^{n_2} \cdots p_t^{n_t}
+        \end{align}
+        for any collection of $n_1, n_2, \cdots, n_t$ of non-negative integers with sum $n$. The vector $N$ is said to have the multinomial distribution.
+        \item Find the marginal mass functions of the multinomial distribution.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item By applying the conditional probability and binomial distribution repeatedly, we can get the formula. Detailedly, let $A$ be the event that we get the $i$-th outcome for $n_i$ times, for all $1 \leq i \leq t$ (the event whose probability we want to calculate), and $A_1$ be the event that the we get the first outcome for $n_1$ times and the rest outcomes for $(n - n_1)$ times. Then
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{P}(A) &= \mathbf{P}(A \cap A_1) = \mathbf{P}(A_1) \mathbf{P}(A | A_1) \\
+            &= \binom{n}{n_1} p_1^{n_1} (1-p_1)^{n-n_1} \cdot \mathbf{P}(A | A_1) \\ 
+            &= \frac{n!}{n_1!(n-n_1)!} p_1^{n_1} (1-p_1)^{n-n_1} \cdot \mathbf{P}(A | A_1)
+        \end{aligned}
+        \end{equation}
+        And let $A_2$ be the event that we get the first outcome for $n_1$ times, the second outcome for $n_2$ times, and the rest outcomes for $(n - n_1 - n_2)$ times. Then
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{P}(A | A_1) &= \mathbf{P}(A \cap A_2 | A_1) = \frac{\mathbf{P}(A \cap A_2 \cap A_1)}{\mathbf{P}(A_1)} \\ 
+            &= \frac{\mathbf{P}(A | A_2 \cap A_1) \mathbf{P}(A_2 \cap A_1)}{\mathbf{P}(A_1)} \\ 
+            &= \mathbf{P}(A_2 | A_1) \mathbf{P}(A | A_2 \cap A_1) \\ 
+            &= \binom{n-n_1}{n_2} \left(\frac{p_2}{1 - p_1}\right)^{n_2} \left(1 - \frac{p_2}{1 - p_1}\right)^{n-n_1-n_2} \cdot \mathbf{P}(A | A_2 \cap A_1)
+        \end{aligned}
+        \end{equation}
+        In the fourth line we divide $p_2$ by $1 - p_1$ to ``normalize'' the probability. Therefore
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{P}(A) &= \frac{n!}{n_1!(n-n_1)!} p_1^{n_1} (1-p_1)^{n-n_1} \cdot \mathbf{P}(A | A_1) \\ 
+            &= \frac{n!}{n_1!n_2!(n-n_1-n_2)!} p_1^{n_1} p_2^{n_2} (1-p_1-p_2)^{n-n_1-n_2} \cdot \mathbf{P}(A | A_2 \cap A_1)
+        \end{aligned}
+        \end{equation}
+        By repeating the above process, we can get the formula. 
+        \item $p_{N_i}(n_i)$ is actually a binomial distribution. So the marginal mass function is
+        \begin{align}
+            p_{N_i}(n_i) = \binom{n}{n_i} p_i^{n_i} (1-p_i)^{n-n_i}
+        \end{align}
+    \end{enumerate}
+    
+\end{answer}
+
+
+\begin{question}
+    Let $X$ and $Y$ be independent random variables, each taking the values -1 or 1 with probability 0.5. Let $Z = XY$ . Show that $X, Y$ , and $Z$ are pairwise independent but not independent.
+\end{question}
+\begin{answer} ~
+    \begin{itemize}
+        \item $X$ and $Y$: Obviously.
+        \item $X$ and $Z$: \begin{itemize}
+            \item $\mathbf{P}(X = 1, Z = 1) = \mathbf{P}(X = 1, Y = 1) = 0.25 = \mathbf{P}(X = 1) \mathbf{P}(Z = 1)$
+            \item $\mathbf{P}(X = 1, Z = -1) = \mathbf{P}(X = 1, Y = -1) = 0.25 = \mathbf{P}(X = 1) \mathbf{P}(Z = -1)$
+            \item $\mathbf{P}(X = -1, Z = 1) = \mathbf{P}(X = -1, Y = -1) = 0.25 = \mathbf{P}(X = -1) \mathbf{P}(Z = 1)$
+            \item $\mathbf{P}(X = -1, Z = -1) = \mathbf{P}(X = -1, Y = 1) = 0.25 = \mathbf{P}(X = -1) \mathbf{P}(Z = -1)$
+        \end{itemize}
+        \item $Y$ and $Z$: Similar to the above.
+        \item $X, Y$ and $Z$: \begin{itemize}
+            \item $\mathbf{P}(X = 1, Y = 1, Z = 1) = 0.25 \neq 0.5 \cdot 0.5 \cdot 0.5 = \mathbf{P}(X = 1) \mathbf{P}(Y = 1) \mathbf{P}(Z = 1)$
+        \end{itemize}
+        Therefore, $X, Y$ and $Z$ are not independent.
+    \end{itemize}
+\end{answer}
+
+
+\begin{question}[Computational problem]
+    Here is a probabilistic method for computing the area of a given subset $S$ of the unit square. The method uses a sequence of independent random selections of points in the unit square $[0, 1] \times [0, 1]$, according to a uniform probability law. If the $i$-ith point belongs to the subset $S$ the value of a random variable $X_i$ is set to 1, and otherwise it is set to 0. Let $X_1, X_2, \cdots$ be the sequence of random variables thus defined, and for any $n$, let
+    \begin{align}
+        S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+    \end{align}
+    \begin{enumerate}
+        \item Show that $\mathbf{E}[S_n]$ is equal to the area of the subset $S$, and that $\text{var}(S_n)$ diminishes to 0 as $n$ increases.
+        \item Show that to calculate $S_n$, it is sufficient to know $S_{n-1}$ and $X_n$, so the past values of $X_k,~k=1,\cdots,n-1$, do not need to be remembered. Give a formula.
+        \item Write a computer program to generate $S_n~\text{for}~n = 1, 2, \cdots, 10000$, using the computer's random number generator, for the case where the subset $S$ is the circle inscribed within the unit square. How can you use your program to measure experimentally the value of $\pi$?
+        \item Use a similar computer program to calculate approximately the area of the set of all $(x,y)$ that lie within the unit square and satisfy $0 \leq \cos\pi x + \sin\pi y \leq 1$.
+    \end{enumerate}
+    You don't have to upload your programs. Just take a screenshot of your programs as well as the results, and show them in your homework. There is no restriction on the programming language you use.
+\end{question}
+\begin{answer} ~ 
+    \begin{enumerate}[label=(\alph*)]
+        \item \begin{itemize}
+            \item $\mathbf{E}[S_n]$:
+            \begin{equation}
+            \begin{aligned}
+                \mathbf{E}[S_n] &= \mathbf{E}\left[\frac{X_1 + X_2 + \cdots + X_n}{n}\right] = \frac{1}{n} \mathbf{E}[X_1 + X_2 + \cdots + X_n] \\ 
+                &= \frac{1}{n} \cdot n \cdot \mathbf{E}[X_1] = \mathbf{E}[X_1] = \text{area of the subset}~S
+            \end{aligned}
+            \end{equation}
+            \item $\text{var}(S_n)$:
+            \begin{equation}
+            \begin{aligned}
+                \text{var}(S_n) &= \text{var}\left(\frac{X_1 + X_2 + \cdots + X_n}{n}\right) \\ 
+                & = \frac{1}{n^2} \text{var}(X_1 + X_2 + \cdots + X_n) \\ 
+                &= \frac{1}{n^2} \cdot np(1-p) \\ 
+                &= \frac{p(1-p)}{n} \rightarrow 0 ~\text{as}~ n \rightarrow \infty
+            \end{aligned}
+            \end{equation}
+        \end{itemize}    
+        The third line is because $\sum_{i=1}^{n} X_i$ satisfies the binomial distribution. And $p$ denotes the probability that the point belongs to the subset $S$, i.e. the area of the subset $S$.
+        \item \begin{equation}
+                S_n = \frac{\sum_{i=1}^{n} X_i}{n} = \frac{(n-1)S_{n-1} + X_n}{n}
+        \end{equation}
+        \item The value of $\pi$ can be calculated by $4 \times S_n$.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\textwidth]{images/HW-5.5.3.png}
+            \caption{The result of the program 5.5.c.}
+        \end{figure}
+        \item ~
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\textwidth]{images/HW-5.5.4.png}
+            \caption{The result of the program 5.5.d.}
+        \end{figure}
+    \end{enumerate}
+\end{answer}
+
+
+\end{document}
