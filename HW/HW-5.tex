@@ -132,7 +132,7 @@
             &= \binom{n-n_1}{n_2} \left(\frac{p_2}{1 - p_1}\right)^{n_2} \left(1 - \frac{p_2}{1 - p_1}\right)^{n-n_1-n_2} \cdot \mathbf{P}(A | A_2 \cap A_1)
         \end{aligned}
         \end{equation}
-        In the fourth line we divide $p_2$ by $1 - p_1$ to ``normalize'' the probability. Therefore
+        In the fourth line we divide $p_2$ by $(1 - p_1)$ to ``normalize'' the probability. Therefore
         \begin{equation}
         \begin{aligned}
             \mathbf{P}(A) &= \frac{n!}{n_1!(n-n_1)!} p_1^{n_1} (1-p_1)^{n-n_1} \cdot \mathbf{P}(A | A_1) \\ 
@@ -175,7 +175,7 @@
     \begin{align}
         S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
     \end{align}
-    \begin{enumerate}
+    \begin{enumerate}[label=(\alph*)]
         \item Show that $\mathbf{E}[S_n]$ is equal to the area of the subset $S$, and that $\text{var}(S_n)$ diminishes to 0 as $n$ increases.
         \item Show that to calculate $S_n$, it is sufficient to know $S_{n-1}$ and $X_n$, so the past values of $X_k,~k=1,\cdots,n-1$, do not need to be remembered. Give a formula.
         \item Write a computer program to generate $S_n~\text{for}~n = 1, 2, \cdots, 10000$, using the computer's random number generator, for the case where the subset $S$ is the circle inscribed within the unit square. How can you use your program to measure experimentally the value of $\pi$?
@@ -202,8 +202,8 @@
                 &= \frac{p(1-p)}{n} \rightarrow 0 ~\text{as}~ n \rightarrow \infty
             \end{aligned}
             \end{equation}
+            The third line is because $\sum_{i=1}^{n} X_i$ satisfies the binomial distribution. And $p$ denotes the probability that the point belongs to the subset $S$, i.e. the area of the subset $S$.
         \end{itemize}    
-        The third line is because $\sum_{i=1}^{n} X_i$ satisfies the binomial distribution. And $p$ denotes the probability that the point belongs to the subset $S$, i.e. the area of the subset $S$.
         \item \begin{equation}
                 S_n = \frac{\sum_{i=1}^{n} X_i}{n} = \frac{(n-1)S_{n-1} + X_n}{n}
         \end{equation}
