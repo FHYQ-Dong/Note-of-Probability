@@ -1,0 +1,197 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{physics}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+
+
+\title{Problem Set 6}
+\author{ FHYQ-Dong, Class **********, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 6}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+    citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\begin{question}[Laplace random variable]
+    Let X have the PDF
+    \begin{align}
+        f_{X}(x) = \frac{\lambda}{2}\mathrm{e}^{-\lambda|x|}
+    \end{align}
+    where $\lambda$ is a positive scalar. Verify that $f_X$ satisfies the normalization condition, and evaluate the mean and variance of $X$.
+\end{question}
+\begin{answer}
+    \begin{align}
+    &\begin{aligned}
+        \int_{-\infty}^{+\infty}f_{X}(x)dx &= \int_{-\infty}^{+\infty}\frac{\lambda}{2}\mathrm{e}^{-\lambda|x|}dx \\
+        &= \int_{-\infty}^{0}\frac{\lambda}{2}\mathrm{e}^{\lambda x}dx + \int_{0}^{+\infty}\frac{\lambda}{2}\mathrm{e}^{-\lambda x}dx \\
+        &= \frac{\lambda}{2}\left(\frac{1}{\lambda} - 0 - 0 + \frac{1}{\lambda}\right) \\
+        &= 1
+    \end{aligned} \\ 
+    &\begin{aligned}
+        \mathbf{E}[X] &= \frac{\lambda}{2}\int_{-\infty}^{0}x\mathrm{e}^{\lambda x}dx + \frac{\lambda}{2}\int_{0}^{+\infty}x\mathrm{e}^{-\lambda x}dx \\
+        &= \frac{\lambda}{2}\cdot\frac{1}{\lambda}\left(\left(x\mathrm{e}^{\lambda x}\Big|_{-\infty}^{0} - \int_{-\infty}^{0}\mathrm{e}^{\lambda x}\dd{x}\right) - \left(x\mathrm{e}^{-\lambda x}\Big|_{0}^{+\infty} - \int_{0}^{+\infty}\mathrm{e}^{-\lambda x}\dd{x}\right)\right) \\ 
+        &= \frac{1}{2} \cdot \frac{-1 + 0 - 0 + 1}{\lambda} \\
+        &= 0
+    \end{aligned} \\ 
+    &\begin{aligned}
+        \text{var}(X) &= \mathbf{E}[X^2] - (\mathbf{E}[X])^2 \\
+        &= \int_{-\infty}^{+\infty}x^2f_{X}(x)dx - 0 \\ 
+        &= \left(\int_{-\infty}^{0}x^2\frac{\lambda}{2}\mathrm{e}^{\lambda x}dx + \int_{0}^{+\infty}x^2\frac{\lambda}{2}\mathrm{e}^{-\lambda x}dx\right) \\
+        &= \frac{\lambda}{2}\cdot\frac{1}{\lambda} \left(\left(x^2\mathrm{e}^{\lambda x}\Big|_{-\infty}^{0} - \int_{-\infty}^{0}2x\mathrm{e}^{\lambda x}\dd{x}\right) - \left(x^2\mathrm{e}^{\lambda x} - \int_{0}^{+\infty}2x\mathrm{e}^{-\lambda x}\dd{x}\right)\right) \\
+        &= \frac{1}{2} \cdot \frac{1}{\lambda} \left(\left(-2x\mathrm{e}^{\lambda x}\Big|_{-\infty}^{0} + 2\int_{-\infty}^{0}\mathrm{e}^{\lambda x}\dd{x}\right) - \left(2x\mathrm{e}^{-\lambda x}\Big|_{0}^{+\infty} - 2\int_{0}^{+\infty}\mathrm{e}^{-\lambda x}\dd{x}\right)\right) \\
+        &= \frac{1}{\lambda^2} \left(1 - 0 - 0 + 1\right) = \frac{2}{\lambda^2}
+    \end{aligned}
+    \end{align}
+\end{answer}
+
+\begin{question}
+    Alvin throws darts at a circular target of radius $r$ and is equally likely to hit any point in the target. Let $X$ be the distance of Alvin's hit from the center.
+    \begin{enumerate}[label=(\alph*)]
+        \item Find the PDF, the mean and the variance of $X$.
+        \item The target has an inner circle of radius $t$. If $X < t$, Alvin gets a score of $S = 1/X$. Otherwise his score is $S = 0$. Find the CDF of $S$. Is $S$ a continuous random variable?
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item The probability of hitting a circle with radius $x$ is $\frac{x^2}{r^2}$, which is the CDF of $X$. So the PDF of $X$ is
+        \begin{equation}
+            f_{X}(x) = \dv{F_{X}(x)}{x} = \dv{\frac{x^2}{r^2}}{x} = \frac{2x}{r^2}, \quad 0 \leq x \leq r
+        \end{equation}
+        And the mean and variance of $X$ are
+        \begin{align}
+            \mathbf{E}[X] &= \int_{0}^{r} x\frac{2x}{r^2} \dd{x} = \frac{2r}{3} \\ 
+            \text{var}[X] &= \mathbf{E}[X^2] - (\mathbf{E}[X])^2 = \int_{0}^{r} x^2\frac{2x}{r^2} \dd{x} - \left(\frac{2r}{3}\right)^2 = \frac{r^2}{18}
+        \end{align}
+        \item The PDF of $S$ is
+        \begin{equation}
+            f_{S}(s) = \left\{
+            \begin{aligned}
+                &1/s, \quad &s > 1/t \\
+                &0, \quad &0 < s \leq 1/t
+            \end{aligned}\right.
+        \end{equation}
+        Therefore, the CDF of $S$ is
+        \begin{equation}
+            F_{S}(s) = \int_{0}^{s}f_{S}(s) \dd{s} = \left\{
+            \begin{aligned}
+                &\ln s + \ln t, \quad &s > 1/t \\
+                &0, \quad &0 < s \leq 1/t
+            \end{aligned}\right.
+        \end{equation}
+        which is not continuous, so $S$ is not a continuous random variable.
+    \end{enumerate}
+\end{answer}
+
+\begin{question} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item A fire station is to be located along a road of length $A$ ($A < \infty$). If fires occur at points uniformly distributed on $(0, A)$, where should the fire station be located so as to minimize the expected distance from the fire?
+        \item Now suppose that the road is of infinite length, stretching from point 0 outward to $\infty$. If the distance of a fire from point 0 is exponentially distributed with rate $\lambda$, where should the fire station be located now?
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item Assume the fire station is located at $x_0$ ($x_0 \in (0, A)$), then the PDF of the distance from the fire station to the fire is
+        \begin{equation}
+            f_{X}(x) = \left\{
+            \begin{aligned}
+                &2/A, \quad &0 < x < \min(x_0, A - x_0) \\
+                &1/A, \quad &\min(x_0, A - x_0) < x < \max(x_0, A - x_0) \\
+            \end{aligned}\right.
+        \end{equation}
+        Due to the symmetry of the problem, it would be well to assume $x_0 \leq A/2$. Then the expected distance from the fire is
+        \begin{equation}
+            \mathbf{E}[X] = \int_{0}^{x_0}\frac{2x}{A}\dd{x} + \int_{x_0}^{A - x_0}\frac{x}{A}\dd{x} = \frac{x_0^2}{A} + \frac{(A - x_0)^2}{2A} - \frac{x_0^2}{2A} = \frac{(A - x_0)^2 + x_0^2}{2A}
+        \end{equation}
+        Since $x_0 + (A - x_0) = A = \text{const.}$, the expected distance is minimized when $x_0 = A/2$, i.e., the fire station should be located at the midpoint of the road.
+        \item Similarly, we assume the fire station is located at $x_0$ ($x_0 \in (0, \infty)$), then the PDF of the distance from the fire station to the fire is
+        \begin{equation}
+            f_{X}(x) = \left\{
+            \begin{aligned}
+                &\lambda\mathrm{e}^{-\lambda x_0}, \quad &x = 0 \\ 
+                &\lambda\mathrm{e}^{-\lambda (x_0 - x)} + \lambda\mathrm{e}^{-\lambda (x_0 + x)}, \quad &0 < x < x_0 \\
+                &\lambda\mathrm{e}^{-\lambda (x_0 + x)}, \quad &x \geq x_0
+            \end{aligned}\right.
+        \end{equation}
+        Therefore, the expected distance from the fire is
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{E}[X] &= \int_{0}^{x_0}x\lambda\mathrm{e}^{-\lambda (x_0 - x)}\dd{x} + \int_{0}^{+\infty}x\lambda\mathrm{e}^{-\lambda (x_0 + x)}\dd{x} \\ 
+            &= \lambda \cdot \frac{1}{\lambda} \left(x_0 - 0 + \frac{1 - \mathrm{e}^{-\lambda x_0}}{\lambda}\right) - \lambda \cdot \frac{1}{\lambda} \left(0 - 0 + \frac{0 - \mathrm{e}^{-\lambda x_0}}{\lambda}\right) \\ 
+            &= x_0 + \frac{1}{\lambda}
+        \end{aligned}
+        \end{equation}
+        So the fire station should be located at the origin.
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    Show that $\Gamma\left(\frac{1}{2}\right) = \sqrt{\pi}$ \\ 
+    \textit{Hint:} $\Gamma(t) = \int_{0}^{+\infty}\mathrm{e}^{-x}x^{t-1}\dd{x}$. Make the change of variables and then relate the resulting expression to the normal distribution.
+\end{question}
+\begin{answer} ~
+    \begin{equation}
+    \begin{aligned}
+        \Gamma\left(\frac{1}{2}\right) &= \int_{0}^{+\infty} \frac{\mathrm{e}^{-x}}{\sqrt{x}}\dd{x} = \int_{0}^{+\infty} \frac{\mathrm{e}^{-u^2}}{u} \cdot 2u\dd{u} = \int_{-\infty}^{+\infty}\mathrm{e}^{-u^2}\dd{u} = \sqrt{\pi}
+    \end{aligned}
+    \end{equation}
+\end{answer}
+
+\begin{question}
+    Suppose $X$ is a random variable with CDF
+    \begin{equation}
+        F_{X}(x) = \frac{1}{1 + \exp(-\lfloor x \rfloor)}
+    \end{equation}
+    where $\lfloor x \rfloor$ is the greatest integer less than or equal to $x$. Find $\mathbf{P}(|X| \leq 3)$.
+\end{question}
+\begin{answer}
+    The CDF of $X$ is piecewise constant, so $X$ is a discrete RV, and 
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{P}(|X| \leq 3) &= \sum_{x=-3}^{3}p_{X}(x) = F_{X}(3) - F_{X}(-4) = \frac{1}{1 + \mathrm{e}^{-3}} - \frac{1}{1 + \mathrm{e}^{4}}
+    \end{aligned}
+    \end{equation}
+\end{answer}
+
+\end{document}
