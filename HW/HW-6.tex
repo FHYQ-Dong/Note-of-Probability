@@ -104,23 +104,15 @@
             \mathbf{E}[X] &= \int_{0}^{r} x\frac{2x}{r^2} \dd{x} = \frac{2r}{3} \\ 
             \text{var}[X] &= \mathbf{E}[X^2] - (\mathbf{E}[X])^2 = \int_{0}^{r} x^2\frac{2x}{r^2} \dd{x} - \left(\frac{2r}{3}\right)^2 = \frac{r^2}{18}
         \end{align}
-        \item The PDF of $S$ is
+        \item The probability of getting 0 score is $1 - \frac{t^2}{r^2}$, and the probability of getting non-zero score is $\frac{t^2}{r^2}$. Given $X < t$, the probability of getting a score no more than $\frac{1}{X}$ is $1 - \frac{1}{t^2s^2}$. Therefore, the CDF of $S$ is
         \begin{equation}
-            f_{S}(s) = \left\{
-            \begin{aligned}
-                &1/s, \quad &s > 1/t \\
-                &0, \quad &0 < s \leq 1/t
+            F_{S}(s) = \left\{\begin{aligned}
+                &0, \quad &s < 0 \\
+                &1 - \frac{t^2}{r^2}, \quad &0 \leq s \leq 1/t \\ 
+                &1 - \frac{1}{s^2r^2}, \quad &s > 1/t
             \end{aligned}\right.
         \end{equation}
-        Therefore, the CDF of $S$ is
-        \begin{equation}
-            F_{S}(s) = \int_{0}^{s}f_{S}(s) \dd{s} = \left\{
-            \begin{aligned}
-                &\ln s + \ln t, \quad &s > 1/t \\
-                &0, \quad &0 < s \leq 1/t
-            \end{aligned}\right.
-        \end{equation}
-        which is not continuous, so $S$ is not a continuous random variable.
+        Because the CDF of $S$ is piecewise constant, when $s < \frac{1}{t}$, $S$ is not a continuous random variable.
     \end{enumerate}
 \end{answer}
 
