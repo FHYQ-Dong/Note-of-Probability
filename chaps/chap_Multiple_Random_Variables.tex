@@ -1,0 +1,183 @@
+\chapter{Multiple Random Variables}
+\section{Conditioning}
+\begin{definition}[Conditional PMF]
+    The conditional PMF of $X$ given $A$ is defined as
+    \begin{align}
+        p_{X|A}(x) = \mathbf{P}(X = x | A) = \frac{\mathbf{P}(\{X = x\} \cap A)}{\mathbf{P}(A)}
+    \end{align}
+    Specifically, if given $Y = y$, then
+    \begin{align}
+        p_{X|Y = y}(x) = \mathbf{P}(X = x | Y = y) = \frac{\mathbf{P}(\{X = x\} \cap \{Y = y\})}{\mathbf{P}(Y = y)}
+    \end{align}
+\end{definition}
+Since $\mathbf{P}(A) = \sum_{x} \mathbf{P}(\{X = x\} \cap A)$, we have $\sum_{x} p_{X|A}(x) = 1$.
+The conditional PMF limits the sample space to $A$.
+\begin{definition}[Conditional Expectation]
+    The conditional expectation of $X$ given $A$ is defined as
+    \begin{align}
+        \mathbf{E}[X|A] = \sum_{x} x p_{X|A}(x)
+    \end{align}
+    Specifically, if given $Y = y$, then
+    \begin{align}
+        \mathbf{E}[X|Y = y] = \sum_{x} x p_{X|Y}(x|y)
+    \end{align}
+\end{definition}
+\begin{theorem}[Total Expectation Theorem]
+    Partition the sample space into disjoint events $A_{1}, A_{2}, \cdots$, then
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{P}(B) &= \sum_{i} \mathbf{P}(A_{i}) \mathbf{P}(B|A_{i}) \\ 
+        p_{X}(x) &= \sum_{i} \mathbf{P}(A_{i}) p_{X|A_{i}}(x) \\
+        \mathbf{E}[X] &= \sum_{i} \mathbf{P}(A_{i}) \mathbf{E}[X|A_{i}]
+    \end{aligned}
+    \end{equation}
+    From line 2 to line 3, we multiply $x$ on both sides and sum over $x$.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.3\textwidth]{images/Note-5.1.png}
+        \caption{Total Expectation Theorem}
+    \end{figure}
+\end{theorem}
+\begin{example}[Geometric PMF 1]
+    Toss a fair coin independently until a head occurs. Let $X$ be the number of tosses. What is the PMF, expectation, and variance of $X$? 
+    \begin{solution}
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{E}[X] &= \sum_{k=1}^{\infty} k \mathbf{P}(X = k) = \sum_{k=1}^{\infty} k (1-p)^{k-1} p = \frac{1}{p} \\ 
+            \text{var}(X) &= \mathbf{E}[X^{2}] - \mathbf{E}[X]^{2} = \frac{1-p}{p^{2}}
+        \end{aligned}
+        \end{equation}
+    \end{solution}
+\end{example}
+\begin{property}[Memoryless Property]
+    Given that $X > 2$, the random variable $X - 2$ has same geometric PMF with $X$ (not given that $X > 2$). 
+    \begin{equation}
+    \begin{aligned}
+        p_{X|X > 2}(x) &= \frac{\mathbf{P}(\{X > 2\} \cap \{X = x\})}{\mathbf{P}(X > 2)} \\ 
+        &= \frac{(1 - p)^{k-1}p}{1 - p - p(1-p)} = (1-p)^{k-3}p
+    \end{aligned}
+    \end{equation}
+    If we \textit{shift} $k$ by 2, then the PMF is the same. That is to say, the random variable $X - 2$ given $X > 2$ has the same geometric PMF with $X$, and thus $\mathbf{E}[(X - 2)|X > 2] = \mathbf{E}[X]$.
+\end{property}
+\begin{example}[Geometric PMF 2]
+    Toss a fair coin independently until a head occurs. Let $X$ be the number of tosses. What is the PMF, expectation, and variance of $X$? 
+    \begin{solution}
+        If we use the memoryless property, then 
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{E}[X] &= \mathbf{P}(X = 1)\mathbf{E}[X | X = 1] + \mathbf{P}(X > 1)\mathbf{E}[X | X > 1] \\ 
+            &= p + (1-p)\mathbf{E}[(X - 1 + 1) | X > 1] \\
+            &= p + (1-p)(1 + \mathbf{E}[X]) \\ 
+            &\Rightarrow \mathbf{E}[X] = \frac{1}{p}
+        \end{aligned}
+        \end{equation}
+        Similarly
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{E}[X^2] &= \mathbf{P}(X = 1)\mathbf{E}[X^2 | X = 1] + \mathbf{P}(X > 1)\mathbf{E}[X^2 | X > 1] \\
+            &= p + (1-p)\mathbf{E}[(X - 1 + 1)^2 | X > 1] \\
+            &= p + (1-p)(1 + 2\mathbf{E}[X] + \mathbf{E}[X^2]) \\
+            &\Rightarrow \mathbf{E}[X^2] = \frac{2-p}{p^2}
+        \end{aligned}
+        \end{equation}
+        Then
+        \begin{equation}
+            \text{var}(X) = \mathbf{E}[X^2] - \mathbf{E}[X]^2 = \frac{1-p}{p^2}
+        \end{equation}
+    \end{solution}
+\end{example}
+
+\section{Multiple Discrete Random Variables}
+\begin{definition}[Joint PMF]
+    The joint PMF of $X$ and $Y$ is defined as
+    \begin{align}
+        p_{X, Y}(x, y) = \mathbf{P}(\{X = x\} \cap \{Y = y\})
+    \end{align}
+\end{definition}
+\begin{property}[Properties of Joint PMF] ~
+    \begin{itemize}
+        \item Added up to 1: $\sum_x \sum_y p_{X, Y}(x, y) = 1$.
+        \item Marginal PMF: $p_{X}(x) = \sum_y p_{X, Y}(x, y)$, $p_{Y}(y) = \sum_x p_{X, Y}(x, y)$. (Total Probability Theorem)
+        \item Conditional PMF: $p_{X|Y}(x|y) = \frac{p_{X, Y}(x, y)}{p_{Y}(y)}$, $p_{Y|X}(y|x) = \frac{p_{X, Y}(x, y)}{p_{X}(x)}$.
+    \end{itemize}
+\end{property}
+If we have a RV function of multiple RVs: $Z = g(X, Y)$, then the PMF of $Z$ is
+\begin{align}
+    p_{Z}(z) = \sum_{x, y: g(x, y) = z} p_{X, Y}(x, y)
+\end{align}
+\begin{definition}[Expectation of Multiple Random Variables]
+    Recall that 
+    \begin{align*}
+        \mathbf{E}[g(X)] = \sum_{x} g(x) p_{X}(x)
+    \end{align*}
+    Then the expectation of $g(X, Y)$ is
+    \begin{align}
+        \mathbf{E}[g(X, Y)] = \sum_{x, y} g(x, y) p_{X, Y}(x, y)
+    \end{align}
+\end{definition}
+\begin{property}[Properties of Expectation] ~
+    \begin{itemize}
+        \item In general, $\mathbf{E}[X + Y] \neq \mathbf{E}[X] + \mathbf{E}[Y]$.
+        \item $\mathbf{E}[\alpha X + \beta Y + \gamma] = \alpha \mathbf{E}[X] + \beta \mathbf{E}[Y] + \gamma$. \textbf{This property holds for any RVs, despite of the independence.} (go back to the definition of expectation and you will see the linearity, which is also the reason of property 1.)
+    \end{itemize}
+\end{property}
+\begin{example}[Coin tossing]
+    Toss a coin independently. The coin may not be fair. 
+    \begin{solution}
+        \begin{equation}
+            X_i = \begin{cases}
+                1, & \text{if the $i$-th toss is head} \\ 
+                0, & \text{otherwise}
+            \end{cases}
+        \end{equation}
+        The sum $X = \sum_{i=1}^n X_i$. Then 
+        \begin{equation}
+            \mathbf{E}[X] = \sum_{i=1}^n \mathbf{E}[X_i] = np
+        \end{equation}
+        \begin{equation}
+        \begin{aligned}
+            \text{var}(X) &= \mathbf{E}[X^2] - \mathbf{E}[X]^2 = (\sum_{i=1}^{N} X_i^2 + \sum_{i \neq j} X_i X_j) - n^2 p^2 \\
+            &= np + n(n-1)p^2 - n^2 p^2 = np(1-p)
+        \end{aligned}
+        \end{equation}
+    \end{solution}
+\end{example}
+
+\section{Independence}
+\begin{definition}[Definition of Independence]
+    Two RVs $X$ and $Y$ are independent if
+    \begin{align}
+        p_{X, Y}(x, y) = p_{X}(x) \cdot p_{Y}(y)
+    \end{align}
+    for all $x$ and $y$.
+\end{definition}
+\begin{property}[Properties of Independence] ~
+    \begin{itemize}
+        \item $\mathbf{E}[g(X)h(Y)] = \mathbf{E}[g(X)] \cdot \mathbf{E}[h(Y)]$. (go back to the definition of expectation, divide the sum into two parts, and you will see the independence.)
+        \item $\text{var}(g(X) + h(Y)) = \text{var}(g(X)) + \text{var}(h(Y))$. (use $\text{var}(A + B) = \mathbf{E}[(A + B)^2] - \mathbf{E}[A + B]^2$.)
+    \end{itemize}
+\end{property}
+
+\begin{definition}[Definition of Conditional Independence]
+    Two RVs $X$ and $Y$ are conditionally independent given $A$ if
+    \begin{align}
+        p_{X, Y|A}(x, y) = p_{X|A}(x) p_{Y|A}(y)
+    \end{align}
+    for all $x$ and $y$.
+\end{definition}
+\begin{example}[Data packet problem]
+    A network system with n nodes randomly redistributes each node's data packet through a central processor. Let $X$ be the number of nodes that receive their original data packets. Find $\mathbf{E}[X]$ and $\text{var}(X)$. \\
+    \begin{solution}
+        Define $X_i$ as the indicator of the $i$-th node. Then $X = \sum_{i=1}^n X_i$. 
+        \begin{equation}
+            \mathbf{E}[X] = \sum_{i=1}^{n} \mathbf{E}[X_i] = n \cdot \frac{1}{n} = 1
+        \end{equation}
+        \begin{equation}
+        \begin{aligned}
+            \text{var}(X) &= \mathbf{E}[X^2] - \mathbf{E}[X]^2 = \sum_{i=1}^{n} \mathbf{E}[X_i^2] + \sum_{i \neq j} \mathbf{E}[X_i X_j] - 1 \\ 
+            &= n \cdot \frac{1}{n} + \sum_{i=1}^{n} \left(\mathbf{P}(X_i = 1) \cdot \mathbf{P}(X_j = 1 | X_i = 1)\right) - 1 \\ 
+            &= n(n-1) \cdot \frac{1}{n(n-1)} = 1
+        \end{aligned}
+        \end{equation}
+    \end{solution}
+\end{example}

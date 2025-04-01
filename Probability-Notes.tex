@@ -1,4 +1,4 @@
-\documentclass[device=normal, lang=en, fontsize=12pt]{elegantnote}
+\documentclass[device=normal, lang=en]{elegantbook}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{float}
@@ -9,125 +9,156 @@
 \pagecolor{pgcolor}
 \numberwithin{equation}{section}
 
-\theoremstyle{definition} %
-\newtheorem{property}{Property}[section] %
+% \theoremstyle{definition} %
+% \newtheorem{property}{Property}[section] %
 
 \title{Probability Notes}
 \author{FHYQ-Dong}
 \date{\today}
-
+\version{7.0}
+\cover{images/Note-cover.png}
+\definecolor{customcoverlinecolor}{RGB}{82, 59, 148}
+\colorlet{coverlinecolor}{customcoverlinecolor}
 
 \begin{document}
 
 \maketitle
-\newpage
+\frontmatter
+
 \tableofcontents
-\newpage
+\mainmatter
 
 
-\input{secs/sec_Probability_Space.tex}
-\input{secs/sec_Conditional_Probability.tex}
-\input{secs/sec_Independence.tex}
-\input{secs/sec_Discrete_Random_Variables.tex}
-\input{secs/sec_Multiple_Random_Variables.tex}
+\input{chaps/chap_Probability_Space.tex}
+\input{chaps/chap_Conditional_Probability.tex}
+\input{chaps/chap_Independence.tex}
+\input{chaps/chap_Discrete_Random_Variables.tex}
+\input{chaps/chap_Multiple_Random_Variables.tex}
+\input{chaps/chap_Continuous_Random_Variables.tex}
 
 
-\section{Continuous Random Variables}
-\subsection{Continuous RVs and PDFs}
-\begin{definition}[Continuous Random Variables]
-    A RV $X$ is continuous if there exists a nonnegative function $f_{X}(x)$, called \textbf{probability density function}, such that
-    \begin{align}
-        \mathbf{P}(X \in A) = \int_{A} f_{X}(x) \dd{x}
-    \end{align}
-    Especially, if $A \subseteq \mathcal{B}(\mathbb{R})$, then
-    \begin{align}
-        \mathbf{P}(a \leq X \leq b) = \int_{a}^{b} f_{X}(x) \dd{x}
-    \end{align}
+
+\chapter{Multiple Continuous Random Variables}
+
+
+\section{Multiple Continuous Random Variables}
+
+\begin{definition}[Joint PDF]
+    The two continuous RVs $X$ and $Y$, with the same experiment, are jointly continuous if they can be described by a joint PDF $f_{X, Y}(x, y)$, where $f_{X, Y}(x, y) \geq 0$ and satisfies
+    \begin{equation}
+        \mathbf{P}((X, Y) \in A) = \iint_{A} f_{X, Y}(x, y) \dd{x} \dd{y}
+    \end{equation}
+    Especially, if $A \subseteq \mathcal{B}(\mathbb{R}^2)$, then
+    \begin{equation}
+        \mathbf{P}((X, Y) \in [a, b] \times [c, d]) = \int_{c}^{d} \int_{a}^{b} f_{X, Y}(x, y) \dd{x} \dd{y}
+    \end{equation}
 \end{definition}
-\begin{property}[Properties of PDF]
-    Let $X$ be a continuous RV with PDF $f_{X}(x)$, then
+
+\begin{property}[Properties of Joint PDFs] ~
     \begin{itemize}
-        \item $f_{X}(x) \geq 0$, and $f_{X}(x)$ can be any nonnegative number. (even $+\infty$)
-        \item $\int_{-\infty}^{\infty} f_{X}(x) \dd{x} = 1$.
-        \item $\mathbf{P}(x \leq X \leq x + \delta) = \int_{x}^{x + \delta} f_{X}(x) \dd{x} \approx f_{X}(x) \cdot \delta$.
+        \item Normalization: $\iint_{\Omega} f_{X, Y}(x, y) \dd{x} \dd{y} = 1$.
+        \item Interpretation: $f_{X, Y}(x, y) \dd{x} \dd{y}$ is the probability that $(X, Y)$ lies in the small rectangle $[x, x + \dd{x}] \times [y, y + \dd{y}]$.
+        \item Marginal PDFs: $f_{X}(x) = \int_{\Omega_{Y}} f_{X, Y}(x, y) \dd{y}$ and $f_{Y}(y) = \int_{\Omega_{X}} f_{X, Y}(x, y) \dd{x}$.
     \end{itemize}
 \end{property}
 
-\subsection{Expectation and Variance}
-\begin{definition}[Definitions of Expectation and Variance]
-    Let $X$ be a continuous RV with PDF $f_{X}(x)$, then
+\begin{definition}[Joint CDFs]
+    If $X$ and $Y$ are two continuous RVs associated with the same experiment, then the joint CDF of $X$ and $Y$ is defined as
     \begin{equation}
-    \begin{aligned}
-        &\mathbf{E}[X] = \int_{-\infty}^{\infty} x f_{X}(x) \dd{x} \\ 
-        &\mathbf{E}[g(X)] = \int_{-\infty}^{\infty} g(x) f_{X}(x) \dd{x}
-    \end{aligned}
+        F_{X, Y}(x, y) = \mathbf{P}(X \leq x, Y \leq y)
     \end{equation}
+    If $X$ and $Y$ can be described by a joint PDF $f_{X, Y}(x, y)$, then
+    \begin{equation}
+        F_{X, Y}(x, y) = \int_{-\infty}^{x} \int_{-\infty}^{y} f_{X, Y}(t, s) \dd{t} \dd{s}
+    \end{equation}
+    Conversely, if $F_{X, Y}(x, y)$ is differentiable, then
+    \begin{equation}
+        f_{X, Y}(x, y) = \pdv{F_{X, Y}(x, y)}{x}{y}
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Expectation and Variance]
+    Let $X$ and $Y$ be two continuous RVs with joint PDF $f_{X, Y}(x, y)$, then
     \begin{equation}
     \begin{aligned}
-        \text{var}(X) &= \mathbf{E}[(X - \mathbf{E}[X])^{2}] = \int_{-\infty}^{\infty} (x - \mathbf{E}[X])^{2} f_{X}(x) \dd{x} \\ 
-        &= \mathbf{E}[X^{2}] - \mathbf{E}[X]^{2}
+        &\mathbf{E}[g(X, Y)] = \iint_{\Omega} g(x, y) f_{X, Y}(x, y) \dd{x} \dd{y} \\ 
+        &\text{var}(g(X, Y)) = \mathbf{E}[g(X, Y) - \mathbf{E}[g(X, Y)]]^2 = \mathbf{E}[g(X, Y)^2] - \mathbf{E}[g(X, Y)]^2
     \end{aligned}
     \end{equation}
 \end{definition}
-\begin{example}[Uniform RV]
-    Consider a RV $X$ that takes value in an interval $[a, b]$ with PDF
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.3\textwidth]{images/Note-6.1.png}
-    \end{figure}
-    \vspace{-2em}
+
+\begin{definition}[Independence]
+    $X$ and $Y$ are independent if their joint PDF can be factorized as
     \begin{equation}
-        \mathbf{E}[X] = \int_{a}^{b} \frac{x}{b - a} \dd{x} = \frac{a + b}{2}
+        f_{X, Y}(x, y) = f_{X}(x) f_{Y}(y), ~\forall x, y
     \end{equation}
+\end{definition}
+
+\begin{example}[Buffon's needle]
+    Parallel lines are at distance $d$, throw a needle of length $l$ (assume $l < d$). Find $\mathbf{P}(\text{needle intersects one of the lines})$.  
+    \begin{solution}
+        Let $X$ be the distance from the center of the needle to the nearest line, and $\Theta$ be the angle between the needle and the lines, where $X$ and $\Theta$ are independent. Given the symmetry characteristics, it is well to assume $X$ is uniform in $[0, d/2]$ and $\Theta$ is uniform in $[0, \pi/2]$. Then the joint PDF is
     \begin{equation}
-        \text{var}(X) = \mathbf{E}[X^2] - (\mathbf{E}[X])^2 = \int_{a}^{b} \frac{x^2}{b - a} \dd{x} - \left(\frac{a + b}{2}\right)^2 = \frac{(b - a)^2}{12}
+        f_{X, \Theta}(x, \theta) = \frac{2}{d} \cdot \frac{2}{\pi}, \quad 0 \leq x \leq \frac{d}{2}, 0 \leq \theta \leq \frac{\pi}{2}
     \end{equation}
-\end{example}
-\begin{example}[Exponential RV]
-    Consider an exponential RV $X$ that has a PDF of the form
+    The needle intersects if $X \leq l/2 \sin\Theta$, and the probability is
     \begin{equation}
-        f_{X}(x) = \lambda \mathrm{e}^{-\lambda x},~ x \geq 0
+    \begin{aligned}
+        \mathbf{P}(X \leq \frac{l}{2}\sin\Theta) &= \iint_{X\leq\frac{l}{2}\sin\Theta} f_{X, \Theta}(x, \theta) \dd{x} \dd{\theta} \\ 
+        &= \frac{4}{\pi d} \int_{0}^{\pi/2} \int_{0}^{(l/2)\sin\theta} \dd{x} \dd{\theta} = \frac{2l}{\pi d}
+    \end{aligned}
     \end{equation}
-    \begin{equation}
-        \mathbf{E}[X] = \int_{0}^{\infty} x \lambda \mathrm{e}^{-\lambda x} \dd{x} = (-x \mathrm{e}^{-\lambda x}) \Big|_{0}^{\infty} + \int_{0}^{\infty} \mathrm{e}^{-\lambda x} \dd{x} = \frac{1}{\lambda}
-    \end{equation}
-    \begin{equation}
-        \text{var}(X) = \mathbf{E}[X^2] - (\mathbf{E}[X])^2 = (-x^2 \mathrm{e}^{-\lambda x}) \Big|_{0}^{\infty} + \int_{0}^{\infty} 2x \mathrm{e}^{-\lambda x} \dd{x} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
-    \end{equation}
+    \end{solution}
 \end{example}
 
-\subsection{Comulative Distribution Function}
-We want to describe both discrete and continuous RVs in a unified way. An intuition is to ``accumulate'' the probability ``up to'' the value $x$.
-\begin{definition}[CDF]
-    The cumulative distribution function (CDF) of a RV $X$ is defined as
-    \begin{align}
-        F_{X}(x) = \mathbf{P}(X \leq x) = \left\{
-        \begin{aligned}
-            &\sum_{t \leq x} p_{X}(t), &\text{discrete} \\ 
-            &\int_{-\infty}^{x} f_{X}(t) \dd{t}, &\text{continuous}
-        \end{aligned}
-        \right.
-    \end{align}
+
+\section{Conditioning and Independence}
+
+\begin{definition}[Definition of Conditional PDFs]
+    Let $X$ and $Y$ be two continuous RVs with joint PDF $f_{X, Y}(x, y)$, then the conditional PDF of $X$ given $Y = y$ is defined as
+    \begin{equation}
+        f_{X \mid Y}(x \mid y) = \frac{f_{X, Y}(x, y)}{f_{Y}(y)}
+    \end{equation}
 \end{definition}
-\begin{example}[Some examples of CDF] ~
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.6\textwidth]{images/Note-6.2.png}
-        \caption{CDF: Continuous RV}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.6\textwidth]{images/Note-6.3.png}
-        \caption{CDF: Discrete RV}
-    \end{figure}
+
+\begin{remark}
+    There's a paradox that the denominator $\mathbf{P}(Y = y) = 0$ for continuous RVs, but we can let $Y$ be a little fatter: $\mathbf{P}(y \leq Y \leq y + \delta) \approx f_{Y}(y) \cdot \delta$ and let $\delta \to 0$ after we do division.
+\end{remark}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/Note-7.1.png}
+    \caption{Visualization of Conditional PDF}
+\end{figure}
+
+\begin{example}[Stick-breaking]
+    Break a stick of length $l$ twice: break at $X$: uniform in $[0, l]$; break again at $Y$: uniform in $[0, X]$. Find $\mathbf{E}[Y]$. 
+    \begin{solution}
+        \begin{align}
+            f_{X, Y}(x, y) &= f_{X}(x) f_{Y \mid X}(y \mid x) = \frac{1}{l} \cdot \frac{1}{x}, \quad 0 \leq y \leq x \leq l \\ 
+            f_{Y}(y) &= \int_{-\infty}^{+\infty} f_{X, Y}(x, y) \dd{x} = \int_{y}^{l} \frac{1}{l} \cdot \frac{1}{x} \dd{x} = \frac{1}{l} \ln\left(\frac{l}{y}\right), \quad 0 \leq y \leq l \\ 
+            \mathbf{E}[Y] &= \int_{-\infty}^{+\infty} y f_{Y}(y) \dd{y} = \int_{0}^{l} y \cdot \frac{1}{l} \ln\left(\frac{l}{y}\right) \dd{y} = \frac{l}{4}
+        \end{align}
+    \end{solution}
 \end{example}
-\begin{property}[Properties of CDF] ~
-    \begin{itemize}
-        \item Monotonically nondecreasing: $x \leq y \Rightarrow F_{X}(x) \leq F_{X}(y)$. (since $p_{X}(x) \geq 0$ and $f_{X}(x) \geq 0$)
-        \item $F_X(x) \to 0$ as $x \to -\infty$ and $F_X(x) \to 1$ as $x \to \infty$.
-        \item When $X$ is continuous: $F_{X}(x)$ is a continuous function, $f_{X}(x) = \frac{\dv{F_{X}}}{\dd{x}}(x)$.
-        \item When $X$ is discrete: $F_{X}(x)$ i piecewise constant function, $p_{X}(k) = F_{X}(k) - F_{X}(k-1)$.
-    \end{itemize}
-\end{property}
+
+\begin{definition}[Conditional Expectation]
+    The conditional expectation of $X$ given that $Y = y$ has happened is defined by
+    \begin{equation}
+        \mathbf{E}[X \mid Y = y] = \int_{-\infty}^{+\infty} x f_{X \mid Y}(x \mid y) \dd{x}
+    \end{equation}
+    For a function $g(X, Y)$, the conditional expectation is 
+    \begin{equation}
+        \mathbf{E}[g(X, Y) \mid Y = y] = \int_{-\infty}^{+\infty} g(x, y) f_{X \mid Y}(x \mid y) \dd{x}
+    \end{equation}
+\end{definition}
+
+Remember how we prove the total expectation theorem in discrete case: we multiple $x$ on both side of the equation of conditional probability and sum over $x$. Now we can do the same thing in continuous case.
+\begin{theorem}[Total Expectation Theorem]
+    Let $X$ and $Y$ be two continuous RVs, then
+    \begin{equation}
+        \mathbf{E}[X] = \int_{-\infty}^{+\infty} \mathbf{E}[X \mid Y = y] f_{Y}(y) \dd{y}
+    \end{equation}
+\end{theorem}
 
 \end{document}

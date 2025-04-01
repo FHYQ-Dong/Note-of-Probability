@@ -1,0 +1,194 @@
+\chapter{Continuous Random Variables}
+
+
+\section{Continuous RVs and PDFs}
+
+\begin{definition}[Continuous Random Variables]
+    A RV $X$ is continuous if there exists a nonnegative function $f_{X}(x)$, called \textbf{probability density function}, such that
+    \begin{align}
+        \mathbf{P}(X \in A) = \int_{A} f_{X}(x) \dd{x}
+    \end{align}
+    Especially, if $A \subseteq \mathcal{B}(\mathbb{R})$, then
+    \begin{align}
+        \mathbf{P}(a \leq X \leq b) = \int_{a}^{b} f_{X}(x) \dd{x}
+    \end{align}
+\end{definition}
+
+\begin{property}[Properties of PDF]
+    Let $X$ be a continuous RV with PDF $f_{X}(x)$, then
+    \begin{itemize}
+        \item $f_{X}(x) \geq 0$, and $f_{X}(x)$ can be any nonnegative number. (even $+\infty$)
+        \item $\int_{-\infty}^{\infty} f_{X}(x) \dd{x} = 1$.
+        \item $\mathbf{P}(x \leq X \leq x + \delta) = \int_{x}^{x + \delta} f_{X}(x) \dd{x} \approx f_{X}(x) \cdot \delta$.
+    \end{itemize}
+\end{property}
+
+
+\section{Expectation and Variance}
+
+\begin{definition}[Definitions of Expectation and Variance]
+    Let $X$ be a continuous RV with PDF $f_{X}(x)$, then
+    \begin{equation}
+    \begin{aligned}
+        &\mathbf{E}[X] = \int_{-\infty}^{\infty} x f_{X}(x) \dd{x} \\ 
+        &\mathbf{E}[g(X)] = \int_{-\infty}^{\infty} g(x) f_{X}(x) \dd{x}
+    \end{aligned}
+    \end{equation}
+    \begin{equation}
+    \begin{aligned}
+        \text{var}(X) &= \mathbf{E}[(X - \mathbf{E}[X])^{2}] = \int_{-\infty}^{\infty} (x - \mathbf{E}[X])^{2} f_{X}(x) \dd{x} \\ 
+        &= \mathbf{E}[X^{2}] - \mathbf{E}[X]^{2}
+    \end{aligned}
+    \end{equation}
+\end{definition}
+
+\begin{example}[Uniform RV]
+    Consider a RV $X$ that takes value in an interval $[a, b]$ with PDF
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.3\textwidth]{images/Note-6.1.png}
+    \end{figure}
+    \vspace{-2em}
+    \begin{equation}
+        \mathbf{E}[X] = \int_{a}^{b} \frac{x}{b - a} \dd{x} = \frac{a + b}{2}
+    \end{equation}
+    \begin{equation}
+        \text{var}(X) = \mathbf{E}[X^2] - (\mathbf{E}[X])^2 = \int_{a}^{b} \frac{x^2}{b - a} \dd{x} - \left(\frac{a + b}{2}\right)^2 = \frac{(b - a)^2}{12}
+    \end{equation}
+\end{example}
+
+\begin{example}[Exponential RV]
+    Consider an exponential RV $X$ that has a PDF of the form
+    \begin{equation}
+        f_{X}(x) = \lambda \mathrm{e}^{-\lambda x},~ x \geq 0
+    \end{equation}
+    \begin{equation}
+        \mathbf{E}[X] = \int_{0}^{\infty} x \lambda \mathrm{e}^{-\lambda x} \dd{x} = (-x \mathrm{e}^{-\lambda x}) \Big|_{0}^{\infty} + \int_{0}^{\infty} \mathrm{e}^{-\lambda x} \dd{x} = \frac{1}{\lambda}
+    \end{equation}
+    \begin{equation}
+        \text{var}(X) = \mathbf{E}[X^2] - (\mathbf{E}[X])^2 = (-x^2 \mathrm{e}^{-\lambda x}) \Big|_{0}^{\infty} + \int_{0}^{\infty} 2x \mathrm{e}^{-\lambda x} \dd{x} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
+    \end{equation}
+\end{example}
+
+
+\section{Comulative Distribution Function}
+We want to describe both discrete and continuous RVs in a unified way. An intuition is to ``accumulate'' the probability ``up to'' the value $x$.
+
+\begin{definition}[CDF]
+    The cumulative distribution function (CDF) of a RV $X$ is defined as
+    \begin{align}
+        F_{X}(x) = \mathbf{P}(X \leq x) = \left\{
+        \begin{aligned}
+            &\sum_{t \leq x} p_{X}(t), &\text{discrete} \\ 
+            &\int_{-\infty}^{x} f_{X}(t) \dd{t}, &\text{continuous}
+        \end{aligned}
+        \right.
+    \end{align}
+\end{definition}
+
+\begin{example}[Some examples of CDF] ~
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{images/Note-6.2.png}
+        \caption{CDF: Continuous RV}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{images/Note-6.3.png}
+        \caption{CDF: Discrete RV}
+    \end{figure}
+\end{example}
+
+\begin{property}[Properties of CDF] ~
+    \begin{itemize}
+        \item Monotonically nondecreasing: $x \leq y \Rightarrow F_{X}(x) \leq F_{X}(y)$. (since $p_{X}(x) \geq 0$ and $f_{X}(x) \geq 0$)
+        \item $F_X(x) \to 0$ as $x \to -\infty$ and $F_X(x) \to 1$ as $x \to \infty$.
+        \item When $X$ is continuous: $F_{X}(x)$ is a continuous function, $f_{X}(x) = \dv{F_X}{x}$.
+        \item When $X$ is discrete: $F_{X}(x)$ i piecewise constant function, $p_{X}(k) = F_{X}(k) - F_{X}(k-1)$.
+    \end{itemize}
+\end{property}
+
+\begin{example}[CDF of Geometry RV]
+    Let $X$ be a geometry RV with parameter $p$, then
+    \begin{equation}
+    \begin{aligned}
+        &\mathbf{P}(X = k) = p(1 - p)^{k - 1} \\ 
+        \Rightarrow &F_{X}(x) = \sum_{k \leq x} p(1 - p)^{k - 1} = 1 - (1 - p)^{\lfloor x \rfloor}
+    \end{aligned}
+    \end{equation}
+\end{example}
+
+\begin{example}[Maximum test score]
+    Assume that each test takes one of the values from 1 to 10 with equal probability 1/10 independently. What is the PMF of the maximum of three test scores?
+    \begin{equation}
+        X = \max\{X_1, X_2, X_3\}
+    \end{equation}
+    \begin{solution}
+        We have the CDF of $X$ as
+        \begin{equation}
+        \begin{aligned}
+            F_{X}(x) &= \mathbf{P}(X \leq x) \\ 
+            &= \mathbf{P}(\max\{X_1, X_2, X_3\} \leq x) \\ 
+            &= \mathbf{P}(X_1 \leq x, X_2 \leq x, X_3 \leq x) \\ 
+            &= \mathbf{P}(X_1 \leq x) \cdot \mathbf{P}(X_2 \leq x) \cdot \mathbf{P}(X_3 \leq x) \\
+            &= F_{X_1}(x) \cdot F_{X_2}(x) \cdot F_{X_3}(x) \\ 
+            &= \left(\frac{\lfloor x \rfloor}{10}\right)^3
+        \end{aligned}
+        \end{equation}
+        and the PMF of $X$ is
+        \begin{equation}
+            p_{X}(x) = F_{X}(x) - F_{X}(x - 1) = \left(\frac{\lfloor x \rfloor}{10}\right)^3 - \left(\frac{\lfloor x \rfloor - 1}{10}\right)^3
+        \end{equation}
+        Similarly, this approach can be introduced to the minimum of three test scores (need to reverse by $1 - \mathbf{P}(xxx)$).
+    \end{solution}
+\end{example}
+
+
+\section{Normal and Exponential RVs}
+
+\begin{definition}[Gaussian (Normal) RV] ~
+    \begin{itemize}
+        \item Standard normal $N(0, 1)$:
+        \begin{equation}
+            f_{X}(x) = \frac{1}{\sqrt{2\pi}} \mathrm{e}^{-x^2/2}
+        \end{equation}
+        which has $\mathbf{E}[X] = 0$ and $\text{var}(X) = 1$. (intergrate by part)
+        \item General normal $N(\mu, \sigma^2)$:
+        \begin{equation}
+            f_{X}(x) = \frac{1}{\sqrt{2\pi} \sigma} \mathrm{e}^{-(x - \mu)^2/2\sigma^2}
+        \end{equation}
+        which has $\mathbf{E}[X] = \mu$ and $\text{var}(X) = \sigma^2$. (let $Y = (X - \mu) / \sigma$ and $Y$ is standard normal)
+        \item The CDF of standard normal is hard to calculate, we denote it as 
+        \begin{equation}
+            \Phi(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{x} \mathrm{e}^{-t^2/2} \dd{t}    
+        \end{equation}
+        If $X \sim N(\mu, \sigma^2)$, then $\mathbf{P}(X \leq x) = \mathbf{P}(\frac{X - \mu}{\sigma} \leq \frac{x - \mu}{\sigma}) = \Phi(\frac{x - \mu}{\sigma})$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Exponential RV]
+    A RV $X$ is exponential with parameter $\lambda$ if it has PDF
+    \begin{equation}
+        f_{X}(x) = \lambda \mathrm{e}^{-\lambda x},~ x \geq 0
+    \end{equation}
+    which has $\mathbf{E}[X] = 1 / \lambda$ and $\text{var}(X) = 1 / \lambda^2$, and the CDF is
+    \begin{equation}
+        F_{X}(x) = 1 - \int_{x}^{+\infty} \lambda \mathrm{e}^{-\lambda t} \dd{t} = 1 - \mathrm{e}^{-\lambda x}
+    \end{equation}
+\end{definition}
+
+A continuous exponential RV also has the memoryless property as discrete exponential RV, which means
+\begin{property}[Memoryless Property]
+    Let $X$ be an exponential RV with parameter $\lambda$, then for all $x, c \geq 0$,
+    \begin{equation}
+        \mathbf{P}(X > x + c \mid X > c) = \mathbf{P}(X > x) = \mathrm{e}^{-\lambda x}
+    \end{equation}
+\end{property}
+
+Because $\mathrm{e}^{-\lambda x} \sim x + 1, ~x \to 0$, we have
+\begin{property}[Continuous-time analog of the geometric] ~
+    \begin{itemize} 
+        \item $\mathbf{P}(0 \leq X \leq \delta) = 1 - \mathrm{e}^{-\lambda \delta} \approx \lambda \delta$.
+        \item $\mathbf{P}(c \leq X \leq c + \delta \mid X > c) \approx \lambda \delta$.
+    \end{itemize}
+\end{property}
