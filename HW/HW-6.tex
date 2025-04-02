@@ -141,15 +141,15 @@
         \begin{equation}
             f_{X}(x) = \left\{
             \begin{aligned}
-                &\lambdae^{-\lambda x_0}, \quad &x = 0 \\ 
-                &\lambdae^{-\lambda (x_0 - x)} + \lambdae^{-\lambda (x_0 + x)}, \quad &0 < x < x_0 \\
-                &\lambdae^{-\lambda (x_0 + x)}, \quad &x \geq x_0
+                &\lambda e^{-\lambda x_0}, \quad &x = 0 \\ 
+                &\lambda e^{-\lambda (x_0 - x)} + \lambda e^{-\lambda (x_0 + x)}, \quad &0 < x < x_0 \\
+                &\lambda e^{-\lambda (x_0 + x)}, \quad &x \geq x_0
             \end{aligned}\right.
         \end{equation}
         Therefore, the expected distance from the fire is
         \begin{equation}
         \begin{aligned}
-            \mathbf{E}[X] &= \int_{0}^{x_0}x\lambdae^{-\lambda (x_0 - x)}\dd{x} + \int_{0}^{+\infty}x\lambdae^{-\lambda (x_0 + x)}\dd{x} \\ 
+            \mathbf{E}[X] &= \int_{0}^{x_0}x\lambda e^{-\lambda (x_0 - x)}\dd{x} + \int_{0}^{+\infty}x\lambda e^{-\lambda (x_0 + x)}\dd{x} \\ 
             &= \lambda \cdot \frac{1}{\lambda} \left(x_0 - 0 + \frac{1 - e^{-\lambda x_0}}{\lambda}\right) - \lambda \cdot \frac{1}{\lambda} \left(0 - 0 + \frac{0 - e^{-\lambda x_0}}{\lambda}\right) \\ 
             &= x_0 + \frac{1}{\lambda}
         \end{aligned}
