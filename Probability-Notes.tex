@@ -20,6 +20,7 @@
 \definecolor{customcoverlinecolor}{RGB}{82, 59, 148}
 \colorlet{coverlinecolor}{customcoverlinecolor}
 
+
 \begin{document}
 
 \maketitle
@@ -35,7 +36,6 @@
 \input{chaps/chap_Discrete_Random_Variables.tex}
 \input{chaps/chap_Multiple_Random_Variables.tex}
 \input{chaps/chap_Continuous_Random_Variables.tex}
-
 
 
 \chapter{Multiple Continuous Random Variables}
@@ -160,5 +160,10 @@ Remember how we prove the total expectation theorem in discrete case: we multipl
         \mathbf{E}[X] = \int_{-\infty}^{+\infty} \mathbf{E}[X \mid Y = y] f_{Y}(y) \dd{y}
     \end{equation}
 \end{theorem}
+
+
+\appendix
+\input{chaps/app_Problem_Solutions.tex}
+
 
 \end{document}

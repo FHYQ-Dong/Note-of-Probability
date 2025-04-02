@@ -1,0 +1,234 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{physics}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+
+
+\title{Problem Set 7}
+\author{ FHYQ-Dong, Class **********, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 7}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+    citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\begin{question}
+    Consider the following variant of Buffon's needle problem (Example 3.11 in [BT]), which was investigated by Laplace. A needle of length $l$ is dropped on a plane surface that is partitioned in rectangles by horizontal lines that are $a$ apart and vertical lines that are $b$ apart. Suppose that the needle's length $l$ satisfies $l < a$ and $l < b$. What is the expected number of rectangle sides crossed by the needle? What is the probability that the needle will cross at least one side of some rectangle?
+\end{question}
+\begin{answer}
+    Let $X$ be the distance from the center of the needle to the horizontal lines, $Y$ be the distance to the vertical lines and $\Theta$ be the angle between the needle and the horizontal lines, where $X, Y, \Theta$ are independent. \\ 
+    Given the symmetry of the problem, it is well to assume that $X, Y$ are uniformly distributed on $[0, a/2]$ and $[0, b/2]$ respectively, and $\Theta$ is uniformly distributed on $[0, \pi]$. Then the joint PDF of $X, Y, \Theta$ is
+    \begin{equation}
+        f_{X, Y, \Theta}(x, y, \theta) = \frac{1}{\pi a b}, \quad (x, y, \theta) \in [0, a/2] \times [0, b/2] \times [0, \pi]
+    \end{equation}
+    The needle intersects a horizontal line if $X \leq \mid l \sin \Theta / 2 \mid$ and a vertical line if $Y \leq \mid l \cos \Theta / 2 \mid$. Let $N$ be the number of rectangle sides crossed by the needle, then
+    \begin{enumerate}[label=(\alph*)]
+        \item $N = 2$ if $X \leq \mid l \sin \Theta / 2 \mid$ and $Y \leq \mid l \cos \Theta / 2 \mid$
+        \begin{equation}
+            \mathbf{P}(N = 2) = \int_{0}^{\pi}\int_{0}^{\mid l\cos\theta \mid/2}\int_{0}^{\mid l\sin\theta \mid/2} \frac{\dd{x}\dd{y}\dd{\theta}}{\pi a b} = \frac{l^2}{8\pi ab}
+        \end{equation}
+        \item $N = 1$ if $X \leq \mid l \sin \Theta / 2 \mid$ and $Y > \mid l \cos \Theta / 2 \mid$ or $X > \mid l \sin \Theta / 2 \mid$ and $Y \leq \mid l \cos \Theta / 2 \mid$
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{P}(N = 1) &= \int_{0}^{\pi}\int_{0}^{b/2}\int_{0}^{\mid l\sin\theta \mid/2} \frac{\dd{x}\dd{y}\dd{\theta}}{\pi a b} + \int_{0}^{\pi}\int_{0}^{\mid l\cos\theta \mid/2}\int_{0}^{a/2} \frac{\dd{x}\dd{y}\dd{\theta}}{\pi a b} - \mathbf{P}(N = 2) \\
+            &= \frac{l}{2\pi a} + \frac{l}{2\pi b} - \frac{l^2}{8\pi ab} = \frac{4(a+b)l - l^2}{8\pi ab}
+        \end{aligned}
+        \end{equation}
+        \item $N = 0$ otherwise
+        \begin{equation}
+            \mathbf{P}(N = 0) = 1 - \mathbf{P}(N = 1) - \mathbf{P}(N = 2) = 1 - \frac{(a+b)l}{2\pi ab}
+        \end{equation}
+    \end{enumerate}
+    Therefore, the expected number of rectangle sides crossed by the needle is
+    \begin{equation}
+        \mathbf{E}[N] = 2\mathbf{P}(N = 2) + \mathbf{P}(N = 1) = \frac{4(a+b)l + l^2}{8\pi ab}
+    \end{equation}
+    The probability that the needle will cross at least one side of some rectangle is
+    \begin{equation}
+        \mathbf{P}(N \geq 1) = 1 - \mathbf{P}(N = 0) = \frac{(a+b)l}{2\pi ab}
+    \end{equation}
+\end{answer}
+
+\begin{question}
+    An absent-minded professor schedules two student appointments for the same time. The ap- pointment durations are independent and exponentially distributed with mean thirty minutes. The first student arrives on time, but the second student arrives five minutes late. What is the expected value of the time between the arrival of the first student and the departure of the second student?
+\end{question}
+\begin{answer} ~ \\ 
+    \textbf{Solution 1:} \\ 
+    Let $X$ be the duration of the meeting with the first student and $Y$ be the duration of the meeting with the second student. Because $X$ and $Y$ are independent and exponentially distributed with mean 30 minutes, the PDF of $X$ and $Y$ and the joint PDF of $X$ and $Y$ are
+    \begin{equation}
+    \begin{aligned}
+        f_X(x) = \frac{1}{30}e^{-x/30}, \quad f_Y(y) = \frac{1}{30}e^{-y/30}, \quad x, y \geq 0 \\
+        f_{X, Y}(x, y) = f_X(x)f_Y(y) = \frac{1}{900}e^{-\frac{x+y}{30}}, \quad x, y \geq 0
+    \end{aligned}
+    \end{equation}
+    Let $Z$ be the time between the arrival of the first student and the departure of the second student, then $Z = X + Y + 5$. The PDF of $Z$ is
+    \begin{equation}
+    \begin{aligned}
+        f_{Z}(z) &= \int_{0}^{z-5} f_{X, Y}(x, z-x-5) \dd{x} = \int_{0}^{z-5} \frac{1}{900}e^{-\frac{z-5}{30}} \dd{x} \\
+        &= \frac{1}{900}e^{-\frac{z-5}{30}}(z-5), \quad z \geq 5
+    \end{aligned}
+    \end{equation}
+    Therefore, the expected value of the time between the arrival of the first student and the departure of the second student is
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{E}[Z] &= \int_{5}^{+\infty} z f_{Z}(z) \dd{z} = \frac{1}{900} \int_{5}^{+\infty} z(z-5) e^{-\frac{z-5}{30}} \dd{z} = 65
+    \end{aligned}
+    \end{equation}
+    which suddenly strikes me to remember the linearity of expectation. \\
+    \textbf{Solution 2:} \\
+    Let $X$ be the duration of the meeting with the first student and $Y$ be the duration of the meeting with the second student. Because $\mathbf{E}[X] = \mathbf{E}[Y] = 30$, the expected value of the time between the arrival of the first student and the departure of the second student $Z$ is
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{E}[Z] &= \mathbf{E}[X + Y + 5] = \mathbf{E}[X] + \mathbf{E}[Y] + 5 = 65
+    \end{aligned}
+    \end{equation}
+\end{answer}
+
+\begin{question}
+    A defective coin minting machine produces coins whose probability of heads is a random variable $P$ with PDF
+    \begin{equation}
+        f_{P}(p) = \left\{\begin{aligned}
+            &p e^p, \quad &p \in [0, 1] \\ 
+            &0, \quad &\text{otherwise}
+        \end{aligned}\right.
+    \end{equation}
+    A coin produced by this machine is selected and tossed repeatedly, with successive tosses assumed independent.
+    \begin{enumerate}[label=(\alph*)]
+        \item Find the probability that a coin toss results in heads.
+        \item Given that a coin toss resulted in heads, find the conditional PDF of $P$.
+        \item Given that the first coin toss resulted in heads, find the conditional probability of heads on the next toss.
+    \end{enumerate}
+\end{question} 
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item The probability a coin toss results in head given a coin with probability of heads $P$ is
+        \begin{equation}
+            \mathbf{P}(\text{head} \mid P = p) = p
+        \end{equation}
+        So the probability that a coin toss results in heads is
+        \begin{equation}
+            \mathbf{P}(\text{head}) = \int_{0}^{1} \mathbf{P}(\text{head} \mid P = p)f_{P}(p) \dd{p} = \int_{0}^{1} p^2 e^p \dd{p} = e - 2
+        \end{equation}
+        \item According to the Bayes' theorem, the conditional PDF of $P$ given that a coin toss resulted in heads is
+        \begin{equation}
+            f_{P}(p \mid \text{head}) = \frac{\mathbf{P}(\text{head} \mid P = p)f_{P}(p)}{\mathbf{P}(\text{head})} = \frac{p^2 e^p}{e - 2}
+        \end{equation}
+        \item Because the successive tosses are independent, the conditional PMF of heads on the next toss given that the first coin toss resulted in heads is
+        \begin{equation}
+            \mathbf{P}(\text{head}_2 \mid \text{head}_1) = \mathbf{P}(\text{head}) = e - 2
+        \end{equation}
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    Let $\Delta$ denote the event that you can form a triangle with three given parts of a rod $R$.
+    \begin{enumerate}[label=(\alph*)]
+        \item $R$ is broken in two uniformly at random, the longer part is broken in two uniformly at random. Show that $\mathbf{P}(\Delta) = \log(4/e)$.
+        \item \label{q:4.b} $R$ is broken in two uniformly at random, a randomly chosen part is broken into two equal parts. Show that $\mathbf{P}(\Delta) = 1/2$.
+        \item In case \ref{q:4.b} show that, given $\Delta$, the triangle is obtuse with probability $3 - 2\sqrt{2}$.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item Due to the symmetry of the problem, it is well to let $X$ be the length of the longer part of the rod after the first break, $Y$ be the length of the shorter part of the rod after the second break, then $X$ is uniformly distributed on $[R/2, R]$ and $Y$ is uniformly distributed on $[0, X/2]$. Because of the independence, the joint PDF of $X$ and $Y$ is
+        \begin{equation}
+            f_{X, Y}(x, y) = \frac{2}{R} \cdot \frac{2}{x}, \quad (x, y) \in \left[\frac{R}{2}, R\right] \times \left[0, \frac{X}{2}\right]
+        \end{equation}
+        The event $\Delta$ is equivalent to 
+        \begin{equation}
+        \begin{aligned}
+            (X - Y) + Y &> R - X, \quad\quad &\text{(i)} \\ 
+            (R - X) + (X - Y) &> Y, \quad\quad &\text{(ii)} \\
+            (R - X) + Y &> X - Y, \quad\quad &\text{(iii)}
+        \end{aligned}
+        \end{equation}
+        According to our definition, (i) and (ii) are naturally satisfied, so probability of event $\Delta$ is
+        \begin{equation}
+        \begin{aligned}
+            \mathbf{P}(\Delta) &= \iint_{X-Y<R/2} f_{X, Y}(x, y) \dd{x}\dd{y} = \int_{R/2}^{R} \dd{x} \int_{x-R/2}^{x/2} \frac{2}{R} \cdot \frac{2}{x} \dd{y} \\
+            &= \int_{R/2}^{R} \frac{2(R - x)}{Rx} \dd{x} = 2\log 2 - 1 = \log(4/e)
+        \end{aligned}
+        \end{equation}
+        \item Obviously, if the shorter part of the first break is chosen to be broken into two equal parts, it is unlikely to form a triangle; instead, if the longer part of the first break is chosen to be broken into two equal parts, it is definitely possible to form a triangle. Therefore, the probability of event $\Delta$ is
+        \begin{equation}
+            \mathbf{P}(\Delta) = \frac{1}{2}
+        \end{equation}
+        \item Let $X$ denote the length of the longer part after the first break, and the length of the edges of the triangle are $X/2, X/2, R-X$. The triangle is obtuse is equivalent to
+        \begin{equation}
+            \frac{X}{2} < \frac{\sqrt{2}}{2}(R - X) \Rightarrow X < \left(2 - \sqrt{2}\right)R
+        \end{equation}
+        Given that the event $\Delta$ occurs, i.e. $X > R/2$, the probability that the triangle is obtuse is
+        \begin{equation}
+            \mathbf{P}(\text{obtuse} \mid \Delta) = \frac{2 - \sqrt{2} - 1/2}{1/2} = 3 - 2\sqrt{2}
+        \end{equation}
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    Find the maximum value of the PDF of $S$ (i.e. $\max_c f_{S}(c)$), where $S = X + Y$ and $(X, Y)$ is uniformly distributed over the unit circle $\left\{(x, y) : x^2 + y^2 \leq 1\right\}$.
+\end{question}
+\begin{answer} ~ \\ 
+    \textbf{Solution 1:} \\ 
+    Let $U = X + Y$ and $V = X$, then $S = U$, $X = V$ and $Y = U - V$. The Jacobian of the transformation is
+    \begin{equation}
+        J = \mqty(1 & 0 \\ -1 & 1) \Rightarrow \abs{\det J} = 1
+    \end{equation}
+    The joint PDF of $U$ and $V$ is
+    \begin{equation}
+        f_{U, V}(u, v) = f_{X, Y}(v, u-v) \cdot \abs{\det J} = \frac{1}{\pi}, \quad (u, v) \in \left\{(u, v) : v^2 + (u-v)^2 \leq 1\right\}
+    \end{equation}
+    Therefore, the PDF of $S$ (i.e. the marginal PDF of $U$) is
+    \begin{equation}
+        f_{S}(s) = \int_{v^2+(u-v)^2 \leq 1} \frac{\dd{v}}{\pi} = \frac{\sqrt{2 - u^2}}{\pi} = \frac{\sqrt{2 - s^2}}{\pi}, \quad s \in [-\sqrt{2}, \sqrt{2}]
+    \end{equation}
+    The maximum value of the PDF of $S$ is
+    \begin{equation}
+        \max_c f_{S}(c) = \frac{\sqrt{2}}{\pi}, \quad c = 0
+    \end{equation}
+    \textbf{Solution 2:} \\
+    Also, it can be solved through directly calculating the length of the chord $x + y = c$ on the unit circle, where $c \in [-\sqrt{2}, \sqrt{2}]$. And then normalize it to get the PDF of $S$. According to the symmetry, the maximum of the PDF of $S$ is reached when $c = 0$.
+\end{answer}
+
+\end{document}

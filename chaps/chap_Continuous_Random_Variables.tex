@@ -60,13 +60,13 @@
 \begin{example}[Exponential RV]
     Consider an exponential RV $X$ that has a PDF of the form
     \begin{equation}
-        f_{X}(x) = \lambda \mathrm{e}^{-\lambda x},~ x \geq 0
+        f_{X}(x) = \lambda e^{-\lambda x},~ x \geq 0
     \end{equation}
     \begin{equation}
-        \mathbf{E}[X] = \int_{0}^{\infty} x \lambda \mathrm{e}^{-\lambda x} \dd{x} = (-x \mathrm{e}^{-\lambda x}) \Big|_{0}^{\infty} + \int_{0}^{\infty} \mathrm{e}^{-\lambda x} \dd{x} = \frac{1}{\lambda}
+        \mathbf{E}[X] = \int_{0}^{\infty} x \lambda e^{-\lambda x} \dd{x} = (-x e^{-\lambda x}) \Big|_{0}^{\infty} + \int_{0}^{\infty} e^{-\lambda x} \dd{x} = \frac{1}{\lambda}
     \end{equation}
     \begin{equation}
-        \text{var}(X) = \mathbf{E}[X^2] - (\mathbf{E}[X])^2 = (-x^2 \mathrm{e}^{-\lambda x}) \Big|_{0}^{\infty} + \int_{0}^{\infty} 2x \mathrm{e}^{-\lambda x} \dd{x} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
+        \text{var}(X) = \mathbf{E}[X^2] - (\mathbf{E}[X])^2 = (-x^2 e^{-\lambda x}) \Big|_{0}^{\infty} + \int_{0}^{\infty} 2x e^{-\lambda x} \dd{x} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
     \end{equation}
 \end{example}
 
@@ -150,17 +150,17 @@ We want to describe both discrete and continuous RVs in a unified way. An intuit
     \begin{itemize}
         \item Standard normal $N(0, 1)$:
         \begin{equation}
-            f_{X}(x) = \frac{1}{\sqrt{2\pi}} \mathrm{e}^{-x^2/2}
+            f_{X}(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}
         \end{equation}
         which has $\mathbf{E}[X] = 0$ and $\text{var}(X) = 1$. (intergrate by part)
         \item General normal $N(\mu, \sigma^2)$:
         \begin{equation}
-            f_{X}(x) = \frac{1}{\sqrt{2\pi} \sigma} \mathrm{e}^{-(x - \mu)^2/2\sigma^2}
+            f_{X}(x) = \frac{1}{\sqrt{2\pi} \sigma} e^{-(x - \mu)^2/2\sigma^2}
         \end{equation}
         which has $\mathbf{E}[X] = \mu$ and $\text{var}(X) = \sigma^2$. (let $Y = (X - \mu) / \sigma$ and $Y$ is standard normal)
         \item The CDF of standard normal is hard to calculate, we denote it as 
         \begin{equation}
-            \Phi(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{x} \mathrm{e}^{-t^2/2} \dd{t}    
+            \Phi(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{x} e^{-t^2/2} \dd{t}    
         \end{equation}
         If $X \sim N(\mu, \sigma^2)$, then $\mathbf{P}(X \leq x) = \mathbf{P}(\frac{X - \mu}{\sigma} \leq \frac{x - \mu}{\sigma}) = \Phi(\frac{x - \mu}{\sigma})$.
     \end{itemize}
@@ -169,11 +169,11 @@ We want to describe both discrete and continuous RVs in a unified way. An intuit
 \begin{definition}[Exponential RV]
     A RV $X$ is exponential with parameter $\lambda$ if it has PDF
     \begin{equation}
-        f_{X}(x) = \lambda \mathrm{e}^{-\lambda x},~ x \geq 0
+        f_{X}(x) = \lambda e^{-\lambda x},~ x \geq 0
     \end{equation}
     which has $\mathbf{E}[X] = 1 / \lambda$ and $\text{var}(X) = 1 / \lambda^2$, and the CDF is
     \begin{equation}
-        F_{X}(x) = 1 - \int_{x}^{+\infty} \lambda \mathrm{e}^{-\lambda t} \dd{t} = 1 - \mathrm{e}^{-\lambda x}
+        F_{X}(x) = 1 - \int_{x}^{+\infty} \lambda e^{-\lambda t} \dd{t} = 1 - e^{-\lambda x}
     \end{equation}
 \end{definition}
 
@@ -181,14 +181,14 @@ A continuous exponential RV also has the memoryless property as discrete exponen
 \begin{property}[Memoryless Property]
     Let $X$ be an exponential RV with parameter $\lambda$, then for all $x, c \geq 0$,
     \begin{equation}
-        \mathbf{P}(X > x + c \mid X > c) = \mathbf{P}(X > x) = \mathrm{e}^{-\lambda x}
+        \mathbf{P}(X > x + c \mid X > c) = \mathbf{P}(X > x) = e^{-\lambda x}
     \end{equation}
 \end{property}
 
-Because $\mathrm{e}^{-\lambda x} \sim x + 1, ~x \to 0$, we have
+Because $e^{-\lambda x} \sim x + 1, ~x \to 0$, we have
 \begin{property}[Continuous-time analog of the geometric] ~
     \begin{itemize} 
-        \item $\mathbf{P}(0 \leq X \leq \delta) = 1 - \mathrm{e}^{-\lambda \delta} \approx \lambda \delta$.
+        \item $\mathbf{P}(0 \leq X \leq \delta) = 1 - e^{-\lambda \delta} \approx \lambda \delta$.
         \item $\mathbf{P}(c \leq X \leq c + \delta \mid X > c) \approx \lambda \delta$.
     \end{itemize}
 \end{property}

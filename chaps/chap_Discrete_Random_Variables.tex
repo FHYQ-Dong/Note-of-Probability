@@ -49,7 +49,7 @@ Several properties of PMF can be derived from the axioms of probability, e.g. $p
 \end{example}
 \begin{example}[Poisson PMF]
     \begin{align}
-        p_{X}(k) = \mathrm{e}^{-\lambda} \frac{\lambda^{k}}{k!}
+        p_{X}(k) = e^{-\lambda} \frac{\lambda^{k}}{k!}
     \end{align}
     It's a good approximation of the binomial distribution when $n$ is large and $p$ is small.
     \begin{proof}
@@ -59,8 +59,8 @@ Several properties of PMF can be derived from the axioms of probability, e.g. $p
             &= \frac{n(n-1)\cdots(n-k+1)}{k!} p^{k} (1-p)^{n-k} \\
             &\approx \frac{n^{k}}{k!} p^{k} (1-p)^{n-k} \\
             &= \frac{n^{k}}{k!} \left(\frac{\lambda}{n}\right)^{k} \left(1-\frac{\lambda}{n}\right)^{n} \\
-            &\approx \frac{n^{k}}{k!} \left(\frac{\lambda}{n}\right)^{k} \mathrm{e}^{-\lambda} \\
-            &= \mathrm{e}^{-\lambda} \frac{\lambda^{k}}{k!}
+            &\approx \frac{n^{k}}{k!} \left(\frac{\lambda}{n}\right)^{k} e^{-\lambda} \\
+            &= e^{-\lambda} \frac{\lambda^{k}}{k!}
         \end{align}
     \end{proof}
 \end{example}
@@ -145,17 +145,17 @@ We can also define the standard deviation as $\sigma(X) = \sqrt{\mathrm{var}(X)}
 \begin{example}[Expectation and Variance of Poisson Distribution]
     \begin{align}
     &\begin{aligned}
-        \mathbf{E}[X] &= \sum_{k=0}^{\infty} k \mathrm{e}^{-\lambda} \frac{\lambda^{k}}{k!} \\
-                      &= \lambda \mathrm{e}^{-\lambda} \sum_{k=1}^{\infty} \frac{\lambda^{k-1}}{(k-1)!} \\
-                      &= \lambda \mathrm{e}^{-\lambda} \mathrm{e}^{\lambda} \\
+        \mathbf{E}[X] &= \sum_{k=0}^{\infty} k e^{-\lambda} \frac{\lambda^{k}}{k!} \\
+                      &= \lambda e^{-\lambda} \sum_{k=1}^{\infty} \frac{\lambda^{k-1}}{(k-1)!} \\
+                      &= \lambda e^{-\lambda} e^{\lambda} \\
                       &= \lambda
     \end{aligned} \\
     &\begin{aligned}
-        \mathbf{E}[X^{2}] &= \sum_{k=0}^{\infty} k^{2} \mathrm{e}^{-\lambda} \frac{\lambda^{k}}{k!} \\
-                         &= \lambda \mathrm{e}^{-\lambda} \sum_{k=1}^{\infty} k \frac{\lambda^{k-1}}{(k-1)!} \\
-                         &= \lambda \mathrm{e}^{-\lambda} \sum_{k=1}^{\infty} (k-1+1) \frac{\lambda^{k-1}}{(k-1)!} \\
-                         &= \lambda \mathrm{e}^{-\lambda} \left(\lambda \sum_{k=1}^{\infty} \frac{\lambda^{k-1}}{(k-1)!} + \sum_{k=1}^{\infty} \frac{\lambda^{k-1}}{(k-1)!}\right) \\
-                         &= \lambda \mathrm{e}^{-\lambda} (\lambda \mathrm{e}^{\lambda} + \mathrm{e}^{\lambda}) \\
+        \mathbf{E}[X^{2}] &= \sum_{k=0}^{\infty} k^{2} e^{-\lambda} \frac{\lambda^{k}}{k!} \\
+                         &= \lambda e^{-\lambda} \sum_{k=1}^{\infty} k \frac{\lambda^{k-1}}{(k-1)!} \\
+                         &= \lambda e^{-\lambda} \sum_{k=1}^{\infty} (k-1+1) \frac{\lambda^{k-1}}{(k-1)!} \\
+                         &= \lambda e^{-\lambda} \left(\lambda \sum_{k=1}^{\infty} \frac{\lambda^{k-1}}{(k-1)!} + \sum_{k=1}^{\infty} \frac{\lambda^{k-1}}{(k-1)!}\right) \\
+                         &= \lambda e^{-\lambda} (\lambda e^{\lambda} + e^{\lambda}) \\
                          &= \lambda^{2} + \lambda
     \end{aligned} \\
     &\begin{aligned}

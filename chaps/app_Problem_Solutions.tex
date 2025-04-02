@@ -1,0 +1,44 @@
+\chapter{Problem Solutions}
+
+
+\section{PDF of a Function of Multiple Continuous RVs}
+
+In the homework, I constantly encounter some problems like this:
+\begin{example}[PDF of a Function of Multiple Continuous RVs]
+    Let $X, Y$ be two continuous RVs with joint PDF $f_{X, Y}(x, y)$, and $Z = g(X, Y)$. Find the PDF of $Z$.
+\end{example}
+
+Here I introduce two approaches to solve this kind of problems: CDF and Jacobian transformation.
+\begin{solution}
+    \textbf{CDF:}
+    \begin{enumerate}
+        \item Find the CDF of $Z$
+            \begin{equation}
+                F_{Z}(z) = \mathbf{P}(Z \leq z) = \mathbf{P}(g(X, Y) \leq z) = \iint_{g(x, y) \leq z} f_{X, Y}(x, y) \dd{x} \dd{y}
+            \end{equation}
+        \item Differentiate $F_{Z}(z)$ to get the PDF of $Z$
+            \begin{equation}
+                f_{Z}(z) = \dv{F_{Z}(z)}{z}
+            \end{equation}
+    \end{enumerate}
+\end{solution}
+\begin{solution}
+    \textbf{Jacobian Transformation:} This approach requires finding a valid variable substitution with invertibility. \\ 
+    Take $Z = g(X, Y) = X + Y$ as an example. Normally, if we want to calculate the determinant of the Jacobian matrix, the Jacobian matrix must be square. However, here $Z$ is a scalar instead of a vector. We take the following steps to avoid this problem:
+    \begin{enumerate}
+        \item Let $U = X + Y$ and $V = X$, then $X = V$ and $Y = U - V$.
+        \item Calculate the Jacobian matrix and its determinant
+            \begin{align}
+                &J = \mqty(\pdv{X}{U} & \pdv{X}{V} \\ \pdv{Y}{U} & \pdv{Y}{V}) = \mqty(0 & 1 \\ 1 & -1) \\ 
+                &\det(J) = -1 
+            \end{align}
+        \item Find the joint PDF of $U$ and $V$
+            \begin{equation}
+                f_{U, V}(u, v) = f_{X, Y}(v, u - v) \cdot \abs{\det(J)} = f_{X, Y}(v, u - v)
+            \end{equation}
+        \item Integrate out $V$ to get the marginal PDF of $U$, which is the PDF of $Z$
+            \begin{equation}
+                f_{U}(u) = \int_{-\infty}^{+\infty} f_{X, Y}(v, u - v) \dd{v}
+            \end{equation}
+    \end{enumerate}
+\end{solution}
