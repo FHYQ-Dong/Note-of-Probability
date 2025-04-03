@@ -54,14 +54,16 @@ Several properties of PMF can be derived from the axioms of probability, e.g. $p
     It's a good approximation of the binomial distribution when $n$ is large and $p$ is small.
     \begin{proof}
         Let $p = \frac{\lambda}{n}$, then
-        \begin{align}
+        \begin{equation}
+        \begin{aligned}
             \binom{n}{k} p^{k} (1-p)^{n-k} &= \frac{n!}{k!(n-k)!} p^{k} (1-p)^{n-k} \\
             &= \frac{n(n-1)\cdots(n-k+1)}{k!} p^{k} (1-p)^{n-k} \\
             &\approx \frac{n^{k}}{k!} p^{k} (1-p)^{n-k} \\
             &= \frac{n^{k}}{k!} \left(\frac{\lambda}{n}\right)^{k} \left(1-\frac{\lambda}{n}\right)^{n} \\
             &\approx \frac{n^{k}}{k!} \left(\frac{\lambda}{n}\right)^{k} e^{-\lambda} \\
             &= e^{-\lambda} \frac{\lambda^{k}}{k!}
-        \end{align}
+        \end{aligned}
+        \end{equation}
     \end{proof}
 \end{example}
 Note that all these PMFs are normalized.
