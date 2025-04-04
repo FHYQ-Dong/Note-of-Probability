@@ -61,68 +61,54 @@
     Let $X$ be the distance from the center of the needle to the horizontal lines, $Y$ be the distance to the vertical lines and $\Theta$ be the angle between the needle and the horizontal lines, where $X, Y, \Theta$ are independent. \\ 
     Given the symmetry of the problem, it is well to assume that $X, Y$ are uniformly distributed on $[0, a/2]$ and $[0, b/2]$ respectively, and $\Theta$ is uniformly distributed on $[0, \pi]$. Then the joint PDF of $X, Y, \Theta$ is
     \begin{equation}
-        f_{X, Y, \Theta}(x, y, \theta) = \frac{1}{\pi a b}, \quad (x, y, \theta) \in [0, a/2] \times [0, b/2] \times [0, \pi]
+        f_{X, Y, \Theta}(x, y, \theta) = \frac{4}{\pi a b}, \quad (x, y, \theta) \in [0, a/2] \times [0, b/2] \times [0, \pi]
     \end{equation}
     The needle intersects a horizontal line if $X \leq \mid l \sin \Theta / 2 \mid$ and a vertical line if $Y \leq \mid l \cos \Theta / 2 \mid$. Let $N$ be the number of rectangle sides crossed by the needle, then
     \begin{enumerate}[label=(\alph*)]
         \item $N = 2$ if $X \leq \mid l \sin \Theta / 2 \mid$ and $Y \leq \mid l \cos \Theta / 2 \mid$
         \begin{equation}
-            \mathbf{P}(N = 2) = \int_{0}^{\pi}\int_{0}^{\mid l\cos\theta \mid/2}\int_{0}^{\mid l\sin\theta \mid/2} \frac{\dd{x}\dd{y}\dd{\theta}}{\pi a b} = \frac{l^2}{8\pi ab}
+            \mathbf{P}(N = 2) = \int_{0}^{\pi}\int_{0}^{\abs{l\cos\theta}/2}\int_{0}^{\abs{l\sin\theta}/2} \frac{4 \dd{x}\dd{y}\dd{\theta}}{\pi a b} = \frac{l^2}{\pi ab}
         \end{equation}
         \item $N = 1$ if $X \leq \mid l \sin \Theta / 2 \mid$ and $Y > \mid l \cos \Theta / 2 \mid$ or $X > \mid l \sin \Theta / 2 \mid$ and $Y \leq \mid l \cos \Theta / 2 \mid$
         \begin{equation}
         \begin{aligned}
-            \mathbf{P}(N = 1) &= \int_{0}^{\pi}\int_{0}^{b/2}\int_{0}^{\mid l\sin\theta \mid/2} \frac{\dd{x}\dd{y}\dd{\theta}}{\pi a b} + \int_{0}^{\pi}\int_{0}^{\mid l\cos\theta \mid/2}\int_{0}^{a/2} \frac{\dd{x}\dd{y}\dd{\theta}}{\pi a b} - \mathbf{P}(N = 2) \\
-            &= \frac{l}{2\pi a} + \frac{l}{2\pi b} - \frac{l^2}{8\pi ab} = \frac{4(a+b)l - l^2}{8\pi ab}
+            \mathbf{P}(N = 1) &= \int_{0}^{\pi}\int_{0}^{b/2}\int_{0}^{\mid l\sin\theta \mid/2} \frac{4 \dd{x}\dd{y}\dd{\theta}}{\pi a b} + \int_{0}^{\pi}\int_{0}^{\mid l\cos\theta \mid/2}\int_{0}^{a/2} \frac{4 \dd{x}\dd{y}\dd{\theta}}{\pi a b} - \mathbf{P}(N = 2) \\
+            &= \frac{2l}{\pi a} + \frac{2l}{\pi b} - \frac{l^2}{\pi ab} = \frac{2(a+b)l - l^2}{\pi ab}
         \end{aligned}
         \end{equation}
         \item $N = 0$ otherwise
         \begin{equation}
-            \mathbf{P}(N = 0) = 1 - \mathbf{P}(N = 1) - \mathbf{P}(N = 2) = 1 - \frac{(a+b)l}{2\pi ab}
+            \mathbf{P}(N = 0) = 1 - \mathbf{P}(N = 1) - \mathbf{P}(N = 2) = 1 - \frac{2(a+b)l}{\pi ab}
         \end{equation}
     \end{enumerate}
     Therefore, the expected number of rectangle sides crossed by the needle is
     \begin{equation}
-        \mathbf{E}[N] = 2\mathbf{P}(N = 2) + \mathbf{P}(N = 1) = \frac{4(a+b)l + l^2}{8\pi ab}
+        \mathbf{E}[N] = 2\mathbf{P}(N = 2) + \mathbf{P}(N = 1) = \frac{2(a+b)l + l^2}{\pi ab}
     \end{equation}
     The probability that the needle will cross at least one side of some rectangle is
     \begin{equation}
-        \mathbf{P}(N \geq 1) = 1 - \mathbf{P}(N = 0) = \frac{(a+b)l}{2\pi ab}
+        \mathbf{P}(N \geq 1) = 1 - \mathbf{P}(N = 0) = \frac{2(a+b)l}{\pi ab}
     \end{equation}
 \end{answer}
 
 \begin{question}
     An absent-minded professor schedules two student appointments for the same time. The ap- pointment durations are independent and exponentially distributed with mean thirty minutes. The first student arrives on time, but the second student arrives five minutes late. What is the expected value of the time between the arrival of the first student and the departure of the second student?
 \end{question}
-\begin{answer} ~ \\ 
-    \textbf{Solution 1:} \\ 
-    Let $X$ be the duration of the meeting with the first student and $Y$ be the duration of the meeting with the second student. Because $X$ and $Y$ are independent and exponentially distributed with mean 30 minutes, the PDF of $X$ and $Y$ and the joint PDF of $X$ and $Y$ are
+\begin{answer}
+    Let $X$ be the interval between the start of the first appointment and the start of the second appointment, $Y$ be the duration of the second appointment, and $Z$ be the interval between the start of the first appointment and the end of the second appointment, then $Z = X + Y$. The CDF of $X$ is
     \begin{equation}
-    \begin{aligned}
-        f_X(x) = \frac{1}{30}e^{-x/30}, \quad f_Y(y) = \frac{1}{30}e^{-y/30}, \quad x, y \geq 0 \\
-        f_{X, Y}(x, y) = f_X(x)f_Y(y) = \frac{1}{900}e^{-\frac{x+y}{30}}, \quad x, y \geq 0
-    \end{aligned}
+        F_{X}(x) = \left\{\begin{aligned}
+            &0, \quad &0 < x < 5 \\
+            &1 - e^{-x/30}, \quad &x \geq 5
+        \end{aligned}\right.
     \end{equation}
-    Let $Z$ be the time between the arrival of the first student and the departure of the second student, then $Z = X + Y + 5$. The PDF of $Z$ is
+    So the mean of $X$ is
     \begin{equation}
-    \begin{aligned}
-        f_{Z}(z) &= \int_{0}^{z-5} f_{X, Y}(x, z-x-5) \dd{x} = \int_{0}^{z-5} \frac{1}{900}e^{-\frac{z-5}{30}} \dd{x} \\
-        &= \frac{1}{900}e^{-\frac{z-5}{30}}(z-5), \quad z \geq 5
-    \end{aligned}
+        \mathbf{E}[X] = 5 \cdot \mathbf{P}(X = 5) + \int_{5^+}^{+\infty} x \dv{F_{X}}{x} \dd{x} = 5 \cdot \left(1 - e^{-1/6}\right) + \int_{5^+}^{+\infty} \frac{x}{30} e^{-x/30} \dd{x} = 5 + 30e^{-1/6}
     \end{equation}
-    Therefore, the expected value of the time between the arrival of the first student and the departure of the second student is
+    Given the mean of $Y$ is $\mathbf{E}[Y] = 30$, the expected value of the time between the arrival of the first student and the departure of the second student is
     \begin{equation}
-    \begin{aligned}
-        \mathbf{E}[Z] &= \int_{5}^{+\infty} z f_{Z}(z) \dd{z} = \frac{1}{900} \int_{5}^{+\infty} z(z-5) e^{-\frac{z-5}{30}} \dd{z} = 65
-    \end{aligned}
-    \end{equation}
-    which suddenly strikes me to remember the linearity of expectation. \\
-    \textbf{Solution 2:} \\
-    Let $X$ be the duration of the meeting with the first student and $Y$ be the duration of the meeting with the second student. Because $\mathbf{E}[X] = \mathbf{E}[Y] = 30$, the expected value of the time between the arrival of the first student and the departure of the second student $Z$ is
-    \begin{equation}
-    \begin{aligned}
-        \mathbf{E}[Z] &= \mathbf{E}[X + Y + 5] = \mathbf{E}[X] + \mathbf{E}[Y] + 5 = 65
-    \end{aligned}
+        \mathbf{E}[Z] = \mathbf{E}[X] + \mathbf{E}[Y] = 5 + 30e^{-1/6} + 30 = 35 + 30e^{-1/6}
     \end{equation}
 \end{answer}
 
