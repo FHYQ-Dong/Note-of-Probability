@@ -72,22 +72,22 @@
         \item $N = 1$ if $X \leq \mid l \sin \Theta / 2 \mid$ and $Y > \mid l \cos \Theta / 2 \mid$ or $X > \mid l \sin \Theta / 2 \mid$ and $Y \leq \mid l \cos \Theta / 2 \mid$
         \begin{equation}
         \begin{aligned}
-            \mathbf{P}(N = 1) &= \int_{0}^{\pi}\int_{0}^{b/2}\int_{0}^{\mid l\sin\theta \mid/2} \frac{4 \dd{x}\dd{y}\dd{\theta}}{\pi a b} + \int_{0}^{\pi}\int_{0}^{\mid l\cos\theta \mid/2}\int_{0}^{a/2} \frac{4 \dd{x}\dd{y}\dd{\theta}}{\pi a b} - \mathbf{P}(N = 2) \\
-            &= \frac{2l}{\pi a} + \frac{2l}{\pi b} - \frac{l^2}{\pi ab} = \frac{2(a+b)l - l^2}{\pi ab}
+            \mathbf{P}(N = 1) &= \int_{0}^{\pi}\int_{0}^{b/2}\int_{0}^{\mid l\sin\theta \mid/2} \frac{4 \dd{x}\dd{y}\dd{\theta}}{\pi a b} + \int_{0}^{\pi}\int_{0}^{\mid l\cos\theta \mid/2}\int_{0}^{a/2} \frac{4 \dd{x}\dd{y}\dd{\theta}}{\pi a b} - 2\mathbf{P}(N = 2) \\
+            &= \frac{2l}{\pi a} + \frac{2l}{\pi b} - \frac{l^2}{\pi ab} = \frac{2(a+b)l - 2l^2}{\pi ab}
         \end{aligned}
         \end{equation}
         \item $N = 0$ otherwise
         \begin{equation}
-            \mathbf{P}(N = 0) = 1 - \mathbf{P}(N = 1) - \mathbf{P}(N = 2) = 1 - \frac{2(a+b)l}{\pi ab}
+            \mathbf{P}(N = 0) = 1 - \mathbf{P}(N = 1) - \mathbf{P}(N = 2) = 1 - \frac{2(a+b)l - l^2}{\pi ab}
         \end{equation}
     \end{enumerate}
     Therefore, the expected number of rectangle sides crossed by the needle is
     \begin{equation}
-        \mathbf{E}[N] = 2\mathbf{P}(N = 2) + \mathbf{P}(N = 1) = \frac{2(a+b)l + l^2}{\pi ab}
+        \mathbf{E}[N] = 2\mathbf{P}(N = 2) + \mathbf{P}(N = 1) = \frac{2(a+b)l}{\pi ab}
     \end{equation}
     The probability that the needle will cross at least one side of some rectangle is
     \begin{equation}
-        \mathbf{P}(N \geq 1) = 1 - \mathbf{P}(N = 0) = \frac{2(a+b)l}{\pi ab}
+        \mathbf{P}(N \geq 1) = 1 - \mathbf{P}(N = 0) = \frac{2(a+b)l - l^2}{\pi ab}
     \end{equation}
 \end{answer}
 
@@ -141,9 +141,9 @@
         \begin{equation}
             f_{P}(p \mid \text{head}) = \frac{\mathbf{P}(\text{head} \mid P = p)f_{P}(p)}{\mathbf{P}(\text{head})} = \frac{p^2 e^p}{e - 2}
         \end{equation}
-        \item Because the successive tosses are independent, the conditional PMF of heads on the next toss given that the first coin toss resulted in heads is
+        \item According to the total probability theorem, the conditional probability of heads on the next toss given that the first coin toss resulted in heads is
         \begin{equation}
-            \mathbf{P}(\text{head}_2 \mid \text{head}_1) = \mathbf{P}(\text{head}) = e - 2
+            \mathbf{P}(\text{head}_2 \mid \text{head}_1) = \frac{\int_0^1 \mathbf{P}(\text{head}_2 ~\&~ \text{head}_1 \mid P = p) \cdot f_{P}(p) \dd{p}}{\mathbf{P}(\text{head})} = \frac{\int_{0}^{1} p^3 e^p \dd{p}}{e - 2} = \frac{6 - 2e}{e - 2}
         \end{equation}
     \end{enumerate}
 \end{answer}
