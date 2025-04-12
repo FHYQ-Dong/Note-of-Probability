@@ -114,6 +114,25 @@ We've already known the Distribution of a RV $X$ and we want to find the distrib
     \end{equation}
 \end{solution}
 
+\begin{example}[CDF and PDF of Normal Distribution]
+    The PDF of standard normal distribution is
+    \begin{equation}
+        f_{X}(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}
+    \end{equation}
+    whose CDF cannot be expressed in closed form and is defined as
+    \begin{equation}
+        \Phi(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{x} e^{-\frac{t^2}{2}} \dd{t}
+    \end{equation}
+    Now, a RV $Y$ is normally distributed with parameters $\mu$ and $\sigma^2$. Let $Z = \frac{Y - \mu}{\sigma}$, then $Z$ is standard normal distributed. The CDF of $Y$ is
+    \begin{equation}
+        F_{Y}(y) = \mathbf{P}(Y \leq y) = \mathbf{P}\left(\frac{Y - \mu}{\sigma} \leq \frac{y - \mu}{\sigma}\right) = \mathbf{P}(Z \leq \frac{y - \mu}{\sigma}) = \Phi\left(\frac{y - \mu}{\sigma}\right)
+    \end{equation}
+    And the PDF of $Y$ is
+    \begin{equation}
+        f_{Y}(y) = \dv{F_{Y}}{y} = \dv{\Phi\left(\frac{y - \mu}{\sigma}\right)}{y} = \frac{1}{\sigma} \Phi'\left(\frac{y - \mu}{\sigma}\right) = \frac{1}{\sigma} f_{Z}\left(\frac{y - \mu}{\sigma}\right) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(y - \mu)^2}{2\sigma^2}}
+    \end{equation}
+\end{example}
+
 For monotonic functions $g(x)$
 \begin{theorem}[PDF of a Strictly Monotonic Function]
     Suppose that $g(\cdot)$ is strictly monotonic, then $g$ has an inverse $h(\cdot) \triangleq g^{-1}(\cdot)$. Assume $h$ is differentiable and the PDF of $Y$ is
@@ -167,6 +186,16 @@ For monotonic functions $g(x)$
     The only function that satisfies these axioms is $I(p) = k \ln p$. We add a negative sign to make it positive, and the constant $k$ is equivalent to the base of the logarithm. 
 \end{remark}
 
+\begin{example}[Entropy of Bernoulli RV]
+    Let $X$ be a Bernoulli RV with $\mathbf{P}(X = 1) = p$, $\mathbf{P}(X = 0) = 1 - p$. Find the entropy of $X$.
+\end{example}
+\begin{solution}
+    THe entropy of $X$ in bits is
+    \begin{equation}
+        H(X) = -p \ln p - (1 - p) \ln (1 - p)
+    \end{equation}
+    which is maximized when $p = 0.5$ (the most uncertain case), and is minimized when $p = 0$ or $p = 1$ (the most certain case). 
+\end{solution}
 
 
 \appendix
