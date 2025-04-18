@@ -15,7 +15,7 @@
 \title{Probability Notes}
 \author{FHYQ-Dong}
 \date{\today}
-\version{7.0}
+\version{8.0}
 \cover{images/Note-cover.png}
 \definecolor{customcoverlinecolor}{RGB}{82, 59, 148}
 \colorlet{coverlinecolor}{customcoverlinecolor}
@@ -36,130 +36,166 @@
 \input{chaps/chap_Discrete_Random_Variables.tex}
 \input{chaps/chap_Multiple_Random_Variables.tex}
 \input{chaps/chap_Continuous_Random_Variables.tex}
+\input{chaps/chap_Multiple_Continuous_Random_Variables.tex}
 
 
-\chapter{Multiple Continuous Random Variables}
 
 
-\section{Multiple Continuous Random Variables}
+\chapter{Derived Distributions and Entropy}
 
-\begin{definition}[Joint PDF]
-    The two continuous RVs $X$ and $Y$, with the same experiment, are jointly continuous if they can be described by a joint PDF $f_{X, Y}(x, y)$, where $f_{X, Y}(x, y) \geq 0$ and satisfies
+\section{Derived Distributions}
+\label{sec:derived-distributions}
+We've already known the Distribution of a RV $X$ and we want to find the distribution of $Y = g(X)$. In discrete case we can calculate the PMF for each possible value of $Y$ like $\mathbf{P}(Y = y) = \sum_{x: g(x) = y} \mathbf{P}(X = x)$. For continuous case we cannot simply do such thing because the conservation of PDF is not guaranteed under summation. Instead, CDF is standardized and we can use it to find the PDF of $Y$.
+\begin{theorem}[Principal Method for Derived Distribution]
+    Two-step method to find the distribution of $Y = g(X)$:
+    \begin{enumerate}
+        \item Find the CDF of $Y$:
+        \begin{equation}
+            F_{Y}(y) = \mathbf{P}(Y \leq y) = \mathbf{P}(g(X) \leq y)
+        \end{equation}
+        \item Differentiate the CDF to find the PDF:
+        \begin{equation}
+            f_{Y}(y) = \dv{F_{Y}}{y}
+        \end{equation}
+    \end{enumerate}
+\end{theorem}
+
+\begin{example}[Taking a Train]
+    A professor is taking the high-speed railway from Beijing to Shanghai. Suppose that the speed of the train is uniformly distributed between 280 km/h and 350 km/h. The distance between the two cities is 1400 km. What is the distribution of the duration of the trip?
+\end{example}
+\begin{solution}
+    Let $T(V) = \frac{1400}{V}$ be the duration of the trip. The speed $V$ is uniformly distributed in $[280, 350]$, so the CDF of $V$ is
     \begin{equation}
-        \mathbf{P}((X, Y) \in A) = \iint_{A} f_{X, Y}(x, y) \dd{x} \dd{y}
+        F_{V}(v) = \begin{cases}
+            0, & v < 280 \\ 
+            \frac{v - 280}{350 - 280}, & 280 \leq v < 350 \\ 
+            1, & v \geq 350
+        \end{cases}
     \end{equation}
-    Especially, if $A \subseteq \mathcal{B}(\mathbb{R}^2)$, then
+    The CDF of $T$ is
     \begin{equation}
-        \mathbf{P}((X, Y) \in [a, b] \times [c, d]) = \int_{c}^{d} \int_{a}^{b} f_{X, Y}(x, y) \dd{x} \dd{y}
+        F_{T}(t) = \mathbf{P}(T \leq t) = \mathbf{P}\left(\frac{1400}{V} \leq t\right) = \mathbf{P}\left(V \geq \frac{1400}{t}\right) = 1 - F_{V}\left(\frac{1400}{t}\right)
     \end{equation}
-\end{definition}
+    \begin{equation}
+        F_{T}(t) = \begin{cases}
+            0, & t < 4 \\ 
+            5 - \frac{20}{t}, & 4 \leq t < 5 \\ 
+            1, & t \geq 5
+        \end{cases}
+    \end{equation}
+    The PDF of $T$ is
+    \begin{equation}
+        f_{T}(t) = \dv{F_{T}}{t} = \begin{cases}
+            0, & t < 4 \\ 
+            \frac{20}{t^2}, & 4 \leq t < 5 \\ 
+            0, & t \geq 5
+        \end{cases}
+    \end{equation}
+\end{solution}
 
-\begin{property}[Properties of Joint PDFs] ~
-    \begin{itemize}
-        \item Normalization: $\iint_{\Omega} f_{X, Y}(x, y) \dd{x} \dd{y} = 1$.
-        \item Interpretation: $f_{X, Y}(x, y) \dd{x} \dd{y}$ is the probability that $(X, Y)$ lies in the small rectangle $[x, x + \dd{x}] \times [y, y + \dd{y}]$.
-        \item Marginal PDFs: $f_{X}(x) = \int_{\Omega_{Y}} f_{X, Y}(x, y) \dd{y}$ and $f_{Y}(y) = \int_{\Omega_{X}} f_{X, Y}(x, y) \dd{x}$.
-    \end{itemize}
-\end{property}
+\begin{example}[PDF of $Y = aX+b$]
+    Let $X$ be a RV with PDF $f_{X}(x)$, and $Y = aX + b$ where $a \neq 0$, then the PDF of $Y$ is
+    \begin{equation}
+        f_{Y}(y) = \frac{1}{\abs{a}} f_{X}\left(\frac{y - b}{a}\right)
+    \end{equation}
+\end{example}
+\begin{solution}
+    The CDF of $Y$ is
+    \begin{equation}
+        F_{Y}(y) = \mathbf{P}(Y \leq y) = \mathbf{P}(aX + b \leq y) = \mathbf{P}\left(X \leq \frac{y - b}{a}\right) = F_{X}\left(\frac{y - b}{a}\right)
+    \end{equation}
+    And then differentiating the CDF using chain rule
+    \begin{equation}
+        f_{Y}(y) = \dv{F_{Y}}{y} = \frac{1}{a} \dv{F_{X}}{\frac{y - b}{a}} = \frac{1}{a} f_{X}\left(\frac{y - b}{a}\right)
+    \end{equation}
+    If $a < 0$, the inequality will be reversed, and a minus sign will be added to the derivative. So we have
+    \begin{equation}
+        f_{Y}(y) = \frac{1}{\abs{a}} f_{X}\left(\frac{y - b}{a}\right)
+    \end{equation}
+\end{solution}
 
-\begin{definition}[Joint CDFs]
-    If $X$ and $Y$ are two continuous RVs associated with the same experiment, then the joint CDF of $X$ and $Y$ is defined as
+\begin{example}[CDF and PDF of Normal Distribution]
+    The PDF of standard normal distribution is
     \begin{equation}
-        F_{X, Y}(x, y) = \mathbf{P}(X \leq x, Y \leq y)
+        f_{X}(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}
     \end{equation}
-    If $X$ and $Y$ can be described by a joint PDF $f_{X, Y}(x, y)$, then
+    whose CDF cannot be expressed in closed form and is defined as
     \begin{equation}
-        F_{X, Y}(x, y) = \int_{-\infty}^{x} \int_{-\infty}^{y} f_{X, Y}(t, s) \dd{t} \dd{s}
+        \Phi(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{x} e^{-\frac{t^2}{2}} \dd{t}
     \end{equation}
-    Conversely, if $F_{X, Y}(x, y)$ is differentiable, then
+    Now, a RV $Y$ is normally distributed with parameters $\mu$ and $\sigma^2$. Let $Z = \frac{Y - \mu}{\sigma}$, then $Z$ is standard normal distributed. The CDF of $Y$ is
     \begin{equation}
-        f_{X, Y}(x, y) = \pdv{F_{X, Y}(x, y)}{x}{y}
+        F_{Y}(y) = \mathbf{P}(Y \leq y) = \mathbf{P}\left(\frac{Y - \mu}{\sigma} \leq \frac{y - \mu}{\sigma}\right) = \mathbf{P}(Z \leq \frac{y - \mu}{\sigma}) = \Phi\left(\frac{y - \mu}{\sigma}\right)
     \end{equation}
-\end{definition}
-
-\begin{definition}[Expectation and Variance]
-    Let $X$ and $Y$ be two continuous RVs with joint PDF $f_{X, Y}(x, y)$, then
+    And the PDF of $Y$ is
     \begin{equation}
-    \begin{aligned}
-        &\mathbf{E}[g(X, Y)] = \iint_{\Omega} g(x, y) f_{X, Y}(x, y) \dd{x} \dd{y} \\ 
-        &\text{var}(g(X, Y)) = \mathbf{E}[g(X, Y) - \mathbf{E}[g(X, Y)]]^2 = \mathbf{E}[g(X, Y)^2] - \mathbf{E}[g(X, Y)]^2
-    \end{aligned}
+        f_{Y}(y) = \dv{F_{Y}}{y} = \dv{\Phi\left(\frac{y - \mu}{\sigma}\right)}{y} = \frac{1}{\sigma} \Phi'\left(\frac{y - \mu}{\sigma}\right) = \frac{1}{\sigma} f_{Z}\left(\frac{y - \mu}{\sigma}\right) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(y - \mu)^2}{2\sigma^2}}
     \end{equation}
-\end{definition}
-
-\begin{definition}[Independence]
-    $X$ and $Y$ are independent if their joint PDF can be factorized as
-    \begin{equation}
-        f_{X, Y}(x, y) = f_{X}(x) f_{Y}(y), ~\forall x, y
-    \end{equation}
-\end{definition}
-
-\begin{example}[Buffon's needle]
-    Parallel lines are at distance $d$, throw a needle of length $l$ (assume $l < d$). Find $\mathbf{P}(\text{needle intersects one of the lines})$.  
-    \begin{solution}
-        Let $X$ be the distance from the center of the needle to the nearest line, and $\Theta$ be the angle between the needle and the lines, where $X$ and $\Theta$ are independent. Given the symmetry characteristics, it is well to assume $X$ is uniform in $[0, d/2]$ and $\Theta$ is uniform in $[0, \pi/2]$. Then the joint PDF is
-    \begin{equation}
-        f_{X, \Theta}(x, \theta) = \frac{2}{d} \cdot \frac{2}{\pi}, \quad 0 \leq x \leq \frac{d}{2}, 0 \leq \theta \leq \frac{\pi}{2}
-    \end{equation}
-    The needle intersects if $X \leq l/2 \sin\Theta$, and the probability is
-    \begin{equation}
-    \begin{aligned}
-        \mathbf{P}(X \leq \frac{l}{2}\sin\Theta) &= \iint_{X\leq\frac{l}{2}\sin\Theta} f_{X, \Theta}(x, \theta) \dd{x} \dd{\theta} \\ 
-        &= \frac{4}{\pi d} \int_{0}^{\pi/2} \int_{0}^{(l/2)\sin\theta} \dd{x} \dd{\theta} = \frac{2l}{\pi d}
-    \end{aligned}
-    \end{equation}
-    \end{solution}
 \end{example}
 
-
-\section{Conditioning and Independence}
-
-\begin{definition}[Definition of Conditional PDFs]
-    Let $X$ and $Y$ be two continuous RVs with joint PDF $f_{X, Y}(x, y)$, then the conditional PDF of $X$ given $Y = y$ is defined as
+For monotonic functions $g(x)$
+\begin{theorem}[PDF of a Strictly Monotonic Function]
+    Suppose that $g(\cdot)$ is strictly monotonic, then $g$ has an inverse $h(\cdot) \triangleq g^{-1}(\cdot)$. Assume $h$ is differentiable and the PDF of $Y$ is
     \begin{equation}
-        f_{X \mid Y}(x \mid y) = \frac{f_{X, Y}(x, y)}{f_{Y}(y)}
-    \end{equation}
-\end{definition}
-
-\begin{remark}
-    There's a paradox that the denominator $\mathbf{P}(Y = y) = 0$ for continuous RVs, but we can let $Y$ be a little fatter: $\mathbf{P}(y \leq Y \leq y + \delta) \approx f_{Y}(y) \cdot \delta$ and let $\delta \to 0$ after we do division.
-\end{remark}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{images/Note-7.1.png}
-    \caption{Visualization of Conditional PDF}
-\end{figure}
-
-\begin{example}[Stick-breaking]
-    Break a stick of length $l$ twice: break at $X$: uniform in $[0, l]$; break again at $Y$: uniform in $[0, X]$. Find $\mathbf{E}[Y]$. 
-    \begin{solution}
-        \begin{align}
-            f_{X, Y}(x, y) &= f_{X}(x) f_{Y \mid X}(y \mid x) = \frac{1}{l} \cdot \frac{1}{x}, \quad 0 \leq y \leq x \leq l \\ 
-            f_{Y}(y) &= \int_{-\infty}^{+\infty} f_{X, Y}(x, y) \dd{x} = \int_{y}^{l} \frac{1}{l} \cdot \frac{1}{x} \dd{x} = \frac{1}{l} \ln\left(\frac{l}{y}\right), \quad 0 \leq y \leq l \\ 
-            \mathbf{E}[Y] &= \int_{-\infty}^{+\infty} y f_{Y}(y) \dd{y} = \int_{0}^{l} y \cdot \frac{1}{l} \ln\left(\frac{l}{y}\right) \dd{y} = \frac{l}{4}
-        \end{align}
-    \end{solution}
-\end{example}
-
-\begin{definition}[Conditional Expectation]
-    The conditional expectation of $X$ given that $Y = y$ has happened is defined by
-    \begin{equation}
-        \mathbf{E}[X \mid Y = y] = \int_{-\infty}^{+\infty} x f_{X \mid Y}(x \mid y) \dd{x}
-    \end{equation}
-    For a function $g(X, Y)$, the conditional expectation is 
-    \begin{equation}
-        \mathbf{E}[g(X, Y) \mid Y = y] = \int_{-\infty}^{+\infty} g(x, y) f_{X \mid Y}(x \mid y) \dd{x}
-    \end{equation}
-\end{definition}
-
-Remember how we prove the total expectation theorem in discrete case: we multiple $x$ on both side of the equation of conditional probability and sum over $x$. Now we can do the same thing in continuous case.
-\begin{theorem}[Total Expectation Theorem]
-    Let $X$ and $Y$ be two continuous RVs, then
-    \begin{equation}
-        \mathbf{E}[X] = \int_{-\infty}^{+\infty} \mathbf{E}[X \mid Y = y] f_{Y}(y) \dd{y}
+        f_{Y}(y) = f_{X}(h(y)) \abs{\dv{h}{y}}
     \end{equation}
 \end{theorem}
+\begin{proof}
+    \begin{align}
+        F_{Y}(y) &= \mathbf{P}(Y \leq y) = \mathbf{P}(g(X) \leq y) = \mathbf{P}(X \leq h(y)) = F_{X}(h(y)) \\ 
+        f_{Y}(y) &= \dv{F_{Y}}{y} = f_{X}(h(y)) \dv{h}{y}
+    \end{align}
+    If $g$ is strictly decreasing, the inequality will be reversed, and a minus sign will be added to the derivative. So we have
+    \begin{equation}
+        f_{Y}(y) = f_{X}(h(y)) \abs{\dv{h}{y}}
+    \end{equation}
+\end{proof}
+\begin{remark}
+    If $g$ is a multiple-to-multiple function, $\abs{\dv{h}{y}}$ becomes Jacobian determinant.
+\end{remark}
+
+\section{Entropy}
+\begin{definition}[Entropy]
+    The entropy of a discrete RV $X$ with PMF $p_X(x)$ is defined as
+    \begin{equation}
+        H(X) = -\sum_{x} p_X(x) \ln p_X(x)
+    \end{equation}
+    The entropy of a continuous RV $X$ with PDF $f_X(x)$ is defined as
+    \begin{equation}
+        H(X) = -\int_{-\infty}^{+\infty} f_X(x) \ln f_X(x) \dd{x}
+    \end{equation}
+\end{definition}
+\begin{remark}
+    \begin{itemize}
+        \item The entropy of a discrete RV is non-negative, while the entropy of a continuous RV can be negative (if $f_{X}(x) > 1$).
+        \item The entropy describes the uncertainty of a random experiment.
+        \item The base of the logarithm can be different, which is equal to multiplying by a constant. \begin{itemize}
+            \item If the base is 2, the unit is bit.
+            \item If the base is $e$, the unit is nat.
+        \end{itemize}
+    \end{itemize}
+\end{remark}
+\begin{remark} \\ 
+    Why is entropy in the form of the expectation of $-\ln f_{X}(x)$? \\ 
+    The entropy of a RV is defined as the expectation of the self-information $H(X) = \mathbf{E}[I(p(X))]$. According to Shannon, self-information shoudle satisfies the following axioms:
+    \begin{itemize}
+        \item Self-information is and only is a function of probability $I(p)$.
+        \item If probability $p = p_1 p_2$, then $I(p) = I(p_1) + I(p_2)$.
+        \item $I(p)$ is continuous.
+    \end{itemize}
+    The only function that satisfies these axioms is $I(p) = k \ln p$. We add a negative sign to make it positive, and the constant $k$ is equivalent to the base of the logarithm. 
+\end{remark}
+
+\begin{example}[Entropy of Bernoulli RV]
+    Let $X$ be a Bernoulli RV with $\mathbf{P}(X = 1) = p$, $\mathbf{P}(X = 0) = 1 - p$. Find the entropy of $X$.
+\end{example}
+\begin{solution}
+    THe entropy of $X$ in bits is
+    \begin{equation}
+        H(X) = -p \ln p - (1 - p) \ln (1 - p)
+    \end{equation}
+    which is maximized when $p = 0.5$ (the most uncertain case), and is minimized when $p = 0$ or $p = 1$ (the most certain case). 
+\end{solution}
 
 
 \appendix

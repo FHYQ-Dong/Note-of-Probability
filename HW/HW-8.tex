@@ -1,0 +1,247 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{physics}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+
+
+\title{Problem Set 8}
+\author{ FHYQ-Dong, Class **********, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 8}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+    citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\begin{question}
+    The metro train arrives at the station near your home every quarter hour starting at 6:00 a.m. You walk into the station every morning between 7:10 and 7:30 a.m. Let $X$ be the elapsed time, in minutes, between 7:10 and the time of your arrival. Let $Y$ be the time that you have to wait until you board a train. Calculate the CDF of $Y$ in terms of the CDF of $X$ and differentiate to obtain a formula for the PDF of $Y$.
+\end{question}
+\begin{answer}
+    Let $F_{X}(x)$ denote the CDF of $X$ and $f_{X}(x)$ denote the PDF of $X$. The relationship between $X$ and $Y$ is 
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[c]{0.45\textwidth}
+            \begin{equation}
+                Y = \left\{\begin{aligned}
+                    &5 - X \quad &X \in [0, 5] \\
+                    &X - 5 \quad &X \in [5, 12.5] \\ 
+                    &20 - X \quad &X \in [12.5, 20] 
+                \end{aligned}\right.
+            \end{equation}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[c]{0.45\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{images/HW-8.1.png}
+            \vspace{-1.5em}
+            \caption{\textit{The relationship between $X$ and $Y$.}}
+            \label{fig:HW-8.1}
+        \end{minipage}
+    \end{figure}
+    As shown in Figure \ref{fig:HW-8.1}, the probability $\mathbf{P}(Y \leq y_0)$ is
+    \begin{enumerate}[label=(\alph*)]
+        \item $0 < y_0 \leq 5$: $X \in [5-y_0, 5+y_0] \cup [20-y_0, 20]$.
+            \begin{equation}
+                \mathbf{P}(Y \leq y_0) = F_{X}(5+y_0) - F_{X}(5-y_0) + F_{X}(20) - F_{X}(20-y_0)
+            \end{equation}
+        \item $5 < y_0 \leq 7.5$: $X \in [0, 5+y_0] \cup [20-y_0, 20]$.
+            \begin{equation}
+                \mathbf{P}(Y \leq y_0) = F_{X}(5+y_0) + F_{X}(20) - F_{X}(20-y_0)
+            \end{equation}
+    \end{enumerate}
+    So the CDF of $Y$ is 
+    \begin{equation}
+        F_{Y}(y) = \left\{\begin{aligned}
+            &F_{X}(5+y) - F_{X}(5-y) + F_{X}(20) - F_{X}(20-y) \quad &0 < y \leq 5 \\
+            &F_{X}(5+y) + F_{X}(20) - F_{X}(20-y) \quad &5 < y \leq 7.5
+        \end{aligned}\right.
+    \end{equation}
+    And the PDF of $Y$ is
+    \begin{equation}
+        f_{Y}(y) = \dv{F_{Y}(y)}{y} = \left\{\begin{aligned}
+            &f_{X}(5+y) + f_{X}(5-y) + f_{X}(20-y) \quad &0 < y \leq 5 \\
+            &f_{X}(5+y) + f_{X}(20-y) \quad &5 < y \leq 7.5
+        \end{aligned}\right.
+    \end{equation}
+    Given $f_{X}(x) = 0$ when $x < 0$, so the PDF of $Y$ can be written as
+    \begin{equation}
+        f_{Y}(y) = f_{X}(5+y) + f_{X}(5-y) + f_{X}(20-y) \quad (0 < y \leq 7.5)
+    \end{equation}
+\end{answer}
+
+\begin{question}
+    Let $X$ and $Y$ be independent and exponentially distributed random variables with different parameters $\lambda$ and $\mu$, respectively. Find the PDF of $X - Y$.
+\end{question}
+\begin{answer}
+    The PDF of $X$ and $Y$ are
+    \begin{equation}
+    \begin{aligned}
+        f_{X}(x) &= \lambda e^{-\lambda x} \quad (x \geq 0) \\
+        f_{Y}(y) &= \mu e^{-\mu y} \quad (y \geq 0)
+    \end{aligned}
+    \end{equation}
+    So the CDF of $X$ and $Y$ are
+    \begin{equation}
+    \begin{aligned}
+        F_{X}(x) &= 1 - e^{-\lambda x} \quad (x \geq 0) \\
+        F_{Y}(y) &= 1 - e^{-\mu y} \quad (y \geq 0)
+    \end{aligned}
+    \end{equation}
+    According to the total probability theorem, the probability $\mathbf{P}(X - Y \geq z)$ is
+    \begin{equation}
+    \begin{aligned}
+        \label{eq:HW-8.2}
+        \mathbf{P}(X - Y > z) &= \int_{0}^{+\infty} \mathbf{P}(X - y > z \mid y) f_{Y}(y) \dd{y} \\ 
+        &= \int_{0}^{+\infty} \mathbf{P}(X > z + y) f_{Y}(y) \dd{y} \\
+        &= \int_{0}^{+\infty} \left(1 - F_{X}(z + y)\right) f_{Y}(y) \dd{y} 
+    \end{aligned}
+    \end{equation}
+    \begin{enumerate}[label=(\alph*)]
+        \item When $z \leq 0$, Eq.\ref{eq:HW-8.2} is
+            \begin{equation}
+                \mathbf{P}(X - Y > z) = \int_{0}^{-z} f_{Y}(y) \dd{y} + \int_{-z}^{+\infty} e^{-\lambda (z + y)} f_{Y}(y) \dd{y} = 1 - \frac{\lambda}{\lambda + \mu} e^{\mu z}
+            \end{equation}
+        \item When $z > 0$, Eq.\ref{eq:HW-8.2} becomes
+            \begin{equation}
+                \mathbf{P}(X - Y > z) = \int_{0}^{+\infty} e^{-\lambda (z + y)} f_{Y}(y) \dd{y} = \frac{\mu}{\lambda + \mu} e^{-\lambda z}
+            \end{equation}
+    \end{enumerate}
+    So the CDF of $X - Y$ is
+    \begin{equation}
+        F_{X - Y}(z) = 1 - \mathbf{P}(X - Y > z) = \left\{\begin{aligned}
+            &\frac{\lambda}{\lambda + \mu} e^{\mu z} \quad &z \leq 0 \\
+            &1 - \frac{\mu}{\lambda + \mu} e^{-\lambda z} \quad &z > 0
+        \end{aligned}\right.
+    \end{equation}
+    And the PDF of $X - Y$ is
+    \begin{equation}
+        f_{X - Y}(z) = \dv{F_{X - Y}(z)}{z} = \left\{\begin{aligned}
+            &\frac{\lambda\mu}{\lambda + \mu} e^{\mu z} \quad &z < 0 \\
+            &\frac{\lambda\mu}{\lambda + \mu} e^{-\lambda z} \quad &z > 0
+        \end{aligned}\right.
+    \end{equation}
+\end{answer}
+
+\begin{question}
+    Find the probability density function of $Y = e^X$ when $X$ is normally distributed with parameters $\mu$ and $\sigma^2$. The random variable $Y$ is said to have a lognormal distribution (since $\log Y$ has a normal distribution) with parameters $\mu$ and $\sigma^2$.
+\end{question}
+\begin{answer}
+    The PDF of $X$ is
+    \begin{equation}
+        f_{X}(x) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \quad (x \in (-\infty, +\infty))
+    \end{equation}
+    Let $F_{X}(x)$ denote the CDF of $X$. The CDF of $Y$ is
+    \begin{equation}
+        F_{Y}(y) = \mathbf{P}(e^X \leq y) = F_{X}(\log y)
+    \end{equation}
+    The PDF of $Y$ is
+    \begin{equation}
+        f_{Y}(y) = \dv{F_{Y}(y)}{y} = \dv{F_{X}(\log y)}{y} = \frac{1}{y} f_{X}(\log y) = \frac{1}{y\sqrt{2\pi}\sigma} e^{-\frac{(\log y - \mu)^2}{2\sigma^2}} \quad (y > 0)
+    \end{equation}
+\end{answer}
+
+\begin{question}
+    A point $(X, Y)$ is picked at random uniformly in the unit circle. Find the joint PDF of $R$ and $X$, where $R^2 = X^2 + Y^2$.
+\end{question}
+\begin{answer}
+    The joint PDF of $X$ and $Y$ is
+    \begin{equation}
+        f_{X, Y}(x, y) = \frac{1}{\pi} \quad (x^2 + y^2 \leq 1)
+    \end{equation}
+    The margin PDF of $X$ is
+    \begin{equation}
+        f_{X}(x) = \int_{-\sqrt{1 - x^2}}^{\sqrt{1 - x^2}} f_{X, Y}(x, y) \dd{y} = \frac{2\sqrt{1 - x^2}}{\pi} \quad (x^2 \leq 1)
+    \end{equation}
+    Given $X = x$, the conditional CDF of $R$ is 
+    \begin{equation}
+        F_{R \mid X}(r \mid x) = \mathbf{P}(R \leq r \mid X = x) = \mathbf{P}(Y^2 \leq r^2 - x^2) = \frac{1}{\pi} \int_{-\sqrt{r^2 - x^2}}^{\sqrt{r^2 - x^2}} 1 \dd{y} = \frac{2\sqrt{r^2 - x^2}}{\pi}
+    \end{equation}
+    So the conditional PDF of $R$ given $X$ is
+    \begin{equation}
+        f_{R \mid X}(r \mid x) = \dv{F_{R \mid X}(r \mid x)}{r} = \frac{2r}{\pi\sqrt{r^2 - x^2}} \quad (x^2 + r^2 \leq 1)
+    \end{equation}
+    The joint PDF of $R$ and $X$ is
+    \begin{equation}
+        f_{R, X}(r, x) = f_{R \mid X}(r \mid x) f_{X}(x) = \frac{4r}{\pi^2} \sqrt{\frac{1 - x^2}{r^2 - x^2}} \quad (x^2 + r^2 \leq 1)
+    \end{equation}
+\end{answer}
+
+\begin{question}
+    Derive the differential entropy of the Gaussian RV with mean $\mu$ and variance $\sigma^2$.
+\end{question}
+\begin{answer}
+    Let $X$ be a RV satisfying the Gaussian distribution with mean $\mu$ and variance $\sigma^2$. The PDF of $X$ is
+    \begin{equation}
+        f_{X}(x) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \quad (x \in (-\infty, +\infty))
+    \end{equation}
+    The differential entropy of $X$ is
+    \begin{equation}
+    \begin{aligned}
+        \label{eq:HW-8.5.1}
+        H(X) &= -\int_{-\infty}^{+\infty} f_{X}(x) \ln f_{X}(x) \dd{x} = -\int_{-\infty}^{+\infty} \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \ln \left(\frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}}\right) \dd{x} \\ 
+        &= - \ln\left(\frac{1}{\sqrt{2\pi}\sigma}\right) \int_{-\infty}^{+\infty} \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x} + \frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x} \\
+        &= \ln\left(\sqrt{2\pi}\sigma\right) + \frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x}
+    \end{aligned}
+    \end{equation}
+    Note that 
+    \begin{equation}
+    \begin{aligned}
+        \label{eq:HW-8.5.2}
+        &\int_{-\infty}^{+\infty} \frac{\sqrt{a}}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = 1 \quad\Rightarrow\quad \int_{-\infty}^{+\infty} e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = \sqrt{\frac{2\pi}{a}}\sigma \\ 
+        \Rightarrow\quad &\dv{a} \int_{-\infty}^{+\infty} e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = \dv{a} \sqrt{\frac{2\pi}{a}}\sigma \quad\Rightarrow\quad \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = \frac{\sigma}{2a^{3/2}}\sqrt{\frac{2\pi}{a}} 
+    \end{aligned}
+    \end{equation}
+    Let $a = 1$, then Eq.\ref{eq:HW-8.5.2} becomes
+    \begin{equation}
+        \label{eq:HW-8.5.3}
+        \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x} = \sqrt{\frac{\pi}{2}}\sigma
+    \end{equation}
+    Substitute Eq.\ref{eq:HW-8.5.3} into Eq.\ref{eq:HW-8.5.1}, we have
+    \begin{equation}
+        H(X) = \ln\left(\sqrt{2\pi}\sigma\right) + \frac{1}{\sqrt{2\pi}\sigma} \cdot \sqrt{\frac{\pi}{2}}\sigma = \ln\left(\sqrt{2\pi}\sigma\right) + \frac{1}{2}
+    \end{equation}
+\end{answer}
+
+\end{document}
