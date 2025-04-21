@@ -26,6 +26,7 @@
 \theoremstyle{plain}% 
 \newtheorem{answer}{Answer} %
 
+\input{math_cmds.tex}
 
 \title{Problem Set 8}
 \author{ FHYQ-Dong, Class **********, Student ID: ********** }
@@ -118,15 +119,15 @@
     The PDF of $X$ and $Y$ are
     \begin{equation}
     \begin{aligned}
-        f_{X}(x) &= \lambda e^{-\lambda x} \quad (x \geq 0) \\
-        f_{Y}(y) &= \mu e^{-\mu y} \quad (y \geq 0)
+        f_{X}(x) &= \lambda \e^{-\lambda x} \quad (x \geq 0) \\
+        f_{Y}(y) &= \mu \e^{-\mu y} \quad (y \geq 0)
     \end{aligned}
     \end{equation}
     So the CDF of $X$ and $Y$ are
     \begin{equation}
     \begin{aligned}
-        F_{X}(x) &= 1 - e^{-\lambda x} \quad (x \geq 0) \\
-        F_{Y}(y) &= 1 - e^{-\mu y} \quad (y \geq 0)
+        F_{X}(x) &= 1 - \e^{-\lambda x} \quad (x \geq 0) \\
+        F_{Y}(y) &= 1 - \e^{-\mu y} \quad (y \geq 0)
     \end{aligned}
     \end{equation}
     According to the total probability theorem, the probability $\mathbf{P}(X - Y \geq z)$ is
@@ -141,44 +142,44 @@
     \begin{enumerate}[label=(\alph*)]
         \item When $z \leq 0$, Eq.\ref{eq:HW-8.2} is
             \begin{equation}
-                \mathbf{P}(X - Y > z) = \int_{0}^{-z} f_{Y}(y) \dd{y} + \int_{-z}^{+\infty} e^{-\lambda (z + y)} f_{Y}(y) \dd{y} = 1 - \frac{\lambda}{\lambda + \mu} e^{\mu z}
+                \mathbf{P}(X - Y > z) = \int_{0}^{-z} f_{Y}(y) \dd{y} + \int_{-z}^{+\infty} \e^{-\lambda (z + y)} f_{Y}(y) \dd{y} = 1 - \frac{\lambda}{\lambda + \mu} \e^{\mu z}
             \end{equation}
         \item When $z > 0$, Eq.\ref{eq:HW-8.2} becomes
             \begin{equation}
-                \mathbf{P}(X - Y > z) = \int_{0}^{+\infty} e^{-\lambda (z + y)} f_{Y}(y) \dd{y} = \frac{\mu}{\lambda + \mu} e^{-\lambda z}
+                \mathbf{P}(X - Y > z) = \int_{0}^{+\infty} \e^{-\lambda (z + y)} f_{Y}(y) \dd{y} = \frac{\mu}{\lambda + \mu} \e^{-\lambda z}
             \end{equation}
     \end{enumerate}
     So the CDF of $X - Y$ is
     \begin{equation}
         F_{X - Y}(z) = 1 - \mathbf{P}(X - Y > z) = \left\{\begin{aligned}
-            &\frac{\lambda}{\lambda + \mu} e^{\mu z} \quad &z \leq 0 \\
-            &1 - \frac{\mu}{\lambda + \mu} e^{-\lambda z} \quad &z > 0
+            &\frac{\lambda}{\lambda + \mu} \e^{\mu z} \quad &z \leq 0 \\
+            &1 - \frac{\mu}{\lambda + \mu} \e^{-\lambda z} \quad &z > 0
         \end{aligned}\right.
     \end{equation}
     And the PDF of $X - Y$ is
     \begin{equation}
         f_{X - Y}(z) = \dv{F_{X - Y}(z)}{z} = \left\{\begin{aligned}
-            &\frac{\lambda\mu}{\lambda + \mu} e^{\mu z} \quad &z < 0 \\
-            &\frac{\lambda\mu}{\lambda + \mu} e^{-\lambda z} \quad &z > 0
+            &\frac{\lambda\mu}{\lambda + \mu} \e^{\mu z} \quad &z < 0 \\
+            &\frac{\lambda\mu}{\lambda + \mu} \e^{-\lambda z} \quad &z > 0
         \end{aligned}\right.
     \end{equation}
 \end{answer}
 
 \begin{question}
-    Find the probability density function of $Y = e^X$ when $X$ is normally distributed with parameters $\mu$ and $\sigma^2$. The random variable $Y$ is said to have a lognormal distribution (since $\log Y$ has a normal distribution) with parameters $\mu$ and $\sigma^2$.
+    Find the probability density function of $Y = \e^X$ when $X$ is normally distributed with parameters $\mu$ and $\sigma^2$. The random variable $Y$ is said to have a lognormal distribution (since $\log Y$ has a normal distribution) with parameters $\mu$ and $\sigma^2$.
 \end{question}
 \begin{answer}
     The PDF of $X$ is
     \begin{equation}
-        f_{X}(x) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \quad (x \in (-\infty, +\infty))
+        f_{X}(x) = \frac{1}{\sqrt{2\pi}\sigma} \e^{-\frac{(x - \mu)^2}{2\sigma^2}} \quad (x \in (-\infty, +\infty))
     \end{equation}
     Let $F_{X}(x)$ denote the CDF of $X$. The CDF of $Y$ is
     \begin{equation}
-        F_{Y}(y) = \mathbf{P}(e^X \leq y) = F_{X}(\log y)
+        F_{Y}(y) = \mathbf{P}(\e^X \leq y) = F_{X}(\log y)
     \end{equation}
     The PDF of $Y$ is
     \begin{equation}
-        f_{Y}(y) = \dv{F_{Y}(y)}{y} = \dv{F_{X}(\log y)}{y} = \frac{1}{y} f_{X}(\log y) = \frac{1}{y\sqrt{2\pi}\sigma} e^{-\frac{(\log y - \mu)^2}{2\sigma^2}} \quad (y > 0)
+        f_{Y}(y) = \dv{F_{Y}(y)}{y} = \dv{F_{X}(\log y)}{y} = \frac{1}{y} f_{X}(\log y) = \frac{1}{y\sqrt{2\pi}\sigma} \e^{-\frac{(\log y - \mu)^2}{2\sigma^2}} \quad (y > 0)
     \end{equation}
 \end{answer}
 
@@ -214,29 +215,29 @@
 \begin{answer}
     Let $X$ be a RV satisfying the Gaussian distribution with mean $\mu$ and variance $\sigma^2$. The PDF of $X$ is
     \begin{equation}
-        f_{X}(x) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \quad (x \in (-\infty, +\infty))
+        f_{X}(x) = \frac{1}{\sqrt{2\pi}\sigma} \e^{-\frac{(x - \mu)^2}{2\sigma^2}} \quad (x \in (-\infty, +\infty))
     \end{equation}
     The differential entropy of $X$ is
     \begin{equation}
     \begin{aligned}
         \label{eq:HW-8.5.1}
-        H(X) &= -\int_{-\infty}^{+\infty} f_{X}(x) \ln f_{X}(x) \dd{x} = -\int_{-\infty}^{+\infty} \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \ln \left(\frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}}\right) \dd{x} \\ 
-        &= - \ln\left(\frac{1}{\sqrt{2\pi}\sigma}\right) \int_{-\infty}^{+\infty} \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x} + \frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x} \\
-        &= \ln\left(\sqrt{2\pi}\sigma\right) + \frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x}
+        H(X) &= -\int_{-\infty}^{+\infty} f_{X}(x) \ln f_{X}(x) \dd{x} = -\int_{-\infty}^{+\infty} \frac{1}{\sqrt{2\pi}\sigma} \e^{-\frac{(x - \mu)^2}{2\sigma^2}} \ln \left(\frac{1}{\sqrt{2\pi}\sigma} \e^{-\frac{(x - \mu)^2}{2\sigma^2}}\right) \dd{x} \\ 
+        &= - \ln\left(\frac{1}{\sqrt{2\pi}\sigma}\right) \int_{-\infty}^{+\infty} \frac{1}{\sqrt{2\pi}\sigma} \e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x} + \frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} \e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x} \\
+        &= \ln\left(\sqrt{2\pi}\sigma\right) + \frac{1}{\sqrt{2\pi}\sigma} \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} \e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x}
     \end{aligned}
     \end{equation}
     Note that 
     \begin{equation}
     \begin{aligned}
         \label{eq:HW-8.5.2}
-        &\int_{-\infty}^{+\infty} \frac{\sqrt{a}}{\sqrt{2\pi}\sigma} e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = 1 \quad\Rightarrow\quad \int_{-\infty}^{+\infty} e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = \sqrt{\frac{2\pi}{a}}\sigma \\ 
-        \Rightarrow\quad &\dv{a} \int_{-\infty}^{+\infty} e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = \dv{a} \sqrt{\frac{2\pi}{a}}\sigma \quad\Rightarrow\quad \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = \frac{\sigma}{2a^{3/2}}\sqrt{\frac{2\pi}{a}} 
+        &\int_{-\infty}^{+\infty} \frac{\sqrt{a}}{\sqrt{2\pi}\sigma} \e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = 1 \quad\Rightarrow\quad \int_{-\infty}^{+\infty} \e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = \sqrt{\frac{2\pi}{a}}\sigma \\ 
+        \Rightarrow\quad &\dv{a} \int_{-\infty}^{+\infty} \e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = \dv{a} \sqrt{\frac{2\pi}{a}}\sigma \quad\Rightarrow\quad \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} \e^{-\frac{(x - \mu)^2 a}{2\sigma^2}} \dd{x} = \frac{\sigma}{2a^{3/2}}\sqrt{\frac{2\pi}{a}} 
     \end{aligned}
     \end{equation}
     Let $a = 1$, then Eq.\ref{eq:HW-8.5.2} becomes
     \begin{equation}
         \label{eq:HW-8.5.3}
-        \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x} = \sqrt{\frac{\pi}{2}}\sigma
+        \int_{-\infty}^{+\infty} \frac{(x - \mu)^2}{2\sigma^2} \e^{-\frac{(x - \mu)^2}{2\sigma^2}} \dd{x} = \sqrt{\frac{\pi}{2}}\sigma
     \end{equation}
     Substitute Eq.\ref{eq:HW-8.5.3} into Eq.\ref{eq:HW-8.5.1}, we have
     \begin{equation}

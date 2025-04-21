@@ -24,6 +24,7 @@
 \theoremstyle{plain}% 
 \newtheorem{answer}{Answer} %
 
+\input{math_cmds.tex}
 
 \title{Problem Set 4}
 \author{ FHYQ-Dong, Class **********, Student ID: ********** }
@@ -76,8 +77,8 @@
         \begin{equation}
             p_X(x) = \left\{
             \begin{aligned}
-                \frac{e^{-\lambda} \lambda^x}{x!}~~& \text{if } x = 0,1,2,\cdots,49 \\
-                1 - \sum_{k=0}^{49} \frac{e^{-\lambda} \lambda^k}{k!}~~& \text{if } x = 50
+                \frac{\e^{-\lambda} \lambda^x}{x!}~~& \text{if } x = 0,1,2,\cdots,49 \\
+                1 - \sum_{k=0}^{49} \frac{\e^{-\lambda} \lambda^k}{k!}~~& \text{if } x = 50
             \end{aligned}\right.
         \end{equation}
         \item Exact formula:
@@ -86,7 +87,7 @@
         \end{equation}
         Poisson approximation:
         \begin{equation}
-            p = 1 - \sum_{k=0}^{50} \frac{e^{-\lambda} \lambda^k}{k!} = \sum_{k=51}^{1000} \frac{e^{-\lambda} \lambda^k}{k!}
+            p = 1 - \sum_{k=0}^{50} \frac{\e^{-\lambda} \lambda^k}{k!} = \sum_{k=51}^{1000} \frac{\e^{-\lambda} \lambda^k}{k!}
         \end{equation}
     \end{enumerate}
 \end{answer}

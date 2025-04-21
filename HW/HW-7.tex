@@ -25,6 +25,7 @@
 \theoremstyle{plain}% 
 \newtheorem{answer}{Answer} %
 
+\input{math_cmds.tex}
 
 \title{Problem Set 7}
 \author{ FHYQ-Dong, Class **********, Student ID: ********** }
@@ -99,12 +100,12 @@
     \begin{equation}
         F_{X}(x) = \left\{\begin{aligned}
             &0, \quad &0 < x < 5 \\
-            &1 - e^{-x/30}, \quad &x \geq 5
+            &1 - \e^{-x/30}, \quad &x \geq 5
         \end{aligned}\right.
     \end{equation}
     So the mean of $X$ is
     \begin{equation}
-        \mathbf{E}[X] = 5 \cdot \mathbf{P}(X = 5) + \int_{5^+}^{+\infty} x \dv{F_{X}}{x} \dd{x} = 5 \cdot \left(1 - e^{-1/6}\right) + \int_{5^+}^{+\infty} \frac{x}{30} e^{-x/30} \dd{x} = 5 + 30e^{-1/6}
+        \mathbf{E}[X] = 5 \cdot \mathbf{P}(X = 5) + \int_{5^+}^{+\infty} x \dv{F_{X}}{x} \dd{x} = 5 \cdot \left(1 - \e^{-1/6}\right) + \int_{5^+}^{+\infty} \frac{x}{30} \e^{-x/30} \dd{x} = 5 + 30e^{-1/6}
     \end{equation}
     Given the mean of $Y$ is $\mathbf{E}[Y] = 30$, the expected value of the time between the arrival of the first student and the departure of the second student is
     \begin{equation}
@@ -116,7 +117,7 @@
     A defective coin minting machine produces coins whose probability of heads is a random variable $P$ with PDF
     \begin{equation}
         f_{P}(p) = \left\{\begin{aligned}
-            &p e^p, \quad &p \in [0, 1] \\ 
+            &p \e^p, \quad &p \in [0, 1] \\ 
             &0, \quad &\text{otherwise}
         \end{aligned}\right.
     \end{equation}
@@ -135,15 +136,15 @@
         \end{equation}
         So the probability that a coin toss results in heads is
         \begin{equation}
-            \mathbf{P}(\text{head}) = \int_{0}^{1} \mathbf{P}(\text{head} \mid P = p)f_{P}(p) \dd{p} = \int_{0}^{1} p^2 e^p \dd{p} = e - 2
+            \mathbf{P}(\text{head}) = \int_{0}^{1} \mathbf{P}(\text{head} \mid P = p)f_{P}(p) \dd{p} = \int_{0}^{1} p^2 \e^p \dd{p} = \e - 2
         \end{equation}
         \item According to the Bayes' theorem, the conditional PDF of $P$ given that a coin toss resulted in heads is
         \begin{equation}
-            f_{P}(p \mid \text{head}) = \frac{\mathbf{P}(\text{head} \mid P = p)f_{P}(p)}{\mathbf{P}(\text{head})} = \frac{p^2 e^p}{e - 2}
+            f_{P}(p \mid \text{head}) = \frac{\mathbf{P}(\text{head} \mid P = p)f_{P}(p)}{\mathbf{P}(\text{head})} = \frac{p^2 \e^p}{\e - 2}
         \end{equation}
         \item According to the total probability theorem, the conditional probability of heads on the next toss given that the first coin toss resulted in heads is
         \begin{equation}
-            \mathbf{P}(\text{head}_2 \mid \text{head}_1) = \frac{\int_0^1 \mathbf{P}(\text{head}_2 ~\&~ \text{head}_1 \mid P = p) \cdot f_{P}(p) \dd{p}}{\mathbf{P}(\text{head})} = \frac{\int_{0}^{1} p^3 e^p \dd{p}}{e - 2} = \frac{6 - 2e}{e - 2}
+            \mathbf{P}(\text{head}_2 \mid \text{head}_1) = \frac{\int_0^1 \mathbf{P}(\text{head}_2 ~\&~ \text{head}_1 \mid P = p) \cdot f_{P}(p) \dd{p}}{\mathbf{P}(\text{head})} = \frac{\int_{0}^{1} p^3 \e^p \dd{p}}{\e - 2} = \frac{6 - 2e}{\e - 2}
         \end{equation}
     \end{enumerate}
 \end{answer}
@@ -151,7 +152,7 @@
 \begin{question}
     Let $\Delta$ denote the event that you can form a triangle with three given parts of a rod $R$.
     \begin{enumerate}[label=(\alph*)]
-        \item $R$ is broken in two uniformly at random, the longer part is broken in two uniformly at random. Show that $\mathbf{P}(\Delta) = \log(4/e)$.
+        \item $R$ is broken in two uniformly at random, the longer part is broken in two uniformly at random. Show that $\mathbf{P}(\Delta) = \log(4/\e)$.
         \item \label{q:4.b} $R$ is broken in two uniformly at random, a randomly chosen part is broken into two equal parts. Show that $\mathbf{P}(\Delta) = 1/2$.
         \item In case \ref{q:4.b} show that, given $\Delta$, the triangle is obtuse with probability $3 - 2\sqrt{2}$.
     \end{enumerate}
@@ -174,7 +175,7 @@
         \begin{equation}
         \begin{aligned}
             \mathbf{P}(\Delta) &= \iint_{X-Y<R/2} f_{X, Y}(x, y) \dd{x}\dd{y} = \int_{R/2}^{R} \dd{x} \int_{x-R/2}^{x/2} \frac{2}{R} \cdot \frac{2}{x} \dd{y} \\
-            &= \int_{R/2}^{R} \frac{2(R - x)}{Rx} \dd{x} = 2\log 2 - 1 = \log(4/e)
+            &= \int_{R/2}^{R} \frac{2(R - x)}{Rx} \dd{x} = 2\log 2 - 1 = \log(4/\e)
         \end{aligned}
         \end{equation}
         \item Obviously, if the shorter part of the first break is chosen to be broken into two equal parts, it is unlikely to form a triangle; instead, if the longer part of the first break is chosen to be broken into two equal parts, it is definitely possible to form a triangle. Therefore, the probability of event $\Delta$ is
