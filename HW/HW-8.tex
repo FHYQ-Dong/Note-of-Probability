@@ -66,8 +66,7 @@
             \begin{equation}
                 Y = \left\{\begin{aligned}
                     &5 - X \quad &X \in [0, 5] \\
-                    &X - 5 \quad &X \in [5, 12.5] \\ 
-                    &20 - X \quad &X \in [12.5, 20] 
+                    &20 - X \quad &X \in (5, 20] 
                 \end{aligned}\right.
             \end{equation}
         \end{minipage}
@@ -82,32 +81,32 @@
     \end{figure}
     As shown in Figure \ref{fig:HW-8.1}, the probability $\mathbf{P}(Y \leq y_0)$ is
     \begin{enumerate}[label=(\alph*)]
-        \item $0 < y_0 \leq 5$: $X \in [5-y_0, 5+y_0] \cup [20-y_0, 20]$.
+        \item $0 \leq y_0 \leq 5$: $X \in [5-y_0, 5] \cup [20-y_0, 20]$.
             \begin{equation}
-                \mathbf{P}(Y \leq y_0) = F_{X}(5+y_0) - F_{X}(5-y_0) + F_{X}(20) - F_{X}(20-y_0)
+                \mathbf{P}(Y \leq y_0) = F_{X}(5) - F_{X}(5-y_0) + F_{X}(20) - F_{X}(20-y_0)
             \end{equation}
-        \item $5 < y_0 \leq 7.5$: $X \in [0, 5+y_0] \cup [20-y_0, 20]$.
+        \item $5 < y_0 \leq 15$: $X \in [0, 5] \cup (20-y_0, 20]$.
             \begin{equation}
-                \mathbf{P}(Y \leq y_0) = F_{X}(5+y_0) + F_{X}(20) - F_{X}(20-y_0)
+                \mathbf{P}(Y \leq y_0) = F_{X}(5) + F_{X}(20) - F_{X}(20-y_0)
             \end{equation}
     \end{enumerate}
     So the CDF of $Y$ is 
     \begin{equation}
         F_{Y}(y) = \left\{\begin{aligned}
-            &F_{X}(5+y) - F_{X}(5-y) + F_{X}(20) - F_{X}(20-y) \quad &0 < y \leq 5 \\
-            &F_{X}(5+y) + F_{X}(20) - F_{X}(20-y) \quad &5 < y \leq 7.5
+            &F_{X}(5) - F_{X}(5-y_0) + F_{X}(20) - F_{X}(20-y_0) \quad &0 \leq y \leq 5 \\
+            &F_{X}(5) + F_{X}(20) - F_{X}(20-y_0) \quad &5 < y \leq 15
         \end{aligned}\right.
     \end{equation}
     And the PDF of $Y$ is
     \begin{equation}
         f_{Y}(y) = \dv{F_{Y}(y)}{y} = \left\{\begin{aligned}
-            &f_{X}(5+y) + f_{X}(5-y) + f_{X}(20-y) \quad &0 < y \leq 5 \\
-            &f_{X}(5+y) + f_{X}(20-y) \quad &5 < y \leq 7.5
+            &f_{X}(5) - f_{X}(5-y_0) + f_{X}(20) - f_{X}(20-y_0) \quad &0 \leq y \leq 5 \\
+            &f_{X}(5) + f_{X}(20) - f_{X}(20-y_0) \quad &5 < y \leq 15
         \end{aligned}\right.
     \end{equation}
     Given $f_{X}(x) = 0$ when $x < 0$, so the PDF of $Y$ can be written as
     \begin{equation}
-        f_{Y}(y) = f_{X}(5+y) + f_{X}(5-y) + f_{X}(20-y) \quad (0 < y \leq 7.5)
+        f_{Y}(y) = f_{X}(5) + f_{X}(5-y) + f_{X}(20-y) \quad (0 \leq y \leq 15)
     \end{equation}
 \end{answer}
 
@@ -194,17 +193,24 @@
     \begin{equation}
         f_{X}(x) = \int_{-\sqrt{1 - x^2}}^{\sqrt{1 - x^2}} f_{X, Y}(x, y) \dd{y} = \frac{2\sqrt{1 - x^2}}{\pi} \quad (x^2 \leq 1)
     \end{equation}
+    Given $X = x$, the conditional PDF of $Y$ is
+    \begin{equation}
+        f_{Y \mid X}(y \mid x) = \frac{f_{X, Y}(x, y)}{f_{X}(x)} = \frac{1}{2\sqrt{1 - x^2}} \quad (x^2 + y^2 \leq 1)
+    \end{equation}
     Given $X = x$, the conditional CDF of $R$ is 
     \begin{equation}
-        F_{R \mid X}(r \mid x) = \mathbf{P}(R \leq r \mid X = x) = \mathbf{P}(Y^2 \leq r^2 - x^2) = \frac{1}{\pi} \int_{-\sqrt{r^2 - x^2}}^{\sqrt{r^2 - x^2}} 1 \dd{y} = \frac{2\sqrt{r^2 - x^2}}{\pi}
+    \begin{aligned}
+        F_{R \mid X}(r \mid x) &= \mathbf{P}(R \leq r \mid X = x) = \mathbf{P}(Y^2 \leq r^2 - x^2) \\ 
+        &= \int_{-\sqrt{r^2 - x^2}}^{\sqrt{r^2 - x^2}} f_{Y \mid X}(y \mid x) \dd{y} = \frac{\sqrt{r^2 - x^2}}{\sqrt{1 - x^2}} \quad (x^2 \leq r^2 \leq 1)
+    \end{aligned}
     \end{equation}
     So the conditional PDF of $R$ given $X$ is
     \begin{equation}
-        f_{R \mid X}(r \mid x) = \dv{F_{R \mid X}(r \mid x)}{r} = \frac{2r}{\pi\sqrt{r^2 - x^2}} \quad (x^2 + r^2 \leq 1)
+        f_{R \mid X}(r \mid x) = \dv{F_{R \mid X}(r \mid x)}{r} = \frac{r}{\sqrt{r^2 - x^2}} \cdot \frac{1}{\sqrt{1 - x^2}} \quad (x^2 \leq r^2 \leq 1)
     \end{equation}
     The joint PDF of $R$ and $X$ is
     \begin{equation}
-        f_{R, X}(r, x) = f_{R \mid X}(r \mid x) f_{X}(x) = \frac{4r}{\pi^2} \sqrt{\frac{1 - x^2}{r^2 - x^2}} \quad (x^2 + r^2 \leq 1)
+        f_{R, X}(r, x) = f_{R \mid X}(r \mid x) f_{X}(x) = \frac{2r}{\pi\sqrt{r^2 - x^2}} \quad (x^2 \leq r^2 \leq 1)
     \end{equation}
 \end{answer}
 
