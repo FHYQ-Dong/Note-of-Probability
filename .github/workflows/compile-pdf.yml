@@ -29,7 +29,7 @@ jobs:
         with:
           root_file: |
             Probability-Notes.tex
-            HW/*.tex
+            HW/HW-*.tex
           
       - name: Stash PDF
         id: stash-pdf
