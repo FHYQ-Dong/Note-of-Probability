@@ -1,4 +1,25 @@
-\newcommand{\e}{\mathrm{e}}
-\newcommand{\E}{\mathbf{E}}
-\newcommand{\cov}{\mathrm{cov}}
-\renewcommand{\var}{\mathrm{var}}
+\ifdefined\e
+    \renewcommand{\e}{\mathrm{e}}
+\else
+    \newcommand{\e}{\mathrm{e}}
+\fi
+\ifdefined\i
+    \renewcommand{\i}{\mathrm{i}}
+\else
+    \newcommand{\i}{\mathrm{i}}
+\fi
+\ifdefined\E
+    \renewcommand{\E}{\mathrm{E}}
+\else
+    \newcommand{\E}{\mathbf{E}}
+\fi
+\ifdefined\cov
+    \renewcommand{\cov}{\mathrm{cov}}
+\else
+    \newcommand{\cov}{\mathrm{cov}}
+\fi
+\ifdefined\var
+    \renewcommand{\var}{\mathrm{var}}
+\else
+    \newcommand{\var}{\mathrm{var}}
+\fi
