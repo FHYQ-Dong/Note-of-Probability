@@ -1,0 +1,110 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{physics}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+
+\input{math_cmds.tex}
+
+\title{Problem Set 9}
+\author{ FHYQ-Dong, Class **********, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 9}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+    citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\begin{question}
+    Consider a PDF that is positive only within an interval $[a, b]$ and is symmetric around the mean $(a + b)/2$. Let $X$ and $Y$ be independent random variables that both have this PDF. Suppose that you have calculated the PDF of $X + Y$. How can you easily obtain the PDF of $X - Y$?
+\end{question}
+
+\begin{question}
+    Consider four random variables, $W$, $X$, $Y$, $Z$, with
+    \begin{equation}
+    \begin{aligned}
+        \E[W] = \E[X] = \E[Y] = \E[Z] = 0 \\
+        \var(W) = \var(X) = \var(Y) = \var(Z) = 1 
+    \end{aligned}
+    \end{equation}
+    and assume that $W$ ,$X$ ,$Y$, $Z$ are pairwise uncorrelated. Find the correlation coefficients $\rho(R, S)$ and $\rho(R, T)$, where $R = W + X$, $S = X + Y$, and $T = Y + Z$.
+\end{question}
+
+\begin{question}
+    Pat and Nat are dating, and all of their dates are scheduled to start at 9 p.m. Nat always arrives promptly at 9 p.m. Pat is highly disorganized and arrives at a time that is uniformly distributed between 8 p.m. and 10 p.m. Let $X$ be the time in hours between 8 p.m. and the time when Pat arrives. If Pat arrives before 9 p.m., their date will last exactly 3 hours. If Pat arrives after 9 p.m., their date will last for a time that is uniformly distributed between 0 and $3 - X$ hours. The date starts at the time they meet. Nat gets irritated when Pat is late and will end the relationship after the second date on which Pat is late by more than 45 minutes. All dates are independent of any other dates.
+    \begin{enumerate}[label=(\alph*)]
+        \item What is the expected number of hours Nat waits for Pat to arrive? 
+        \item What is the expected duration of any particular date?
+        \item What is the expected number of dates they will have before breaking up?
+    \end{enumerate}
+\end{question}
+
+\begin{question}
+    An urn contains $a$ white and $b$ black balls. After a ball is drawn, it is returned to the urn if it is white; but if it is black, it is replaced by a white ball from another urn. Let $M_n$ denote the expected number of white balls in the urn after the foregoing operation has been repeated $n$ times.
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{q:4.a} Derive the recursive equation
+        \begin{equation}
+            M_{n+1} = \qty(1 - \frac{1}{a + b}) M_n + 1
+        \end{equation}
+        \item Use part \ref{q:4.a} to prove that
+        \begin{equation}
+            M_n = a + b - b \qty(1 + \frac{1}{a + b})^n
+        \end{equation}
+        \item What is the probability that the $(n + 1)$-th ball drawn is white in terms of $M_n$?
+    \end{enumerate}
+\end{question}
+
+\begin{question}
+    The joint distribution of $X_1$ and $X_2$ follows bivariate Gaussian distribution. The joint PDF is
+    \begin{equation}
+        f_{X_1, X_2}(x_1, x_2) = \frac{1}{2\pi \sigma_1\sigma_2 \sqrt{1 - \rho^2}} \exp\qty(-\frac{1}{2(1 - \rho^2)} \qty(\frac{(x_1-\mu_1)^2}{\sigma_1^2} - \frac{2\rho(x_1-\mu_1)(x_2-\mu_2)}{\sigma_1\sigma_2} + \frac{(x_2-\mu_2)^2}{\sigma_2^2}))
+    \end{equation}
+    where $\rho$ is the correlation coefficient of $X_1$ and $X_2$.
+    \begin{enumerate}[label=(\alph*)]
+        \item Find $f_{X_2}(x_2)$, $\E[X_2]$ and $\var(X_2)$. Is $f_{X_2}(x_2)$ Gaussian?
+        \item Find $f_{X_2 \mid X_1}(x_2 \mid x_1)$, $\E[X_2 \mid X_1]$ and $\var(X_2 \mid X_1)$. Is $f_{X_2 \mid X_1}(x_2 \mid x_1)$ Gaussian?
+    \end{enumerate}
+\end{question}
+
+\end{document}
