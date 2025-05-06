@@ -1,0 +1,245 @@
+\chapter{Convolution, Covariance, Correlation, and Conditional Expectation}
+
+\section{Convolution}
+\begin{definition}[Convolution]
+    The convolution of two functions $f$ and $g$ is defined as
+    \begin{equation}
+        (f * g)(x) = \int_{-\infty}^{+\infty} f(x') g(x - x') \dd{x'}
+    \end{equation}
+    The convolution of two discrete functions is defined as
+    \begin{equation}
+        (f * g)(k) = \sum_{k' = -\infty}^{+\infty} f(k') g(k - k')
+    \end{equation}
+\end{definition}
+When considering a RV $W = X + Y$ where $X$ and $Y$ are independent discrete RVs
+\begin{equation}
+    p_{W}(w) = \mathbf{P}(X + Y = w) = \sum_{\{(x, y): x + y = w\}} p_{X}(x) p_{Y}(y) = \sum_{x} p_{X}(x) p_{Y}(w - x)
+\end{equation}
+For continuous cases
+\begin{equation}
+    f_{W}(w) = \mathbf{P}(X + Y = w) = \int_{-\infty}^{+\infty} f_{X}(x) f_{Y}(w - x) \dd{x}
+\end{equation}
+If $X$ and $Y$ are dependent, let $f_{X, Y}(x, y)$ be the joint PDF of $X$ and $Y$, then
+\begin{equation}
+    f_{W}(w) = \int_{-\infty}^{+\infty} f_{X}(x) f_{X, Y}(x, w - x) \dd{x}
+\end{equation}
+\begin{remark}
+    This is somehow similar to LTI systems in SS. When the system is not time-invariant, $h(t - \tau)$ becomes $h(t, \tau)$.
+\end{remark}
+\begin{remark}
+    \begin{itemize}
+    \item Conditional CDF: $F_{W \mid X}(w \mid x) = F_{Y}(w - x)$
+    \item Conditional PDF: $f_{W \mid X}(w \mid x) = f_{Y}(w - x)$
+    \item Joint PDF: $f_{W, X}(w, x) = f_{X}(x) f_{Y}(w - x)$
+    \item Marginal PDF: $f_{W}(w) = \int_{-\infty}^{+\infty} f_{W, X}(w, x) \dd{x} = \int_{-\infty}^{+\infty} f_{X}(x) f_{Y}(w - x) \dd{x}$
+    \end{itemize}
+\end{remark}
+\begin{example}[Convolution of Uniform RVs]
+    The RVs $X$ and $Y$ are independent and uniformly distributed in the interval $[0, 1]$. Find the PDF of $Z = X +Y$.
+\end{example}
+\begin{solution}
+    \begin{equation}
+        f_{Z}(z) = \int_{-\infty}^{+\infty} f_{X}(x) f_{Y}(z - x) \dd{x} = \left\{\begin{aligned}
+            &0, \quad &z < 0 \\ 
+            &z, \quad &0 \leq z < 1 \\ 
+            &2 - z, \quad &1 \leq z < 2 \\
+            &0, \quad &z \geq 2
+        \end{aligned}\right.
+    \end{equation}
+\end{solution}
+
+\begin{example}[Sum of Two Independent Normal RVs]
+    $X \sim N(\mu_x, \sigma_x^2)$, $Y \sim N(\mu_y, \sigma_y^2)$ are independent. 
+    \begin{itemize}
+        \item The joint PDF is
+        \begin{equation}
+            f_{X, Y}(x, y) = \frac{1}{2 \pi \sigma_x \sigma_y} \e^{-\frac{(x - \mu_x)^2}{2 \sigma_x^2}} \e^{-\frac{(y - \mu_y)^2}{2 \sigma_y^2}}
+        \end{equation}
+        which is a constant (as shown in Figure \ref{fig:equal-probability-ellipse}) on the ellipse where
+        \begin{equation}
+            \frac{(x - \mu_x)^2}{2\sigma_x^2} + \frac{(y - \mu_y)^2}{2\sigma_y^2} = const.
+        \end{equation}
+        \item Let $W = X + Y$, the PDF of $W$ is
+        \begin{equation}
+            f_{W}(w) = \int_{-\infty}^{+\infty} f_{X, Y}(x, w - x) \dd{x} = \frac{1}{2\pi\sigma_x\sigma_y}\int_{-\infty}^{+\infty} \exp\left(-\frac{(x - \mu_x)^2}{2\sigma_x^2} -\frac{(w - x - \mu_y)^2}{2\sigma_y^2}\right) \dd{x}
+            = \cdots
+        \end{equation}
+        which is also a normal RV with mean $\mu_w = \mu_x + \mu_y$ and variance $\sigma_w^2 = \sigma_x^2 + \sigma_y^2$.
+    \end{itemize}
+    \begin{proof}
+        Obvious after Fourier transformation.
+    \end{proof}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{images/Note-9.1.png}
+        \caption{The joint PDF of two independent normal RVs.}
+        \label{fig:equal-probability-ellipse}
+    \end{figure}
+\end{example}
+\begin{example}[The Difference of Two Independent Exponential RVs]
+    Consider the case where $X$ and $Y$ are independent exponential RVs with parameter $\lambda$ and $\mu$, respectively. Find the PDF of $Z = X - Y$.
+\end{example}
+\begin{solution}
+    \begin{equation}
+        f_{Z}(z) = f_{X-Y}(z) = \int_{-\infty}^{+\infty} f_{X}(x) f_{-Y}(z - x) \dd{x} = \int_{-\infty}^{+\infty} f_{X}(x) f_{Y}(x - z) \dd{x}
+    \end{equation}
+    For $z \geq 0$, $f_{X}(x)$ is nonzero when $x \geq 0$ and $f_{Y}(x - z)$ is nonzero when $x \geq z$.
+    \begin{equation}
+        f_{Z}(z) = \int_{z}^{+\infty} \lambda \e^{-\lambda x} \mu \e^{-\mu (x - z)} \dd{x} = \int_{z}^{+\infty} \lambda \mu \e^{-(\lambda + \mu)x + \mu z} \dd{x} = \frac{\lambda \mu}{\lambda + \mu} \e^{-\lambda z} \quad (z \geq 0)
+    \end{equation}
+    For $z < 0$, $f_{X}(x)$ is nonzero when $x \geq 0$ and $f_{Y}(x - z)$ is nonzero when $x \leq z$.
+    \begin{equation}
+        f_{Z}(z) = \int_{0}^{z} \lambda \e^{-\lambda x} \mu \e^{-\mu (x - z)} \dd{x} = \int_{0}^{z} \lambda \mu \e^{-(\lambda + \mu)x + \mu z} \dd{x} = \frac{\lambda \mu}{\lambda + \mu} \e^{\mu z} \quad (z < 0)
+    \end{equation}
+\end{solution}
+
+
+\section{Covariance and Correlation}
+\begin{definition}[Covariance]
+    The covariance of two RVs $X$ and $Y$ is defined as
+    \begin{equation}
+        \cov(X, Y) = \E[(X - \mu_X)(Y - \mu_Y)] = \E[XY] - \mu_X \mu_Y
+    \end{equation}
+    where $\mu_X = \E[X]$ and $\mu_Y = \E[Y]$. \\ 
+    The covariance describes the degree to which two RVs vary together. If $X$ and $Y$ are independent, then $\cov(X, Y) = 0$. 
+\end{definition}
+\begin{proof}
+    The second equality is because
+    \begin{equation}
+        \E[(X - \mu_X)(Y - \mu_Y)] = \E[XY] - \mu_X \E[Y] - \mu_Y \E[X] + \mu_X \mu_Y
+        = \E[XY] - \mu_X \mu_Y
+    \end{equation}
+\end{proof}
+\begin{property}[Properties of Covariance]
+    \begin{itemize}
+        \item $\cov(X, X) = \var(X)$
+        \item $\cov(X, aY + b) = a \cov(X, Y)$ (linearity of expectation)
+        \item $\cov(X, Y + Z) = \cov(X, Y) + \cov(X, Z)$ (linearity of expectation)
+        \item independent $\Rightarrow \cov(X, Y) = 0$ (but not the other way around)
+    \end{itemize}
+\end{property}
+
+\begin{theorem}[Variance of the Sum of Multiple RVs]
+    \begin{equation}
+        \var\qty(\sum_{i=1}^{n} X_i) = \sum_{i=1}^{n} \var(X_i) + \sum_{\{(i,j): j \neq i\}}^{n} \cov(X_i, X_j)
+    \end{equation}
+    which is somehow similar to the complete square of the quadratic form.
+\end{theorem}
+\begin{proof}
+    Denote $\widetilde{X_i} = X_i - \E[X_i]$, then
+    \begin{equation}
+        \E\qty[\widetilde{X_i}^2] = \E\qty[X_i^2 - 2X_i\E[X_i] + \E[X_i]^2] = \E[X_i^2] - 2\E[X_i]\E[X_i] + \E[X_i]^2 = \var(X_i)
+    \end{equation}
+    \begin{equation}
+        \E\qty[\widetilde{X_i}\widetilde{X_j}] = \E\qty[X_i X_j - X_i \E[X_j] - \E[X_i] X_j + \E[X_i] \E[X_j]] = \E[X_i X_j] - \E[X_i]\E[X_j] = \cov(X_i, X_j)
+    \end{equation} 
+    Therefore
+    \begin{equation}
+    \begin{aligned}
+        \var\qty(\sum_{i=1}^{n} X_i) &= \E\qty[\qty(\sum_{i=1}^{n}X_i - \E[X_i])^2] = \E\qty[\qty(\sum_{i=1}^{n} \widetilde{X_i})^2] \\ 
+        &= \sum_{i=1}^{n}\E\qty[\widetilde{X_i}] + \sum_{\{(i,j): j \neq i\}}^{n}\E\qty[X_i, X_j] \\ 
+        &= \sum_{i=1}^{n} \var(X_i) + \sum_{\{(i,j): j \neq i\}}^{n} \cov(X_i, X_j)
+    \end{aligned}
+    \end{equation}
+\end{proof}
+
+\begin{example}[Data Packet Problem]
+    Consider the data packet problem again, where a router randomly distributes $n$ data packets to $n$ nodes. Find the variance of $X$, the number of nodes where the $i$-th node receives the $i$-th data packet.
+\end{example}
+\begin{solution}
+    Let $X_i$ be the indicator of the event that the $i$-th node receives the $i$-th data packet. Then $X = \sum_{i=1}^{n} X_i$. Note that $X_i$ obeys the Bernoulli distribution with parameter $p = 1/n$. Therefore, 
+    \begin{equation}
+        \E[X_i] = \frac{1}{n}, \quad \var(X_i) = \frac{1}{n}\left(1 - \frac{1}{n}\right)
+    \end{equation}
+    For $i \neq j$
+    \begin{equation}
+    \begin{aligned}
+        \cov(X_i, X_j) &= \E[X_i X_j] - \E[X_i]\E[X_j] = \mathbf{P}(X_i = 1, X_j = 1) - \frac{1}{n^2} \\ 
+        &= \frac{1}{n(n-1)} - \frac{1}{n^2} = \frac{1}{n^2(n-1)}
+    \end{aligned}
+    \end{equation}
+    Therefore
+    \begin{equation}
+    \begin{aligned}
+        \var(X) &= \sum_{i=1}^{n} \var(X_i) + \sum_{\{(i,j): j \neq i\}}^{n} \cov(X_i, X_j) \\ 
+        &= n \cdot \frac{1}{n}\left(1 - \frac{1}{n}\right) + n(n-1) \cdot \frac{1}{n^2(n-1)} = 1
+    \end{aligned}
+    \end{equation}
+\end{solution}
+
+\begin{definition}[Coefficient of Correlation]
+    The coefficient of correlation of two RVs $X$ and $Y$ is defined as
+    \begin{equation}
+        \rho(X, Y) = \frac{\cov(X, Y)}{\sigma_X\sigma_Y} = \E\left[\frac{X - \mu_X}{\sigma_X} \cdot \frac{Y - \mu_Y}{\sigma_Y}\right]
+    \end{equation}
+    where $\sigma_X = \sqrt{\var(X)}$, $\sigma_Y = \sqrt{\var(Y)}$, $\mu_X = \E[X]$, and $\mu_Y = \E[Y]$. 
+\end{definition}
+According to the linearity of covariance, if $X \to 1000X$ (e.g. change the unit of $X$ from g to kg), then $\cov(X, Y) \to 1000 \cov(X, Y)$, which is not what we want. So we need to normalize the covariance. Here we choose $\sigma_X$ and $\sigma_Y$ as the normalization factors because $\sigma_X \to a\sigma_X$ when $X \to aX + b$, i.e. $\sigma$ is proportional to the scale and unrelated to the shift, just like the covariance.
+\begin{property}[Properties of Coefficient]
+    \begin{itemize}
+        \item $\abs{\rho(X, Y)} \leq 1$
+        \item $\abs{\rho(X, Y)} = 1 \Leftrightarrow (X - \E[X]) = c(Y - \E[Y])$ (linearly related)
+        \item $X$ and $Y$ are independent $\Rightarrow \rho(X, Y) = 0$ (but not the other way around)
+    \end{itemize}
+\end{property}
+
+\begin{example}[Data Transmission]
+    Consider $n$ independent transmissions of a binary signal where the probability of transmitting a bit 1 is $p$ and a bit 0 is $1 - p$. Let $X$ represent the number of 1's transmitted and $Y$ the number of 0's. Find the correlation coefficient between $X$ and $Y$ .
+\end{example}
+\begin{solution}
+    Since $X + Y = n$ which means $X$ and $Y$ are linearly related, we have $\rho(X, Y) = -1$. \\ 
+    Or, we have $X + Y = n$ and $\E[X] + \E[Y] = n$, thus
+    \begin{equation}
+    \begin{aligned}
+        &X - \E[X] = -(Y - \E[Y]) \\ 
+        \Rightarrow \quad &\cov(X, Y) = \E[(X - \E[X])(Y - \E[Y])] = -\var(X) = -\var(Y) \\ 
+        \Rightarrow \quad &\rho(X, Y) = \frac{\cov(X, Y)}{\sigma_X \sigma_Y} = -\frac{\var(X)}{\sqrt{\var(X)}\sqrt{\var(Y)}} = -1
+    \end{aligned}
+    \end{equation}
+\end{solution}
+
+
+\section{Conditional Expectation}
+\begin{theorem}[The Conditional Expectation as an Estimator]
+    Denote the conditional expectation
+    \begin{equation}
+        \hat{X} = \E[X \mid Y]
+    \end{equation}
+    as an estimator of $X$ given $Y$, and the estimation error as 
+    \begin{equation}
+        \widetilde{X} = X - \hat{X}
+    \end{equation}
+    is a RV.
+\end{theorem}
+\begin{property}[Properties of the Estimator]
+    \begin{itemize}
+        \item Unbiased: $\E[\widetilde{X}] = \E[\E[\widetilde{X} \mid Y]] = \E[\E[X \mid Y] - \E[\hat{X} \mid Y]] = \E[\hat{X} - \hat{X}] = 0$
+        \item Uncorrelated: $\cov(\hat{X}, \widetilde{X}) = \E[\hat{X}\widetilde{X}] - \E[\hat{X}]\E[\widetilde{X}] = \E[\E[\hat{X}\widetilde{X} \mid Y]] = \E[\hat{X}\E[\widetilde{X} \mid Y]] = \E[\hat{X} \cdot 0] = 0$
+        \item $\var(X) = \var(\hat{X}) + \var(\widetilde{X}) + 2\cov(\hat{X}, \widetilde{X}) = \var(\hat{X}) + \var(\widetilde{X})$
+    \end{itemize}
+    The second to last equality of the second property is because $\hat{X}$ is fully determined by $Y$, i.e. given $Y$, $\hat{X}$ is a number.
+\end{property}
+
+The first item of the third property of the estimator $\var(\hat{X})$ can be written as 
+\begin{equation}
+    \var(\hat{X}) = \var\qty(\E[X \mid Y])
+\end{equation}
+The second item of the third property of the estimator $\var(\widetilde{X})$ can be written as
+\begin{equation}
+    \var(\widetilde{X}) = \E\qty[\widetilde{X}^2] - \E\qty[\widetilde{X}]^2 = \E\qty[\E\qty[\widetilde{X}^2 \mid Y]] = \E\qty[\E\qty[\qty(X - \hat{X})^2 \mid Y]] = \E[\var(X \mid Y)]
+\end{equation}
+So we get the total variance decomposition
+\begin{theorem}[Law of Total Variance]
+    \begin{equation}
+        \var(X) = \var\qty(\E[X \mid Y]) + \E\qty[\var(X \mid Y)]
+    \end{equation}
+\end{theorem}
+\begin{example}[Radar detection]
+    Consider $n$ independent detections by a radar, where the probability of a valid detection, $Y$, is uniformly distributed over the interval $[0, 1]$. Let $X$ be the number of valid detections. Find $\var(X)$.
+\end{example}
+\begin{solution}
+    Given $Y$, $X$ is a binomial RV, hence $\E[X \mid Y] = nY$ and $\var(X \mid Y) = nY(1 - Y)$. Therefore
+    \begin{equation}
+        \var(X) = \var\qty(\E[X \mid Y]) + \E\qty[\var(X \mid Y)] = \var(nY) + \E[nY(1 - Y)] = \frac{n^2}{12} + \frac{n}{6}
+    \end{equation}
+\end{solution}

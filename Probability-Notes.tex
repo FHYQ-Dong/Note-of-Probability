@@ -4,6 +4,7 @@
 \usepackage{float}
 \usepackage{extarrows}
 \usepackage{physics}
+\usepackage{mathtools}
 
 \input{math_cmds.tex}
 
@@ -17,7 +18,7 @@
 \title{Probability Notes}
 \author{FHYQ-Dong}
 \date{\today}
-\version{9.0}
+\version{10.0}
 \cover{images/Note-cover.png}
 \definecolor{customcoverlinecolor}{RGB}{82, 59, 148}
 \colorlet{coverlinecolor}{customcoverlinecolor}
@@ -40,245 +41,201 @@
 \input{chaps/chap_Continuous_Random_Variables.tex}
 \input{chaps/chap_Multiple_Continuous_Random_Variables.tex}
 \input{chaps/chap_Derived_Distributions_and_Entropy.tex}
+\input{chaps/chap_Convolution_Covariance_Correlation_and_Conditional_Expectation.tex}
 
 
-\chapter{Convolution, Covariance, Correlation, and Conditional Expectation}
+\chapter{Transforms and Sum of A Random Number of RVs}
 
-\section{Convolution}
-\begin{definition}[Convolution]
-    The convolution of two functions $f$ and $g$ is defined as
+\section{Transforms}
+If we want to calculate the PDF of $Z = X + Y$, we need to do the convolution of $f_{X}$ and $f_{Y}$. But if we have a look from the frequency domain, we just need to multiply the Fourier transforms of $f_{X}$ and $f_{Y}$, which is much easier.
+\begin{definition}[Definition of the Transform]
+    The transform associated with a RV $X$ is a function $M_{X}(s)$ of a scalar parameter $s$ defined as
     \begin{equation}
-        (f * g)(x) = \int_{-\infty}^{+\infty} f(x') g(x - x') \dd{x'}
-    \end{equation}
-    The convolution of two discrete functions is defined as
-    \begin{equation}
-        (f * g)(k) = \sum_{k' = -\infty}^{+\infty} f(k') g(k - k')
-    \end{equation}
-\end{definition}
-When considering a RV $W = X + Y$ where $X$ and $Y$ are independent discrete RVs
-\begin{equation}
-    p_{W}(w) = \mathbf{P}(X + Y = w) = \sum_{\{(x, y): x + y = w\}} p_{X}(x) p_{Y}(y) = \sum_{x} p_{X}(x) p_{Y}(w - x)
-\end{equation}
-For continuous cases
-\begin{equation}
-    f_{W}(w) = \mathbf{P}(X + Y = w) = \int_{-\infty}^{+\infty} f_{X}(x) f_{Y}(w - x) \dd{x}
-\end{equation}
-If $X$ and $Y$ are dependent, let $f_{X, Y}(x, y)$ be the joint PDF of $X$ and $Y$, then
-\begin{equation}
-    f_{W}(w) = \int_{-\infty}^{+\infty} f_{X}(x) f_{X, Y}(x, w - x) \dd{x}
-\end{equation}
-\begin{remark}
-    This is somehow similar to LTI systems in SS. When the system is not time-invariant, $h(t - \tau)$ becomes $h(t, \tau)$.
-\end{remark}
-\begin{remark}
-    \begin{itemize}
-    \item Conditional CDF: $F_{W \mid X}(w \mid x) = F_{Y}(w - x)$
-    \item Conditional PDF: $f_{W \mid X}(w \mid x) = f_{Y}(w - x)$
-    \item Joint PDF: $f_{W, X}(w, x) = f_{X}(x) f_{Y}(w - x)$
-    \item Marginal PDF: $f_{W}(w) = \int_{-\infty}^{+\infty} f_{W, X}(w, x) \dd{x} = \int_{-\infty}^{+\infty} f_{X}(x) f_{Y}(w - x) \dd{x}$
-    \end{itemize}
-\end{remark}
-\begin{example}[Convolution of Uniform RVs]
-    The RVs $X$ and $Y$ are independent and uniformly distributed in the interval $[0, 1]$. Find the PDF of $Z = X +Y$.
-\end{example}
-\begin{solution}
-    \begin{equation}
-        f_{Z}(z) = \int_{-\infty}^{+\infty} f_{X}(x) f_{Y}(z - x) \dd{x} = \left\{\begin{aligned}
-            &0, \quad &z < 0 \\ 
-            &z, \quad &0 \leq z < 1 \\ 
-            &2 - z, \quad &1 \leq z < 2 \\
-            &0, \quad &z \geq 2
+        M_{X}(s) = \E[\e^{sX}] = \left\{\begin{aligned}
+            \sum_{x} p_{X}(x) \e^{sx}, \quad &\text{if } X \text{ is discrete} \\
+            \int_{-\infty}^{+\infty} f_{X}(x) \e^{sx} \dd{x}, \quad &\text{if } X \text{ is continuous}
         \end{aligned}\right.
     \end{equation}
-\end{solution}
-
-\begin{example}[Sum of Two Independent Normal RVs]
-    $X \sim N(\mu_x, \sigma_x^2)$, $Y \sim N(\mu_y, \sigma_y^2)$ are independent. 
-    \begin{itemize}
-        \item The joint PDF is
-        \begin{equation}
-            f_{X, Y}(x, y) = \frac{1}{2 \pi \sigma_x \sigma_y} \e^{-\frac{(x - \mu_x)^2}{2 \sigma_x^2}} \e^{-\frac{(y - \mu_y)^2}{2 \sigma_y^2}}
-        \end{equation}
-        which is a constant (as shown in Figure \ref{fig:equal-probability-ellipse}) on the ellipse where
-        \begin{equation}
-            \frac{(x - \mu_x)^2}{2\sigma_x^2} + \frac{(y - \mu_y)^2}{2\sigma_y^2} = const.
-        \end{equation}
-        \item Let $W = X + Y$, the PDF of $W$ is
-        \begin{equation}
-            f_{W}(w) = \int_{-\infty}^{+\infty} f_{X, Y}(x, w - x) \dd{x} = \frac{1}{2\pi\sigma_x\sigma_y}\int_{-\infty}^{+\infty} \exp\left(-\frac{(x - \mu_x)^2}{2\sigma_x^2} -\frac{(w - x - \mu_y)^2}{2\sigma_y^2}\right) \dd{x}
-            = \cdots
-        \end{equation}
-        which is also a normal RV with mean $\mu_w = \mu_x + \mu_y$ and variance $\sigma_w^2 = \sigma_x^2 + \sigma_y^2$.
-    \end{itemize}
-    \begin{proof}
-        Obvious after Fourier transformation.
-    \end{proof}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.4\textwidth]{images/Note-9.1.png}
-        \caption{The joint PDF of two independent normal RVs.}
-        \label{fig:equal-probability-ellipse}
-    \end{figure}
-\end{example}
-\begin{example}[The Difference of Two Independent Exponential RVs]
-    Consider the case where $X$ and $Y$ are independent exponential RVs with parameter $\lambda$ and $\mu$, respectively. Find the PDF of $Z = X - Y$.
-\end{example}
-\begin{solution}
-    \begin{equation}
-        f_{Z}(z) = f_{X-Y}(z) = \int_{-\infty}^{+\infty} f_{X}(x) f_{-Y}(z - x) \dd{x} = \int_{-\infty}^{+\infty} f_{X}(x) f_{Y}(x - z) \dd{x}
-    \end{equation}
-    For $z \geq 0$, $f_{X}(x)$ is nonzero when $x \geq 0$ and $f_{Y}(x - z)$ is nonzero when $x \geq z$.
-    \begin{equation}
-        f_{Z}(z) = \int_{z}^{+\infty} \lambda \e^{-\lambda x} \mu \e^{-\mu (x - z)} \dd{x} = \int_{z}^{+\infty} \lambda \mu \e^{-(\lambda + \mu)x + \mu z} \dd{x} = \frac{\lambda \mu}{\lambda + \mu} \e^{-\lambda z} \quad (z \geq 0)
-    \end{equation}
-    For $z < 0$, $f_{X}(x)$ is nonzero when $x \geq 0$ and $f_{Y}(x - z)$ is nonzero when $x \leq z$.
-    \begin{equation}
-        f_{Z}(z) = \int_{0}^{z} \lambda \e^{-\lambda x} \mu \e^{-\mu (x - z)} \dd{x} = \int_{0}^{z} \lambda \mu \e^{-(\lambda + \mu)x + \mu z} \dd{x} = \frac{\lambda \mu}{\lambda + \mu} \e^{\mu z} \quad (z < 0)
-    \end{equation}
-\end{solution}
-
-
-\section{Covariance and Correlation}
-\begin{definition}[Covariance]
-    The covariance of two RVs $X$ and $Y$ is defined as
-    \begin{equation}
-        \cov(X, Y) = \E[(X - \mu_X)(Y - \mu_Y)] = \E[XY] - \mu_X \mu_Y
-    \end{equation}
-    where $\mu_X = \E[X]$ and $\mu_Y = \E[Y]$. \\ 
-    The covariance describes the degree to which two RVs vary together. If $X$ and $Y$ are independent, then $\cov(X, Y) = 0$. 
 \end{definition}
-\begin{proof}
-    The second equality is because
-    \begin{equation}
-        \E[(X - \mu_X)(Y - \mu_Y)] = \E[XY] - \mu_X \E[Y] - \mu_Y \E[X] + \mu_X \mu_Y
-        = \E[XY] - \mu_X \mu_Y
-    \end{equation}
-\end{proof}
-\begin{property}[Properties of Covariance]
+\begin{remark}
     \begin{itemize}
-        \item $\cov(X, X) = \var(X)$
-        \item $\cov(X, aY + b) = a \cov(X, Y)$ (linearity of expectation)
-        \item $\cov(X, Y + Z) = \cov(X, Y) + \cov(X, Z)$ (linearity of expectation)
-        \item independent $\Rightarrow \cov(X, Y) = 0$ (but not the other way around)
+        \item In SS, Laplace transform is defined using $\e^{-st}$, while here we use $\e^{sx}$.
+        \item Given $\int_{-\infty}^{+\infty} f_{X}(x) \dd{x} = 1$, the transform is always well defined when $\Re(s) = 0$.
+        \item The transform only exists when $\Re(s) < \sigma_0$, while in SS it is $\Re(s) > \sigma_0$.
+        \item \textbf{When applying transformation on $X$, e.g. $X \mapsto aX + b$, it will affect $\e^{s\textcolor{red}{X}}$ but not $f_{\textcolor{red}{X}}(x)$, i.e. $\e^{sX} \mapsto \e^{s(aX + b)}$ but $f_{X}(x)$ remains unchanged, which is different from the Laplace transform in SS.}
     \end{itemize}
-\end{property}
-
-\begin{theorem}[Variance of the Sum of Multiple RVs]
-    \begin{equation}
-        \var\qty(\sum_{i=1}^{n} X_i) = \sum_{i=1}^{n} \var(X_i) + \sum_{\{(i,j): j \neq i\}}^{n} \cov(X_i, X_j)
-    \end{equation}
-    which is somehow similar to the complete square of the quadratic form.
-\end{theorem}
-\begin{proof}
-    Denote $\widetilde{X_i} = X_i - \E[X_i]$, then
-    \begin{equation}
-        \E\qty[\widetilde{X_i}^2] = \E\qty[X_i^2 - 2X_i\E[X_i] + \E[X_i]^2] = \E[X_i^2] - 2\E[X_i]\E[X_i] + \E[X_i]^2 = \var(X_i)
-    \end{equation}
-    \begin{equation}
-        \E\qty[\widetilde{X_i}\widetilde{X_j}] = \E\qty[X_i X_j - X_i \E[X_j] - \E[X_i] X_j + \E[X_i] \E[X_j]] = \E[X_i X_j] - \E[X_i]\E[X_j] = \cov(X_i, X_j)
-    \end{equation} 
-    Therefore
+\end{remark}
+\noindent Sanity checks:
     \begin{equation}
     \begin{aligned}
-        \var\qty(\sum_{i=1}^{n} X_i) &= \E\qty[\qty(\sum_{i=1}^{n}X_i - \E[X_i])^2] = \E\qty[\qty(\sum_{i=1}^{n} \widetilde{X_i})^2] \\ 
-        &= \sum_{i=1}^{n}\E\qty[\widetilde{X_i}] + \sum_{\{(i,j): j \neq i\}}^{n}\E\qty[X_i, X_j] \\ 
-        &= \sum_{i=1}^{n} \var(X_i) + \sum_{\{(i,j): j \neq i\}}^{n} \cov(X_i, X_j)
+        M_{X}(0) &= \int_{-\infty}^{+\infty} f_{X}(x) \dd{x} = 1 \\ 
+        \abs{M_{X}(s)} = \abs{\int_{-\infty}^{+\infty} f_{X}(x) \e^{sx} \dd{x}} &\textcolor{red}{~\leq} \int_{-\infty}^{+\infty} \abs{f_{X}(x)} \cdot \abs{\e^{sx}} \dd{x} = \int_{-\infty}^{+\infty} f_{X}(x) \dd{x} = 1
     \end{aligned}
+    \end{equation}
+Linear operations:
+\begin{equation}
+\begin{aligned}
+    M_{aX}(s) &= \int_{-\infty}^{+\infty} f_{X}(x) \e^{s(ax)} \dd{x} = M_{X}(sa) \\
+    M_{X + c}(s) &= \int_{-\infty}^{+\infty} f_{X}(x) \e^{s(x + c)} \dd{x} = M_{X}(s) \e^{sc} \\ 
+    M_{aX + b} &= \int_{-\infty}^{+\infty} f_{X}(x) \e^{s(ax + b)} \dd{x} = M_{X}(sa) \e^{sb}
+\end{aligned}
+\end{equation}
+From transforms to moments:
+\begin{equation}
+\begin{aligned}
+    \dv{s} M_{X}(s) \Big|_{s=0} &= \int_{-\infty}^{+\infty} x \e^{sx} f_{X}(x) \dd{x} \Big|_{s=0} = \int_{-\infty}^{+\infty} x f_{X}(x) \dd{x} = \E[X] \\
+    \dv[n]{s} M_{X}(s) \Big|_{s=0} &= \int_{-\infty}^{+\infty} x^n \e^{sx} f_{X}(x) \dd{x} \Big|_{s=0} = \int_{-\infty}^{+\infty} x^n f_{X}(x) \dd{x} = \E[X^n]
+\end{aligned}
+\end{equation}
+\begin{equation}
+    \mathbf{P}(X = c) = \lim_{N \to \infty} \frac{1}{N} \sum_{k=1}^{N} M_{X}(jk) \e^{-jk c} \quad \text{for interger-valued RV}
+\end{equation}
+\begin{proof}
+    \begin{equation}
+        \text{RHS} = \lim_{N \to \infty} \frac{1}{N} \sum_{k=1}^{N} \sum_{x} p_{X}(x) \e^{jkx} \e^{-jk c} = \lim_{N \to \infty} \frac{1}{N} \sum_{x} p_{X}(x) \sum_{k=1}^{N} \e^{jk(x - c)} 
+    \end{equation}
+    For $x = c$
+    \begin{equation}
+        \sum_{k=1}^{N} \e^{jk(x - c)} = \sum_{k=1}^{N} 1 = N
+    \end{equation}
+    For $x \neq c$
+    \begin{equation}
+        \sum_{k=1}^{N} \e^{jk(x - c)} = \frac{\e^{jk(x - c)}}{1 - e^{jk(x - c)}} \cdot \qty(1 - \e^{jkN(x - c)})
+    \end{equation}
+    which is bounded. Therefore, as $N \to \infty$
+    \begin{equation}
+        \text{RHS} = p_{X}(c)
     \end{equation}
 \end{proof}
 
-\begin{example}[Data Packet Problem]
-    Consider the data packet problem again, where a router randomly distributes $n$ data packets to $n$ nodes. Find the variance of $X$, the number of nodes where the $i$-th node receives the $i$-th data packet.
-\end{example}
-\begin{solution}
-    Let $X_i$ be the indicator of the event that the $i$-th node receives the $i$-th data packet. Then $X = \sum_{i=1}^{n} X_i$. Note that $X_i$ obeys the Bernoulli distribution with parameter $p = 1/n$. Therefore, 
-    \begin{equation}
-        \E[X_i] = \frac{1}{n}, \quad \var(X_i) = \frac{1}{n}\left(1 - \frac{1}{n}\right)
-    \end{equation}
-    For $i \neq j$
-    \begin{equation}
-    \begin{aligned}
-        \cov(X_i, X_j) &= \E[X_i X_j] - \E[X_i]\E[X_j] = \mathbf{P}(X_i = 1, X_j = 1) - \frac{1}{n^2} \\ 
-        &= \frac{1}{n(n-1)} - \frac{1}{n^2} = \frac{1}{n^2(n-1)}
-    \end{aligned}
-    \end{equation}
-    Therefore
-    \begin{equation}
-    \begin{aligned}
-        \var(X) &= \sum_{i=1}^{n} \var(X_i) + \sum_{\{(i,j): j \neq i\}}^{n} \cov(X_i, X_j) \\ 
-        &= n \cdot \frac{1}{n}\left(1 - \frac{1}{n}\right) + n(n-1) \cdot \frac{1}{n^2(n-1)} = 1
-    \end{aligned}
-    \end{equation}
-\end{solution}
-
-\begin{definition}[Coefficient of Correlation]
-    The coefficient of correlation of two RVs $X$ and $Y$ is defined as
-    \begin{equation}
-        \rho(X, Y) = \frac{\cov(X, Y)}{\sigma_X\sigma_Y} = \E\left[\frac{X - \mu_X}{\sigma_X} \cdot \frac{Y - \mu_Y}{\sigma_Y}\right]
-    \end{equation}
-    where $\sigma_X = \sqrt{\var(X)}$, $\sigma_Y = \sqrt{\var(Y)}$, $\mu_X = \E[X]$, and $\mu_Y = \E[Y]$. 
-\end{definition}
-According to the linearity of covariance, if $X \to 1000X$ (e.g. change the unit of $X$ from g to kg), then $\cov(X, Y) \to 1000 \cov(X, Y)$, which is not what we want. So we need to normalize the covariance. Here we choose $\sigma_X$ and $\sigma_Y$ as the normalization factors because $\sigma_X \to a\sigma_X$ when $X \to aX + b$, i.e. $\sigma$ is proportional to the scale and unrelated to the shift, just like the covariance.
-\begin{property}[Properties of Coefficient]
+\begin{example}[Example of the Transform]
     \begin{itemize}
-        \item $\abs{\rho(X, Y)} \leq 1$
-        \item $\abs{\rho(X, Y)} = 1 \Leftrightarrow (X - \E[X]) = c(Y - \E[Y])$ (linearly related)
-        \item $X$ and $Y$ are independent $\Rightarrow \rho(X, Y) = 0$ (but not the other way around)
+        \item Poisson RV: $X \sim \text{Poi}(\lambda)$
+        \begin{equation}
+            M_{X}(s) = \sum_{x=0}^{+\infty} \e^{sx} \frac{\lambda^x}{x!} \e^{-\lambda} = \e^{-\lambda} \sum_{x=0}^{+\infty} \frac{(\lambda \e^{s})^x}{x!} = \e^{-\lambda} \e^{\lambda \e^{s}} = \e^{\lambda(\e^{s} - 1)}
+        \end{equation}
+        \item Exponential RV: $X \sim \text{Exp}(\lambda)$
+        \begin{equation}
+            M_{X}(s) = \int_{0}^{+\infty} \lambda \e^{-\lambda x} \e^{sx} \dd{x} = \int_{0}^{+\infty} \lambda \e^{-(\lambda - s)x} \dd{x} = \frac{\lambda}{\lambda - s} \quad \Re(s) < \lambda
+        \end{equation}
+        \item Normal RV: $X \sim \mathcal{N}(\mu, \sigma^2)$ \\ 
+        For standard normal RV $Z \sim \mathcal{N}(0, 1)$, we have
+        \begin{equation}
+            M_{Z}(s) = \int_{-\infty}^{+\infty} \frac{1}{\sqrt{2\pi}} \e^{-x^2/2} \e^{sx} \dd{x} = \e^{s^2/2} 
+        \end{equation}
+        Now $X = \sigma Z + \mu$, therefore
+        \begin{equation}
+            M_{X}(s) = M_{Z}(\sigma s) \e^{\mu s} = \e^{\sigma^2 s^2/2+ \mu s}
+        \end{equation}
     \end{itemize}
-\end{property}
-
-\begin{example}[Data Transmission]
-    Consider $n$ independent transmissions of a binary signal where the probability of transmitting a bit 1 is $p$ and a bit 0 is $1 - p$. Let $X$ represent the number of 1's transmitted and $Y$ the number of 0's. Find the correlation coefficient between $X$ and $Y$ .
 \end{example}
-\begin{solution}
-    Since $X + Y = n$ which means $X$ and $Y$ are linearly related, we have $\rho(X, Y) = -1$. \\ 
-    Or, we have $X + Y = n$ and $\E[X] + \E[Y] = n$, thus
+
+\begin{example}[Moments of Exponential RV]
+    For an exponential RV $X \sim \text{Exp}(\lambda)$, we have
     \begin{equation}
     \begin{aligned}
-        &X - \E[X] = -(Y - \E[Y]) \\ 
-        \Rightarrow \quad &\cov(X, Y) = \E[(X - \E[X])(Y - \E[Y])] = -\var(X) = -\var(Y) \\ 
-        \Rightarrow \quad &\rho(X, Y) = \frac{\cov(X, Y)}{\sigma_X \sigma_Y} = -\frac{\var(X)}{\sqrt{\var(X)}\sqrt{\var(Y)}} = -1
+        M_{X}(s) &= \frac{\lambda}{\lambda - s} \\ 
+        \dv{s} M_{X}(s) = \frac{\lambda}{(\lambda - s)^2}, &\quad \dv[2]{s} M_{X}(s) = \frac{2\lambda}{(\lambda - s)^3}
     \end{aligned}
     \end{equation}
-\end{solution}
-
-
-\section{Conditional Expectation}
-\begin{theorem}[The Conditional Expectation as an Estimator]
-    Denote the conditional expectation
+    Thus, by setting $s = 0$, we have
     \begin{equation}
-        \hat{X} = \E[X \mid Y]
+        \E[X] = \frac{1}{\lambda}, \quad \E[X^2] = \frac{2}{\lambda^2}
     \end{equation}
-    as an estimator of $X$ given $Y$, and the estimation error as 
-    \begin{equation}
-        \widetilde{X} = X - \hat{X}
-    \end{equation}
-    is a RV.
-\end{theorem}
-\begin{property}[Properties of the Estimator]
-    \begin{itemize}
-        \item Unbiased: $\E[\widetilde{X}] = \E[\E[\widetilde{X} \mid Y]] = \E[\E[X \mid Y] - \E[\hat{X} \mid Y]] = \E[\hat{X} - \hat{X}] = 0$
-        \item Uncorrelated: $\cov(\hat{X}, \widetilde{X}) = \E[\hat{X}\widetilde{X}] - \E[\hat{X}]\E[\widetilde{X}] = \E[\E[\hat{X}\widetilde{X} \mid Y]] = \E[\hat{X}\E[\widetilde{X} \mid Y]] = \E[\hat{X} \cdot 0] = 0$
-        \item $\var(X) = \var(\hat{X}) + \var(\widetilde{X}) + 2\cov(\hat{X}, \widetilde{X}) = \var(\hat{X}) + \var(\widetilde{X})$
-    \end{itemize}
-    The second to last equality of the second property is because $\hat{X}$ is fully determined by $Y$, i.e. given $Y$, $\hat{X}$ is a number.
-\end{property}
+\end{example}
 
-The first item of the third property of the estimator $\var(\hat{X})$ can be written as 
-\begin{equation}
-    \var(\hat{X}) = \var\qty(\E[X \mid Y])
-\end{equation}
-The second item of the third property of the estimator $\var(\widetilde{X})$ can be written as
-\begin{equation}
-    \var(\widetilde{X}) = \E\qty[\widetilde{X}^2] - \E\qty[\widetilde{X}]^2 = \E\qty[\E\qty[\widetilde{X}^2 \mid Y]] = \E\qty[\E\qty[\qty(X - \hat{X})^2 \mid Y]] = \E[\var(X \mid Y)]
-\end{equation}
-So we get the total variance decomposition
-\begin{theorem}[Law of Total Variance]
+
+\section{Sum of independent RVs}
+\begin{theorem}[Sum of Independent RVs]
+    Let $X$ and $Y$ be independent RVs, and let $Z = X + Y$. The Transform associated with $Z$ is
     \begin{equation}
-        \var(X) = \var\qty(\E[X \mid Y]) + \E\qty[\var(X \mid Y)]
+        M_{Z}(s) = M_{X}(s) M_{Y}(s)
     \end{equation}
 \end{theorem}
+\begin{proof}
+    \begin{equation}
+        M_{Z}(s) = \E[\e^{sZ}] = \E[\e^{s(X + Y)}] = \E[\e^{sX} \e^{sY}] = \E[\e^{sX}] \E[\e^{sY}] = M_{X}(s) M_{Y}(s)
+    \end{equation}
+    The 4th equality is because $X$ and $Y$ are independent.
+\end{proof}
+\begin{example}[Sum of Poisson RVs]
+    Let $X_i \sim \text{Poi}(\lambda_i)$, $i = 1, 2, \cdots, n$ be independent Poisson RVs. Then the transform of $Z = \sum_{i=1}^{n} X_i$ is
+    \begin{equation}
+        M_{Z}(s) = \prod_{i=1}^{n} M_{X_i}(s) = \prod_{i=1}^{n} \exp\qty(\lambda_i(\e^{s} - 1)) = \exp\qty(\sum_{i=1}^{n} \lambda_i(\e^{s} - 1))
+    \end{equation}
+\end{example}
+\begin{example}[Sum of Some RVs]
+    \begin{itemize}
+        \item Bernoulli RV: Let $X_1, X_2, \cdots, X_n$ be independent Bernoulli RVs with parameter $p$. The transform of a single Bernoulli RV is
+        \begin{equation}
+            M_{X_i}(s) = (1 - p)\e^{0s} + p\e^{1s} = 1 - p + p \e^{s}
+        \end{equation}
+        Therefore, the transform of $Z = \sum_{i=1}^{n} X_i$ is
+        \begin{equation}
+            M_{Z}(s) = \prod_{i=1}^{n} M_{X_i}(s) = \prod_{i=1}^{n} \qty(1 - p + p \e^{s}) = (1 - p + p \e^{s})^n
+        \end{equation}
+        which is a binomial distribution with parameters $n$ and $p$.
+        \begin{proof}
+            The transform of a binomial distributed RV $Z \sim \mathcal{B}(n, p)$ is
+            \begin{equation}
+                M_{Z}(s) = \sum_{k=0}^{n} \binom{n}{k} p^k (1 - p)^{n - k} \e^{ks} = \sum_{k=0}^{n} \binom{n}{k} \qty(p\e^s)^k (1 - p)^{n - k} = (1 - p + p \e^{s})^n
+            \end{equation}
+        \end{proof}
+        \item Poisson RV: Let $X_1, X_2, \cdots, X_n$ be independent Poisson RVs with parameters $\lambda_1, \lambda_2, \cdots, \lambda_n$. The transform of $Z = \sum_{i=1}^{n} X_i$ is
+        \begin{equation}
+            \prod_{i=1}^{n} M_{X_i}(s) = \prod_{i=1}^{n} \e^{\lambda_i(\e^{s} - 1)} = \exp\qty(\sum_{i=1}^{n} \lambda_i(\e^{s} - 1)) \coloneqq \e^{\lambda (\e^{s} - 1)}
+        \end{equation}
+        which is also a Poisson RV with parameter $\lambda = \sum_{i=1}^{n} \lambda_i$.
+        \item Normal RV: Let $X_1, X_2, \cdots, X_n$ be independent normal RVs with parameters $\mu_i$ and $\sigma_i^2$. The transform of $Z = \sum_{i=1}^{n} X_i$ is
+        \begin{equation}
+            M_{Z}(s) = \prod_{i=1}^{n} M_{X_i}(s) = \prod_{i=1}^{n} \e^{\sigma_i^2 s^2/2 + \mu_i s} = \exp \qty(\frac{s^2}{2} \sum_{i=1}^{n} \sigma_i^2 + s \sum_{i=1}^{n} \mu_i) \coloneqq \exp\qty(\frac{s^2}{2} \sigma^2 + s \mu)
+        \end{equation}
+        which is also a normal RV with parameters $\mu = \sum_{i=1}^{n} \mu_i$ and $\sigma^2 = \sum_{i=1}^{n} \sigma_i^2$.
+    \end{itemize}
+\end{example}
 
+
+\section{Sum of A Random Number of Independent RVs}
+Consider the sum of a series of independent identically distributed (i.i.d.) RVs $Y = X_1 + X_2 + \cdots + X_N$, where $N$ is a random variable. 
+\begin{itemize}
+    \item Expectation of $Y$: \\ 
+    Conditioning on $N$: 
+    \begin{equation}
+        \E[Y \mid N = n] = \E[X_1 + X_2 + \cdots + X_n] = n \E[X], \forall n \in \mathbb{N} \quad\Rightarrow\quad \E[Y \mid N] = N \E[X]
+    \end{equation}
+    Using the law of total expectation:
+    \begin{equation}
+        \E[Y] = \E[\E[Y \mid N]] = \E[N] \E[X]
+    \end{equation}
+    \item Variance of $Y$: \\
+    Conditioning on $N$:
+    \begin{align}
+        &\begin{aligned}
+            &\var(Y \mid N = n) = \var(X_1 + X_2 + \cdots + X_n) = n \cdot \var(X), \forall n \in \mathbb{N} \\ 
+            &\Rightarrow\quad \var(Y \mid N) = N \var(X) 
+        \end{aligned} \\
+        &\E[\var(Y \mid N)] = \E[N] \var(X) \\ 
+        &\var(\E[Y \mid N]) = \var(N \E[X]) = (\E[X])^2 \var(N) 
+    \end{align}
+    The third and fourth equation is because $\E[X], \var(X)$ is a constant in terms of $N$. So according to the law of total variance
+    \begin{equation}
+        \var(Y) = \E[\var(Y \mid N)] + \var(\E[Y \mid N]) = \E[N] \var(X) + (\E[X])^2 \var(N)
+    \end{equation}
+    \item Transform: \\ 
+    Conditional on $N$:
+    \begin{equation}
+        \E[\e^{sY} \mid N = n] = \E[\e^{s(X_1 + X_2 + \cdots + X_n)}] = \E[\e^{sX_1}]^n = \qty(M_{X}(s))^n
+    \end{equation}
+    The second equality is due to the independence of $X_i$'s. Now, using the law of total expectation
+    \begin{equation}
+        M_{Y}(s) = \E[\e^{sY}] = \E[\E[\e^{sY} \mid N]] = \sum_{n=0}^{+\infty} M_{X}(s)^n p_N(n) = \sum_{n=0}^{+\infty} \e^{n \ln M_{X}(s)} p_{N}(n)
+    \end{equation}
+    Comparing with the transform of $N$
+    \begin{equation}
+        M_{N}(s) = \sum_{n=0}^{+\infty} \e^{ns} p_{N}(n)
+    \end{equation}
+    We can see that the transform of $Y$ is the transform of $N$ with $s$ substituted by $\ln M_{X}(s)$.
+ \end{itemize}
 
 \appendix
 \input{chaps/app_Problem_Solutions.tex}
