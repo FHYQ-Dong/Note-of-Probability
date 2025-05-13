@@ -18,7 +18,7 @@
 \title{Probability Notes}
 \author{FHYQ-Dong}
 \date{\today}
-\version{10.0}
+\version{11.0}
 \cover{images/Note-cover.png}
 \definecolor{customcoverlinecolor}{RGB}{82, 59, 148}
 \colorlet{coverlinecolor}{customcoverlinecolor}
@@ -42,200 +42,122 @@
 \input{chaps/chap_Multiple_Continuous_Random_Variables.tex}
 \input{chaps/chap_Derived_Distributions_and_Entropy.tex}
 \input{chaps/chap_Convolution_Covariance_Correlation_and_Conditional_Expectation.tex}
+\input{chaps/chap_Transforms_and_Sum_of_A_Random_Number_of_RVs.tex}
 
 
-\chapter{Transforms and Sum of A Random Number of RVs}
+\chapter{Weak Law of Large Numbers}
 
-\section{Transforms}
-If we want to calculate the PDF of $Z = X + Y$, we need to do the convolution of $f_{X}$ and $f_{Y}$. But if we have a look from the frequency domain, we just need to multiply the Fourier transforms of $f_{X}$ and $f_{Y}$, which is much easier.
-\begin{definition}[Definition of the Transform]
-    The transform associated with a RV $X$ is a function $M_{X}(s)$ of a scalar parameter $s$ defined as
+\section{Probabilistic Inequalities}
+The intuition makes sense that if a non-negative RV must have a little probability to be large if its mean is small.
+\begin{theorem}[Markov's Inequality]
+    If a RV $X$ is non-negative, then for any $a > 0$,
     \begin{equation}
-        M_{X}(s) = \E[\e^{sX}] = \left\{\begin{aligned}
-            \sum_{x} p_{X}(x) \e^{sx}, \quad &\text{if } X \text{ is discrete} \\
-            \int_{-\infty}^{+\infty} f_{X}(x) \e^{sx} \dd{x}, \quad &\text{if } X \text{ is continuous}
-        \end{aligned}\right.
-    \end{equation}
-\end{definition}
-\begin{remark}
-    \begin{itemize}
-        \item In SS, Laplace transform is defined using $\e^{-st}$, while here we use $\e^{sx}$.
-        \item Given $\int_{-\infty}^{+\infty} f_{X}(x) \dd{x} = 1$, the transform is always well defined when $\Re(s) = 0$.
-        \item The transform only exists when $\Re(s) < \sigma_0$, while in SS it is $\Re(s) > \sigma_0$.
-        \item \textbf{When applying transformation on $X$, e.g. $X \mapsto aX + b$, it will affect $\e^{s\textcolor{red}{X}}$ but not $f_{\textcolor{red}{X}}(x)$, i.e. $\e^{sX} \mapsto \e^{s(aX + b)}$ but $f_{X}(x)$ remains unchanged, which is different from the Laplace transform in SS.}
-    \end{itemize}
-\end{remark}
-\noindent Sanity checks:
-    \begin{equation}
-    \begin{aligned}
-        M_{X}(0) &= \int_{-\infty}^{+\infty} f_{X}(x) \dd{x} = 1 \\ 
-        \abs{M_{X}(s)} = \abs{\int_{-\infty}^{+\infty} f_{X}(x) \e^{sx} \dd{x}} &\textcolor{red}{~\leq} \int_{-\infty}^{+\infty} \abs{f_{X}(x)} \cdot \abs{\e^{sx}} \dd{x} = \int_{-\infty}^{+\infty} f_{X}(x) \dd{x} = 1
-    \end{aligned}
-    \end{equation}
-Linear operations:
-\begin{equation}
-\begin{aligned}
-    M_{aX}(s) &= \int_{-\infty}^{+\infty} f_{X}(x) \e^{s(ax)} \dd{x} = M_{X}(sa) \\
-    M_{X + c}(s) &= \int_{-\infty}^{+\infty} f_{X}(x) \e^{s(x + c)} \dd{x} = M_{X}(s) \e^{sc} \\ 
-    M_{aX + b} &= \int_{-\infty}^{+\infty} f_{X}(x) \e^{s(ax + b)} \dd{x} = M_{X}(sa) \e^{sb}
-\end{aligned}
-\end{equation}
-From transforms to moments:
-\begin{equation}
-\begin{aligned}
-    \dv{s} M_{X}(s) \Big|_{s=0} &= \int_{-\infty}^{+\infty} x \e^{sx} f_{X}(x) \dd{x} \Big|_{s=0} = \int_{-\infty}^{+\infty} x f_{X}(x) \dd{x} = \E[X] \\
-    \dv[n]{s} M_{X}(s) \Big|_{s=0} &= \int_{-\infty}^{+\infty} x^n \e^{sx} f_{X}(x) \dd{x} \Big|_{s=0} = \int_{-\infty}^{+\infty} x^n f_{X}(x) \dd{x} = \E[X^n]
-\end{aligned}
-\end{equation}
-\begin{equation}
-    \mathbf{P}(X = c) = \lim_{N \to \infty} \frac{1}{N} \sum_{k=1}^{N} M_{X}(jk) \e^{-jk c} \quad \text{for interger-valued RV}
-\end{equation}
-\begin{proof}
-    \begin{equation}
-        \text{RHS} = \lim_{N \to \infty} \frac{1}{N} \sum_{k=1}^{N} \sum_{x} p_{X}(x) \e^{jkx} \e^{-jk c} = \lim_{N \to \infty} \frac{1}{N} \sum_{x} p_{X}(x) \sum_{k=1}^{N} \e^{jk(x - c)} 
-    \end{equation}
-    For $x = c$
-    \begin{equation}
-        \sum_{k=1}^{N} \e^{jk(x - c)} = \sum_{k=1}^{N} 1 = N
-    \end{equation}
-    For $x \neq c$
-    \begin{equation}
-        \sum_{k=1}^{N} \e^{jk(x - c)} = \frac{\e^{jk(x - c)}}{1 - e^{jk(x - c)}} \cdot \qty(1 - \e^{jkN(x - c)})
-    \end{equation}
-    which is bounded. Therefore, as $N \to \infty$
-    \begin{equation}
-        \text{RHS} = p_{X}(c)
-    \end{equation}
-\end{proof}
-
-\begin{example}[Example of the Transform]
-    \begin{itemize}
-        \item Poisson RV: $X \sim \text{Poi}(\lambda)$
-        \begin{equation}
-            M_{X}(s) = \sum_{x=0}^{+\infty} \e^{sx} \frac{\lambda^x}{x!} \e^{-\lambda} = \e^{-\lambda} \sum_{x=0}^{+\infty} \frac{(\lambda \e^{s})^x}{x!} = \e^{-\lambda} \e^{\lambda \e^{s}} = \e^{\lambda(\e^{s} - 1)}
-        \end{equation}
-        \item Exponential RV: $X \sim \text{Exp}(\lambda)$
-        \begin{equation}
-            M_{X}(s) = \int_{0}^{+\infty} \lambda \e^{-\lambda x} \e^{sx} \dd{x} = \int_{0}^{+\infty} \lambda \e^{-(\lambda - s)x} \dd{x} = \frac{\lambda}{\lambda - s} \quad \Re(s) < \lambda
-        \end{equation}
-        \item Normal RV: $X \sim \mathcal{N}(\mu, \sigma^2)$ \\ 
-        For standard normal RV $Z \sim \mathcal{N}(0, 1)$, we have
-        \begin{equation}
-            M_{Z}(s) = \int_{-\infty}^{+\infty} \frac{1}{\sqrt{2\pi}} \e^{-x^2/2} \e^{sx} \dd{x} = \e^{s^2/2} 
-        \end{equation}
-        Now $X = \sigma Z + \mu$, therefore
-        \begin{equation}
-            M_{X}(s) = M_{Z}(\sigma s) \e^{\mu s} = \e^{\sigma^2 s^2/2+ \mu s}
-        \end{equation}
-    \end{itemize}
-\end{example}
-
-\begin{example}[Moments of Exponential RV]
-    For an exponential RV $X \sim \text{Exp}(\lambda)$, we have
-    \begin{equation}
-    \begin{aligned}
-        M_{X}(s) &= \frac{\lambda}{\lambda - s} \\ 
-        \dv{s} M_{X}(s) = \frac{\lambda}{(\lambda - s)^2}, &\quad \dv[2]{s} M_{X}(s) = \frac{2\lambda}{(\lambda - s)^3}
-    \end{aligned}
-    \end{equation}
-    Thus, by setting $s = 0$, we have
-    \begin{equation}
-        \E[X] = \frac{1}{\lambda}, \quad \E[X^2] = \frac{2}{\lambda^2}
-    \end{equation}
-\end{example}
-
-
-\section{Sum of independent RVs}
-\begin{theorem}[Sum of Independent RVs]
-    Let $X$ and $Y$ be independent RVs, and let $Z = X + Y$. The Transform associated with $Z$ is
-    \begin{equation}
-        M_{Z}(s) = M_{X}(s) M_{Y}(s)
+        \mathbf{P}(X \geq a) \leq \frac{\E[X]}{a}
     \end{equation}
 \end{theorem}
 \begin{proof}
     \begin{equation}
-        M_{Z}(s) = \E[\e^{sZ}] = \E[\e^{s(X + Y)}] = \E[\e^{sX} \e^{sY}] = \E[\e^{sX}] \E[\e^{sY}] = M_{X}(s) M_{Y}(s)
+        \E[X] = \int_{0}^{+\infty} xf_X(x) \dd{x} \geq \int_{a}^{+\infty} xf_X(x) \dd{x} \geq a\int_{a}^{+\infty} f_X(x) \dd{x} = a \mathbf{P}(X \geq a)
     \end{equation}
-    The 4th equality is because $X$ and $Y$ are independent.
 \end{proof}
-\begin{example}[Sum of Poisson RVs]
-    Let $X_i \sim \text{Poi}(\lambda_i)$, $i = 1, 2, \cdots, n$ be independent Poisson RVs. Then the transform of $Z = \sum_{i=1}^{n} X_i$ is
+The equality holds iff. $\int_{0}^{a} xf_X(x) \dd{x} = 0$ and $\int_{a^+}^{+\infty} xf_X(x) \dd{x} = 0$, i.e. $X$ can only take the value $a$ and $0$.
+
+The intuition makes sense that if a RV has small variance, then it is unlikely to be far away from its mean.
+\begin{theorem}[Chebyshev's Inequality]
+    If a RV $X$ has finite mean $\mu$ and finite variance $\sigma^2$, then for any $c > 0$,
     \begin{equation}
-        M_{Z}(s) = \prod_{i=1}^{n} M_{X_i}(s) = \prod_{i=1}^{n} \exp\qty(\lambda_i(\e^{s} - 1)) = \exp\qty(\sum_{i=1}^{n} \lambda_i(\e^{s} - 1))
+        \mathbf{P}(\abs{X - \mu} \geq c) \leq \frac{\sigma^2}{c^2}
     \end{equation}
+\end{theorem}
+\begin{proof}
+    \begin{equation}
+        \sigma^2 = \int_{-\infty}^{+\infty} (x - \mu)^2 f_X(x) \dd{x} \geq \int_{-\infty}^{\mu - c} (x - \mu)^2 f_X(x) \dd{x} + \int_{\mu + c}^{+\infty} (x - \mu)^2 f_X(x) \dd{x} \geq c^2 \mathbf{P}(\abs{X - \mu} \geq c)
+    \end{equation}
+\end{proof}
+The equality holds iff. $\int_{(\mu-c)^+}^{(\mu+c)^-} (x - \mu)^2 f_X(x) \dd{x} = \int_{-\infty}^{(\mu-c)^-} (x - \mu)^2 f_X(x) \dd{x} = \int_{(\mu+c)^{+}}^{+\infty} (x - \mu)^2 f_X(x) \dd{x} = 0$, i.e. $X$ can only take the value $\mu - c$, $\mu + c$ and $\mu$, and $\mathbf{P}(X = \mu) = 1 - \sigma^2/c^2$. To keep the mean is still $\mu$, $\mathbf{P}(X = \mu + c) = \mathbf{P}(X = \mu - c) = \sigma^2/c^2$.
+
+\begin{theorem}[Chernoff's Inequality]
+    If a RV $X$ has a transform $M_{X}(s)$, then
+    \begin{equation}
+        \mathbf{P}(X \geq a) \leq \exp\qty(-\max_{s \geq 0} \qty{sa - \ln M_{X}(s)})
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Given $a$ and $\textcolor{red}{\forall s \geq 0}$, we have
+    \begin{equation}
+        M_X(s) = \int_{-\infty}^{a} \e^{sx} f_X(x) \dd{x} + \int_{a}^{+\infty} \e^{sx} f_X(x) \dd{x} \geq \int_{a}^{+\infty} \e^{sx} f_X(x) \dd{x} \geq \e^{sa} \mathbf{P}(X \geq a)
+    \end{equation}
+    which yields
+    \begin{equation}
+        \mathbf{P}(X \geq a) \leq \frac{M_X(s)}{\e^{sa}}, \forall s \geq 0 \quad\Rightarrow\quad \mathbf{P}(X \geq a) \leq \inf_{s \geq 0} \frac{M_X(s)}{\e^{sa}} = \exp\qty(-\max_{s \geq 0} \qty{sa - \ln M_{X}(s)})
+    \end{equation}
+\end{proof}
+This inequality is useful when $a > 0$. Similarly, we can prove
+\begin{theorem}[Chernoff's Inequality]
+    If a RV $X$ has a transform $M_{X}(s)$, then
+    \begin{equation}
+        \mathbf{P}(X \leq a) \leq \exp\qty(-\max_{s \leq 0} \qty{sa - \ln M_{X}(s)})
+    \end{equation}
+\end{theorem}
+
+The three inequalities have the upper bound of $c^{-1}$, $c^{-2}$ and $\exp(-c)$, respectively, with the information of the distribution of $X$ increasing. 
+
+\begin{example}[Upper Bound of Variance]
+    When $X$ is known to take values in a range $[a, b]$, then $\sigma^2 \leq (b - a)^2/4$.
 \end{example}
-\begin{example}[Sum of Some RVs]
-    \begin{itemize}
-        \item Bernoulli RV: Let $X_1, X_2, \cdots, X_n$ be independent Bernoulli RVs with parameter $p$. The transform of a single Bernoulli RV is
-        \begin{equation}
-            M_{X_i}(s) = (1 - p)\e^{0s} + p\e^{1s} = 1 - p + p \e^{s}
-        \end{equation}
-        Therefore, the transform of $Z = \sum_{i=1}^{n} X_i$ is
-        \begin{equation}
-            M_{Z}(s) = \prod_{i=1}^{n} M_{X_i}(s) = \prod_{i=1}^{n} \qty(1 - p + p \e^{s}) = (1 - p + p \e^{s})^n
-        \end{equation}
-        which is a binomial distribution with parameters $n$ and $p$.
-        \begin{proof}
-            The transform of a binomial distributed RV $Z \sim \mathcal{B}(n, p)$ is
-            \begin{equation}
-                M_{Z}(s) = \sum_{k=0}^{n} \binom{n}{k} p^k (1 - p)^{n - k} \e^{ks} = \sum_{k=0}^{n} \binom{n}{k} \qty(p\e^s)^k (1 - p)^{n - k} = (1 - p + p \e^{s})^n
-            \end{equation}
-        \end{proof}
-        \item Poisson RV: Let $X_1, X_2, \cdots, X_n$ be independent Poisson RVs with parameters $\lambda_1, \lambda_2, \cdots, \lambda_n$. The transform of $Z = \sum_{i=1}^{n} X_i$ is
-        \begin{equation}
-            \prod_{i=1}^{n} M_{X_i}(s) = \prod_{i=1}^{n} \e^{\lambda_i(\e^{s} - 1)} = \exp\qty(\sum_{i=1}^{n} \lambda_i(\e^{s} - 1)) \coloneqq \e^{\lambda (\e^{s} - 1)}
-        \end{equation}
-        which is also a Poisson RV with parameter $\lambda = \sum_{i=1}^{n} \lambda_i$.
-        \item Normal RV: Let $X_1, X_2, \cdots, X_n$ be independent normal RVs with parameters $\mu_i$ and $\sigma_i^2$. The transform of $Z = \sum_{i=1}^{n} X_i$ is
-        \begin{equation}
-            M_{Z}(s) = \prod_{i=1}^{n} M_{X_i}(s) = \prod_{i=1}^{n} \e^{\sigma_i^2 s^2/2 + \mu_i s} = \exp \qty(\frac{s^2}{2} \sum_{i=1}^{n} \sigma_i^2 + s \sum_{i=1}^{n} \mu_i) \coloneqq \exp\qty(\frac{s^2}{2} \sigma^2 + s \mu)
-        \end{equation}
-        which is also a normal RV with parameters $\mu = \sum_{i=1}^{n} \mu_i$ and $\sigma^2 = \sum_{i=1}^{n} \sigma_i^2$.
-    \end{itemize}
-\end{example}
+\begin{proof}
+    Note that for any constant $\gamma$
+    \begin{equation}
+        \E[(X - \gamma)^2] = \E[X^2] - 2\gamma \E[X] + \gamma^2
+    \end{equation}
+    which is minimized when $\gamma = \E[X]$. Therefore, letting $\gamma = (a+b)/2$
+    \begin{equation}
+        \sigma^2 = \E[X - \E[X]] \leq \E\qty[\qty(X - \frac{a+b}{2})^2] = \E\qty[(X - a)(X - b)] + \frac{(b - a)^2}{4} \leq \frac{(b - a)^2}{4}
+    \end{equation}
+\end{proof}
 
 
-\section{Sum of A Random Number of Independent RVs}
-Consider the sum of a series of independent identically distributed (i.i.d.) RVs $Y = X_1 + X_2 + \cdots + X_N$, where $N$ is a random variable. 
+\section{Weak Law of Large Numbers}
+When the number of samples becomes large, i.e. let $X_1, X_2, \cdots, X_n$ be i.i.d RVs with finite mean $\mu$ and finite variance $\sigma^2$, and let $n \to \infty$
+\begin{equation}
+    M_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+\end{equation}
 \begin{itemize}
-    \item Expectation of $Y$: \\ 
-    Conditioning on $N$: 
+    \item $\E[M_n] = \mu$
+    \item $\var(M_n) = \frac{\sigma^2}{n}$
+    \item Applying Chebyshev's inequality
     \begin{equation}
-        \E[Y \mid N = n] = \E[X_1 + X_2 + \cdots + X_n] = n \E[X], \forall n \in \mathbb{N} \quad\Rightarrow\quad \E[Y \mid N] = N \E[X]
+        \mathbf{P}(\abs{X - \mu} \geq \epsilon) \leq \frac{\sigma^2}{n\epsilon^2}
     \end{equation}
-    Using the law of total expectation:
+    \item Let $n \to \infty$, we have $\mathbf{P}(\abs{X - \mu} \geq \epsilon) \to 0$.
+\end{itemize}
+\begin{theorem}[The Weak Law of Large Numbers]
+    Let $X_1, X_2, \cdots, X_n$ be i.i.d RVs with finite mean $\mu$ and finite variance $\sigma^2$. Then for any $\epsilon > 0$,
     \begin{equation}
-        \E[Y] = \E[\E[Y \mid N]] = \E[N] \E[X]
+        \mathbf{P}(\abs{M_n - \mu} \geq \epsilon) = \mathbf{P}\qty(\abs{\frac{X_1 + X_2 + \cdots + X_n}{n} - \mu} \geq \epsilon) \leq \frac{\sigma^2}{n\epsilon^2} \to 0, \text{ as } n \to \infty
     \end{equation}
-    \item Variance of $Y$: \\
-    Conditioning on $N$:
-    \begin{align}
-        &\begin{aligned}
-            &\var(Y \mid N = n) = \var(X_1 + X_2 + \cdots + X_n) = n \cdot \var(X), \forall n \in \mathbb{N} \\ 
-            &\Rightarrow\quad \var(Y \mid N) = N \var(X) 
-        \end{aligned} \\
-        &\E[\var(Y \mid N)] = \E[N] \var(X) \\ 
-        &\var(\E[Y \mid N]) = \var(N \E[X]) = (\E[X])^2 \var(N) 
-    \end{align}
-    The third and fourth equation is because $\E[X], \var(X)$ is a constant in terms of $N$. So according to the law of total variance
+\end{theorem}
+We say that $M_n$ converges \textcolor{red}{in probability} to $\mu$, denoted as $M_n \xrightarrow{\textcolor{red}{p}} \mu$.
+
+\begin{example}[The pollster's problem]
+    Let $f$ denote the fraction of voters who support a particular officer, and $X_i$ be Bernoulli random variables encoding poll responses
     \begin{equation}
-        \var(Y) = \E[\var(Y \mid N)] + \var(\E[Y \mid N]) = \E[N] \var(X) + (\E[X])^2 \var(N)
+        X_i = \left\{\begin{aligned}
+            1, \quad &\text{if yes} \\
+            0, \quad &\text{if no}
+        \end{aligned}\right.
     \end{equation}
-    \item Transform: \\ 
-    Conditional on $N$:
+    The sample mean $M_n = (X_1 + \cdots + X_n) / n$ estimates the fraction of ``yes'' in our sample. The goal is to solve for $n$ satisfying 95\% confidence of $\leq 1\%$ error
     \begin{equation}
-        \E[\e^{sY} \mid N = n] = \E[\e^{s(X_1 + X_2 + \cdots + X_n)}] = \E[\e^{sX_1}]^n = \qty(M_{X}(s))^n
+        \mathbf{P}(\abs{M_n - f} \geq 0.01) \leq 0.05
     \end{equation}
-    The second equality is due to the independence of $X_i$'s. Now, using the law of total expectation
+\end{example}
+\begin{solution}
+    Use the Chebyshev's inequality
     \begin{equation}
-        M_{Y}(s) = \E[\e^{sY}] = \E[\E[\e^{sY} \mid N]] = \sum_{n=0}^{+\infty} M_{X}(s)^n p_N(n) = \sum_{n=0}^{+\infty} \e^{n \ln M_{X}(s)} p_{N}(n)
+        \mathbf{P}(\abs{M_n - f} \geq 0.01) \leq \frac{\sigma_{M_n}^2}{(0.01)^2} = \frac{\sigma_X^2}{n(0.01)^2} \leq \frac{1}{4n(0.01)^2} \leq 0.05 \quad\Rightarrow\quad n \geq 50000
     \end{equation}
-    Comparing with the transform of $N$
-    \begin{equation}
-        M_{N}(s) = \sum_{n=0}^{+\infty} \e^{ns} p_{N}(n)
-    \end{equation}
-    We can see that the transform of $Y$ is the transform of $N$ with $s$ substituted by $\ln M_{X}(s)$.
- \end{itemize}
+\end{solution}
 
 \appendix
 \input{chaps/app_Problem_Solutions.tex}
