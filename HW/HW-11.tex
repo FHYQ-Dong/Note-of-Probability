@@ -1,0 +1,172 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{physics}
+\usepackage{mathtools}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+\newtheorem{theorem}{Theorem} % Define the theorem environment
+
+\input{math_cmds.tex}
+
+\title{Problem Set 11}
+\author{ FHYQ-Dong, Class **********, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 11}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  filecolor=black,   
+  urlcolor=black,
+  citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\begin{question}
+    A statistician wants to estimate the mean height $h$ (in meters) of a population, based on $n$ independent samples $X_1, \ldots, X_n$, chosen uniformly from the entire population. He uses the sample mean $M_n = (X_1+ \ldots + X_n) / n$ as the estimate of $h$, and a rough guess of 1.0 meters for the standard deviation of the samples $X_i$.
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{q:1.a} How large should $n$ be so that the standard deviation of $M_n$ is at most 1 centimeter?
+        \item \label{q:1.b} How large should $n$ be so that Chebyshev's inequality guarantees that the estimate is within 5 centimeters from $h$, with probability at least 0.99?
+        \item The statistician realizes that all persons in the population have heights between 1.4 and 2.0 meters, and revises the standard deviation figure that he uses based on the bound on page 11 in Lecture 11. How should the values of $n$ obtained in parts \ref{q:1.a} and \ref{q:1.b} be revised?
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{a:1.a} We have
+        \begin{equation}
+            M_n = \frac{X_1 + \cdots + X_n}{n}
+        \end{equation}
+        with $X_i$ being i.i.d RVs, so
+        \begin{equation}
+            \var(M_n) = \frac{\var(X_1)}{n^2} \quad\Rightarrow\quad \sigma_{M_n} = \frac{\sigma}{\sqrt{n}} = \frac{1.0}{\sqrt{n}} \leq 0.01
+        \end{equation}
+        which yields $n \geq 10000$.
+        \item \label{a:1.b} According to Chebyshev's inequality
+        \begin{equation}
+            \mathbf{P}(\abs{M_n - h} \geq 0.05) \leq \frac{\sigma_{M_n}}{(0.05)^2} \quad\Rightarrow\quad \mathbf{P}\qty(\abs{\frac{X_1 + \cdots + X_n}{n} - h} \geq 0.05) \leq \frac{1.0^2}{n(0.05)^2} \leq 0.01
+        \end{equation}
+        which yields $n \geq 40000$.
+        \item According to the bound on page 11 in Lecture 11
+        \begin{theorem}[Upper bound for variance]
+            When $X$ is known to take values in a range $[a, b]$, then
+            \begin{equation}
+                \sigma^2 \leq \frac{(b - a)^2}{4}
+            \end{equation}
+        \end{theorem}
+        The standard deviation of $X_i$ is
+        \begin{equation}
+            \sigma = \sqrt{\frac{(2.0 - 1.4)^2}{4}} = 0.3
+        \end{equation}
+        Therefore, the answer to part \ref{a:1.a} can be revised as
+        \begin{equation}
+            \sigma_{M_n} = \frac{0.3}{\sqrt{n}} \leq 0.01 \quad\Rightarrow\quad n \geq 900
+        \end{equation}
+        And the answer to part \ref{a:1.b} can be revised as
+        \begin{equation}
+            \mathbf{P}(\abs{M_n - h} \geq 0.05) \leq \frac{\sigma_{M_n}}{(0.05)^2} \quad\Rightarrow\quad \mathbf{P}\qty(\abs{\frac{X_1 + \cdots + X_n}{n} - h} \geq 0.05) \leq \frac{(0.3)^2}{n(0.05)^2} \leq 0.01
+        \end{equation}
+        which yields $n \geq 3600$.
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    In order to estimate $f$, the true fraction of smokers in a large population, Alvin selects $n$ people at random. His estimator $M_n$ is obtained by dividing $S_n$, the number of smokers in his sample, by $n$, i.e., $M_n = S_n / n$. Alvin chooses the sample size $n$ to be the smallest possible number for which the Chebyshev's inequality yields a guarantee that
+    \begin{equation}
+        \mathbf{P}(\abs{M_n - f} \geq \epsilon) \leq \delta
+    \end{equation}
+    where $\epsilon$ and $\delta$ are some prespecified tolerances. Determine how the value of $n$ recommended by the Chebyshev's inequality changes in the following cases.
+    \begin{enumerate}[label=(\alph*)]
+        \item The value of $\epsilon$ is reduced to half its original value.
+        \item The probability $\delta$ is reduced to half its original value.
+    \end{enumerate}
+\end{question}
+\begin{answer}
+    Assume the sample $X_i$ are i.i.d RVs with standard deviation $\sigma$ and mean $f$. According to Chebyshev's inequality
+    \begin{equation}
+        \mathbf{P}\qty(\abs{\frac{M_n}{n} - f} \geq \epsilon) \leq \frac{\sigma^2}{n^2 \epsilon^2} \leq \delta \quad\Rightarrow\quad n \geq \frac{\sigma^2}{\epsilon^2 \delta}
+    \end{equation}
+    \begin{enumerate}[label=(\alph*)]
+        \item If $\epsilon \to \epsilon / 2$, then $n \to 4n$.
+        \item If $\delta \to \delta / 2$, then $n \to n/2$.
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    From past experience, a professor knows that the test score of a student taking the final examination is a random variable with mean 75.
+    \begin{enumerate}[label=(\alph*)]
+        \item Give an upper bound for the probability that a student's test score will exceed 85.
+        \item Suppose, in addition, that the professor knows that the variance of a student's test score is equal to 25.  What can be said about the probability that a student will score between 65 and 85?
+        \item How many students would have to take the examination to ensure with probability at least 0.9 that the class average would be within 5 of 75?
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item According to Markov's inequality
+        \begin{equation}
+            \mathbf{P}(X \geq a) \leq \frac{\E[X]}{a} \quad\Rightarrow\quad \mathbf{P}(X \geq 85) \leq \frac{75}{85} = \frac{15}{17}
+        \end{equation}
+        \item According to Chebyshev's inequality
+        \begin{equation}
+            \mathbf{P}(\abs{X - \E[X]} \geq c) \leq \frac{\var(X)}{c^2} \quad\Rightarrow\quad \mathbf{P}(65 \leq X \leq 85) \leq \frac{25}{10^2} = \frac{1}{4}
+        \end{equation}
+        \item According to Chebyshev's inequality
+        \begin{equation}
+            \mathbf{P}\qty(\abs{\frac{X_1 + \cdots + X_n}{n} - 75} \geq 5) \leq \frac{25}{n^2 5^2} \leq 0.1 \quad\Rightarrow\quad n \geq 10
+        \end{equation}
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    If $X$ is a Poisson random variable with mean $\lambda$, show that for $i < \lambda$
+    \begin{equation}
+        \mathbf{P}(X < i) \leq \frac{\e^{-\lambda} (\e\lambda)^i}{i^i}
+    \end{equation}
+    \textit{Hint:} Use Chernoff inequality.  The transform of Poisson RV is $M_X(s) = \e^{\lambda(\e^s - 1)}$.
+\end{question}
+\begin{answer}
+    According to Chernoff's inequality
+    \begin{equation}
+        \mathbf{P}(X \leq i) \leq \exp\qty(-\max_{s \leq 0} \qty{si - \ln M_X(s)}) = \exp\qty(-\max_{s \leq 0} \qty{si - \lambda(\e^s - 1)})
+    \end{equation}
+    Denote $\phi(s) = si - \lambda(\e^s - 1)$, then $\phi'(s) = i - \lambda \e^s$ and $\phi''(s) = -\lambda \e^s < 0$. $\phi'(s)$ has a unique root $s_0 = \ln(i/\lambda)$, which means $\phi$ reaches its maximum at $s_0$. Therefore, we have
+    \begin{equation}
+        \mathbf{P}(X < i) \leq \exp\qty(-\phi(s_0)) = \exp\qty(-i\ln\frac{i}{\lambda} + i - \lambda) = \frac{\e^{-\lambda} (\e\lambda)^i}{i^i}
+    \end{equation}
+\end{answer}
+\end{document}
