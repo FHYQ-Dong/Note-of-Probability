@@ -1,0 +1,166 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{physics}
+\usepackage{mathtools}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+\newtheorem{theorem}{Theorem} % Define the theorem environment
+
+\input{math_cmds.tex}
+
+\title{Problem Set 12}
+\author{ FHYQ-Dong, Class **********, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 12}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  filecolor=black,   
+  urlcolor=black,
+  citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\begin{question}
+    During each day, the probability that your computer's operating system crashes at least once is 5\%, independent of every other day. You are interested in the probability of at least 45 crash-free days out of the next 50 days.
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{q:1.a} Find the probability of interest by using the normal approximation with 1/2 correction to the binomial.
+        \item Repeat part \ref{q:1.a}, this time using the Poisson approximation to the binomial.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item Let $X$ be the number of crash-free days in 50 days. Then $X$ follows a binomial distribution with parameters $n = 50$ and $p = 0.95$. By applying the normal approximation with 1/2 correction
+        \begin{equation}
+            \mathbf{P}(X \geq 45) = \mathbf{P}(44.5 \leq X) \approx 1 - \Phi\qty(\frac{44.5 - 50 \times 0.95}{\sqrt{50 \times 0.95 \times 0.05}}) \approx 1 - 0.02577 = 0.97423
+        \end{equation}
+        \item Notice that the number of crash days $Y$ also follows a binomial distribution with parameters $n = 50$ and $p = 0.05$. When $n$ is very large, we can use a Poisson RV with parameter $\lambda = np = 50 \times 0.05 = 2.5$ to approximate the distribution of $Y$. 
+        \begin{equation}
+            \mathbf{P}(X \geq 45) = \mathbf{P}(Y \leq 5) \approx \sum_{k=0}^{5} \e^{-\lambda} \frac{\lambda^k}{k!} \approx 0.962
+        \end{equation}
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    A factory produces $X_n$ gadgets on day $n$, where the $X_n$ are independent and identically distributed random variables, with mean 5 and variance 9.
+    \begin{enumerate}[label=(\alph*)]
+        \item Find an approximation with 1/2 correction to the probability that the total number of gadgets produced in 100 days is less than 440.
+        \item  Find (approximately) the largest value of $n$ such that
+        \begin{equation}
+            \mathbf{P}(X_1 + X_2 + \cdots + X_n \geq 200 + 5n) \leq 0.05
+        \end{equation}
+        \item Let $N$ be the first day on which the total number of gadgets produced exceeds 1000. Calculate an approximation to the probability that $N \geq 220$.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item Let $S = X_1 + \cdots X_100$ be the total number of gadgets produced in 100 days, then according to the CLT
+        \begin{equation}
+            \mathbf{P}(S < 440) = \mathbf{P}(S \leq 439.5) \quad\Leftrightarrow\quad \mathbf{P}\qty(\frac{S - 5 \times 100}{\sqrt{100} \times 3} < \frac{439.5 - 5 \times 100}{\sqrt{100} \times 3}) \approx \Phi\qty(- \frac{60.5}{30}) \approx 0.02186
+        \end{equation}
+        \item Notice that $\E[X_i] = 5$ and $\var(X_i) = 9$, then
+        \begin{equation}
+            \mathbf{P}(X_1 + \cdots + X_n \geq 200 + 5n) = \mathbf{P}\qty(\frac{X_1 + \cdots + X_n - 5n}{3\sqrt{n}} \geq \frac{200}{3\sqrt{n}}) \leq 0.05 \quad\Rightarrow\quad 1 - \Phi\qty(\frac{200}{3\sqrt{n}}) \leq 0.05
+        \end{equation}
+        which yields (by checking the standard normal table)
+        \begin{equation}
+            \frac{200}{3\sqrt{n}} \geq 1.65 \quad\Rightarrow\quad n \leq 1632
+        \end{equation}
+        \item Let $S_n = X_1 + \cdots + X_n$ be the total number of gadgets produced in $n$ days, then
+        \begin{equation}
+            \mathbf{P}(N \leq 220) = \mathbf{P}(S_{219} \leq 1000) = \mathbf{P}\qty(\frac{S_{219} - 5 \times 219}{3\sqrt{219}} \leq \frac{1000 - 5 \times 219}{3\sqrt{219}}) = \Phi(-2.1398) \approx 0.01618
+        \end{equation}
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    Let $X_1, Y_1, X_2, Y_2, \ldots$ be independent random variables, uniformly distributed in the unit interval $[0, 1]$, and let
+    \begin{equation}
+        W = \frac{(X_1 + X_2 + \cdot + X_{16}) - (Y_1 + Y_2 + \cdot + Y_{16})}{16}
+    \end{equation}
+    Find a numerical approximation to the quantity
+    \begin{equation}
+        \mathbf{P}(\abs{W - \E[W]} < 0.001)
+    \end{equation}
+\end{question}
+\begin{answer}
+    Let $Z_i = X_i - Y_i$, then $\E[Z_i] = 0$ and $\var(Z_i) = 1/6$. Then $W = (Z_1 + \cdots Z_{16}) / 16$, whose $\E[W] = 0$ and $\var(W) = 1/96$. Therefore, according to CLT
+    \begin{equation}
+        \mathbf{P}(\abs{W - \E[W]} < 0.001) = \mathbf{P}(\frac{\abs{W}}{\sqrt{1/96}} < \frac{0.001}{\sqrt{1/96}}) \approx \Phi(0.001\sqrt{96}) - \Phi(-0.001\sqrt{96}) \approx 0.00782
+    \end{equation}
+\end{answer}
+
+\begin{question}
+    It is well known that infants born to mothers who smoke tend to be small and prone to a range of ailments. It is conjectured that also they look abnormal. Nurses were shown selections of photographs of babies, one half of whom had smokers as mothers; the nurses were asked to judge from a baby's appearance whether or not the mother smoked. In 1500 trials the correct answer was given 910 times. Is the conjecture plausible? If so, why?
+\end{question}
+\begin{answer}
+    Proof by contradiction. If the conjecture is not plausible, then the number correct answers $X$ should follows a binomial distribution with parameters $n = 1500$ and $p = 0.5$. According to the CLT
+    \begin{equation}
+        \mathbf{P}\qty(\frac{X - 1500 \times 0.5}{\sqrt{1500 \times 0.5 \times 0.5}} \geq x) = \mathbf{P}\qty(\frac{X - 750}{\sqrt{375}} \geq x) \approx 1 - \Phi(x)
+    \end{equation}
+    Now $X = 910$, then
+    \begin{equation}
+        \frac{X - 750}{\sqrt{375}} = \frac{910 - 750}{\sqrt{375}} \approx 8.26 \geq 8 \quad\Rightarrow\quad \mathbf{P}\qty(\frac{X - 750}{\sqrt{375}}) \leq 1 - \Phi(8) \approx 6.6613 \times 10^{-16}
+    \end{equation}
+    Since the probability of getting 910 correct answers is extremely small, we can conclude that the conjecture is plausible.
+\end{answer}
+
+\begin{question}
+    \textbf{Conputional Problem.} In this problem, we want to demonstrate the central limit theorem by writing a computer program. Let $X_1, \ldots, X_n$ be i.i.d. random variables following the uniform distribution within the interval $[0, 1]$. Let 
+    \begin{equation}
+        Z_n = \frac{X_1 + \cdots + X_n - n\mu}{\sigma\sqrt{n}}
+    \end{equation}
+    where $\mu$ and $\sigma$ denote the mean and the standard deviation of $X_i$, respectively. Write a computer program to generate 100000 samples of $Z_n$ and draw the histogram of the samples for $n = 1, n = 2, n = 5$ and $n = 50$ respectively. \\ 
+    You don't have to upload your programs. Just take a screenshot of your programs as well as the results, and show them in your homework. There is no restriction on the programming language you use.
+\end{question}
+\begin{answer} ~
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.95\linewidth]{images/HW-12.5-result.png}
+        \caption{Result of the computational problem.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.95\linewidth]{images/HW-12.5-program.png}
+        \caption{Program of the computational problem.}
+    \end{figure}
+\end{answer}
+
+\end{document}

@@ -91,9 +91,12 @@ The conditional PMF limits the sample space to $A$.
 \begin{definition}[Joint PMF]
     The joint PMF of $X$ and $Y$ is defined as
     \begin{align}
-        p_{X, Y}(x, y) = \mathbf{P}(\{X = x\} \cap \{Y = y\})
+        p_{X, Y}(x, y) = \mathbf{P}(\{X(\omega) = x\} \cap \{Y(\omega) = y\})
     \end{align}
 \end{definition}
+\begin{remark}
+    \textbf{All the RVs are defined on the same probability space $(\Omega, \mathcal{F}, \mathbf{P})$. For those RVs defined on different probability spaces, we need to define a new probability space $\Omega = \Omega_X \times \Omega_Y$ previously.}
+\end{remark}
 \begin{property}[Properties of Joint PMF] ~
     \begin{itemize}
         \item Added up to 1: $\sum_x \sum_y p_{X, Y}(x, y) = 1$.

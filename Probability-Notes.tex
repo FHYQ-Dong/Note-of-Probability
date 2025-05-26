@@ -18,7 +18,7 @@
 \title{Probability Notes}
 \author{FHYQ-Dong}
 \date{\today}
-\version{11.0}
+\version{12.0}
 \cover{images/Note-cover.png}
 \definecolor{customcoverlinecolor}{RGB}{82, 59, 148}
 \colorlet{coverlinecolor}{customcoverlinecolor}
@@ -43,119 +43,113 @@
 \input{chaps/chap_Derived_Distributions_and_Entropy.tex}
 \input{chaps/chap_Convolution_Covariance_Correlation_and_Conditional_Expectation.tex}
 \input{chaps/chap_Transforms_and_Sum_of_A_Random_Number_of_RVs.tex}
+\input{chaps/chap_Weak_Law_of_Large_Numbers.tex}
 
 
-\chapter{Weak Law of Large Numbers}
+\chapter{Central Limit Theorem}
 
-\section{Probabilistic Inequalities}
-The intuition makes sense that if a non-negative RV must have a little probability to be large if its mean is small.
-\begin{theorem}[Markov's Inequality]
-    If a RV $X$ is non-negative, then for any $a > 0$,
-    \begin{equation}
-        \mathbf{P}(X \geq a) \leq \frac{\E[X]}{a}
-    \end{equation}
-\end{theorem}
-\begin{proof}
-    \begin{equation}
-        \E[X] = \int_{0}^{+\infty} xf_X(x) \dd{x} \geq \int_{a}^{+\infty} xf_X(x) \dd{x} \geq a\int_{a}^{+\infty} f_X(x) \dd{x} = a \mathbf{P}(X \geq a)
-    \end{equation}
-\end{proof}
-The equality holds iff. $\int_{0}^{a} xf_X(x) \dd{x} = 0$ and $\int_{a^+}^{+\infty} xf_X(x) \dd{x} = 0$, i.e. $X$ can only take the value $a$ and $0$.
-
-The intuition makes sense that if a RV has small variance, then it is unlikely to be far away from its mean.
-\begin{theorem}[Chebyshev's Inequality]
-    If a RV $X$ has finite mean $\mu$ and finite variance $\sigma^2$, then for any $c > 0$,
-    \begin{equation}
-        \mathbf{P}(\abs{X - \mu} \geq c) \leq \frac{\sigma^2}{c^2}
-    \end{equation}
-\end{theorem}
-\begin{proof}
-    \begin{equation}
-        \sigma^2 = \int_{-\infty}^{+\infty} (x - \mu)^2 f_X(x) \dd{x} \geq \int_{-\infty}^{\mu - c} (x - \mu)^2 f_X(x) \dd{x} + \int_{\mu + c}^{+\infty} (x - \mu)^2 f_X(x) \dd{x} \geq c^2 \mathbf{P}(\abs{X - \mu} \geq c)
-    \end{equation}
-\end{proof}
-The equality holds iff. $\int_{(\mu-c)^+}^{(\mu+c)^-} (x - \mu)^2 f_X(x) \dd{x} = \int_{-\infty}^{(\mu-c)^-} (x - \mu)^2 f_X(x) \dd{x} = \int_{(\mu+c)^{+}}^{+\infty} (x - \mu)^2 f_X(x) \dd{x} = 0$, i.e. $X$ can only take the value $\mu - c$, $\mu + c$ and $\mu$, and $\mathbf{P}(X = \mu) = 1 - \sigma^2/c^2$. To keep the mean is still $\mu$, $\mathbf{P}(X = \mu + c) = \mathbf{P}(X = \mu - c) = \sigma^2/c^2$.
-
-\begin{theorem}[Chernoff's Inequality]
-    If a RV $X$ has a transform $M_{X}(s)$, then
-    \begin{equation}
-        \mathbf{P}(X \geq a) \leq \exp\qty(-\max_{s \geq 0} \qty{sa - \ln M_{X}(s)})
-    \end{equation}
-\end{theorem}
-\begin{proof}
-    Given $a$ and $\textcolor{red}{\forall s \geq 0}$, we have
-    \begin{equation}
-        M_X(s) = \int_{-\infty}^{a} \e^{sx} f_X(x) \dd{x} + \int_{a}^{+\infty} \e^{sx} f_X(x) \dd{x} \geq \int_{a}^{+\infty} \e^{sx} f_X(x) \dd{x} \geq \e^{sa} \mathbf{P}(X \geq a)
-    \end{equation}
-    which yields
-    \begin{equation}
-        \mathbf{P}(X \geq a) \leq \frac{M_X(s)}{\e^{sa}}, \forall s \geq 0 \quad\Rightarrow\quad \mathbf{P}(X \geq a) \leq \inf_{s \geq 0} \frac{M_X(s)}{\e^{sa}} = \exp\qty(-\max_{s \geq 0} \qty{sa - \ln M_{X}(s)})
-    \end{equation}
-\end{proof}
-This inequality is useful when $a > 0$. Similarly, we can prove
-\begin{theorem}[Chernoff's Inequality]
-    If a RV $X$ has a transform $M_{X}(s)$, then
-    \begin{equation}
-        \mathbf{P}(X \leq a) \leq \exp\qty(-\max_{s \leq 0} \qty{sa - \ln M_{X}(s)})
-    \end{equation}
-\end{theorem}
-
-The three inequalities have the upper bound of $c^{-1}$, $c^{-2}$ and $\exp(-c)$, respectively, with the information of the distribution of $X$ increasing. 
-
-\begin{example}[Upper Bound of Variance]
-    When $X$ is known to take values in a range $[a, b]$, then $\sigma^2 \leq (b - a)^2/4$.
-\end{example}
-\begin{proof}
-    Note that for any constant $\gamma$
-    \begin{equation}
-        \E[(X - \gamma)^2] = \E[X^2] - 2\gamma \E[X] + \gamma^2
-    \end{equation}
-    which is minimized when $\gamma = \E[X]$. Therefore, letting $\gamma = (a+b)/2$
-    \begin{equation}
-        \sigma^2 = \E[X - \E[X]] \leq \E\qty[\qty(X - \frac{a+b}{2})^2] = \E\qty[(X - a)(X - b)] + \frac{(b - a)^2}{4} \leq \frac{(b - a)^2}{4}
-    \end{equation}
-\end{proof}
-
-
-\section{Weak Law of Large Numbers}
-When the number of samples becomes large, i.e. let $X_1, X_2, \cdots, X_n$ be i.i.d RVs with finite mean $\mu$ and finite variance $\sigma^2$, and let $n \to \infty$
+\section{Central Limit Theorem}
+Let $X_1, X_2, \ldots, X_n$ be i.i.d. RVs with finite mean $\mu$ and finite variance $\sigma^2$. Standardize the sum $S_n = X_1 + X_2 + \cdots + X_n$ by
 \begin{equation}
-    M_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+    Z_n = \frac{S_n - \E[S_n]}{\sqrt{\var(S_n)}} = \frac{S_n - n\mu}{\sqrt{n}\sigma}
 \end{equation}
-\begin{itemize}
-    \item $\E[M_n] = \mu$
-    \item $\var(M_n) = \frac{\sigma^2}{n}$
-    \item Applying Chebyshev's inequality
+then $\E[Z_n] = 0$ and $\var(Z_n) = 1$. 
+
+\begin{theorem}[Central Limit Theorem]
+    Let $X_1, X_2, \ldots, X_n$ be i.i.d. RVs with finite mean $\mu$ and finite variance $\sigma^2$. Then the distribution of $Z_n$ converges to the standard normal distribution as $n \to \infty$, i.e.
     \begin{equation}
-        \mathbf{P}(\abs{X - \mu} \geq \epsilon) \leq \frac{\sigma^2}{n\epsilon^2}
+        Z_n \xrightarrow{D} N(0, 1)
     \end{equation}
-    \item Let $n \to \infty$, we have $\mathbf{P}(\abs{X - \mu} \geq \epsilon) \to 0$.
-\end{itemize}
-\begin{theorem}[The Weak Law of Large Numbers]
-    Let $X_1, X_2, \cdots, X_n$ be i.i.d RVs with finite mean $\mu$ and finite variance $\sigma^2$. Then for any $\epsilon > 0$,
+    or equivalently
     \begin{equation}
-        \mathbf{P}(\abs{M_n - \mu} \geq \epsilon) = \mathbf{P}\qty(\abs{\frac{X_1 + X_2 + \cdots + X_n}{n} - \mu} \geq \epsilon) \leq \frac{\sigma^2}{n\epsilon^2} \to 0, \text{ as } n \to \infty
+        \frac{S_n - n\mu}{\sqrt{n}\sigma} \xrightarrow{D} N(0, 1)
     \end{equation}
 \end{theorem}
-We say that $M_n$ converges \textcolor{red}{in probability} to $\mu$, denoted as $M_n \xrightarrow{\textcolor{red}{p}} \mu$.
-
-\begin{example}[The pollster's problem]
-    Let $f$ denote the fraction of voters who support a particular officer, and $X_i$ be Bernoulli random variables encoding poll responses
+\begin{proof}
+    For simplicity, assume $X_1, X_2, \ldots, X_n$ are i.i.d. RVs with mean $\mu = 0$, variance $\sigma^2$ and transform $M_X(s)$. The transform of $Z_n$ is 
     \begin{equation}
-        X_i = \left\{\begin{aligned}
-            1, \quad &\text{if yes} \\
-            0, \quad &\text{if no}
-        \end{aligned}\right.
+        M_{Z_n}(s) = \E[\e^{sZ_n}] = \E\qty[\e^{\frac{s}{\sqrt{n}\sigma}S_n}] = \prod_{i=1}^{n} M_X\qty(\frac{s}{\sqrt{n}\sigma}) = \qty(M_X\qty(\frac{s}{\sqrt{n}\sigma}))^n
     \end{equation}
-    The sample mean $M_n = (X_1 + \cdots + X_n) / n$ estimates the fraction of ``yes'' in our sample. The goal is to solve for $n$ satisfying 95\% confidence of $\leq 1\%$ error
+    By the Taylor expansion of $M_X(s)$ around $s = 0$
+    \begin{equation}
+        M_X\qty(\frac{s}{\sqrt{n}\sigma}) = 1 + \frac{s^2}{2n} + o\qty(\frac{s^2}{n\sigma^2}), \quad \text{as } n \to \infty
+    \end{equation}
+    Therefore
+    \begin{equation}
+        M_{Z_n}(s) = \qty(1 + \frac{s^2}{2n} + o\qty(\frac{s^2}{n\sigma^2}))^n \xrightarrow{n \to \infty} \e^{\frac{s^2}{2}} = M_{N(0, 1)}(s)
+    \end{equation}
+\end{proof}
+
+\begin{example}[The Pollster's problem]
+    Let $f$ denote the fraction of the entire voter population, $X_i$ be the indicator RV that the $i$-th voter polls, and $M_n = (X_1 + \cdots + X_n) / n$. Find $n$ such that
     \begin{equation}
         \mathbf{P}(\abs{M_n - f} \geq 0.01) \leq 0.05
     \end{equation}
 \end{example}
 \begin{solution}
-    Use the Chebyshev's inequality
     \begin{equation}
-        \mathbf{P}(\abs{M_n - f} \geq 0.01) \leq \frac{\sigma_{M_n}^2}{(0.01)^2} = \frac{\sigma_X^2}{n(0.01)^2} \leq \frac{1}{4n(0.01)^2} \leq 0.05 \quad\Rightarrow\quad n \geq 50000
+        \abs{M_n - f} \geq 0.01 \quad\Leftrightarrow\quad \abs{\frac{X_1 + \cdots + X_n - nf}{\sqrt{n}\sigma}} \geq \frac{0.01 \sqrt{n}}{\sigma}
+    \end{equation}
+    where LHS follows a standard normal distribution. Let $Z \sim N(0, 1)$, then
+    \begin{equation}
+        \mathbf{P}(\abs{M_n - f} \geq 0.01) \approx \mathbf{P}\qty(\abs{Z} \geq \frac{0.01 \sqrt{n}}{\sigma}) \leq \mathbf{P}(\abs{Z} \geq 0.02\sqrt{n}) = 2(1 - \Phi(0.02\sqrt{n})) \leq 0.05
+    \end{equation}
+    which yields $n \geq 9604$.
+\end{solution}
+
+\begin{example}[Binomial RV]
+    A binomial RV $S_n$ with parameters $n$ and $p$ can be viewed as the sum of $n$ independent Bernoulli RVs $X_1, \ldots, X_n$ with parameter $p$
+    \begin{equation}
+        S_n = X_1 + X_2 + \cdots + X_n
+    \end{equation}
+    Find $\mathbf{P}(k \leq S_n \leq l)$.
+\end{example}
+\begin{solution}
+    For Bernoulli RV $X_i$
+    \begin{equation}
+        \mu = \E[X_i] = p, \quad \sigma = \sqrt{\var(X_i)} = \sqrt{p(1-p)}
+    \end{equation}
+    and the inequality suggests
+    \begin{equation}
+        k \leq S_n \leq l \quad\Rightarrow\quad \frac{k - nq}{\sqrt{np(1-p)}} \leq Z_n \leq \frac{l - nq}{\sqrt{np(1-p)}}
+    \end{equation}
+    According to the CLT,$Z_n$ approximately follows a standard normal distribution, therefore
+    \begin{equation}
+        \mathbf{P}(k \leq S_n \leq l) = \mathbf{P}\qty(\frac{k - np}{\sqrt{np(1-p)}} \leq Z_n \leq \frac{l - np}{\sqrt{np(1-p)}}) \approx \Phi\qty(\frac{l - np}{\sqrt{np(1-p)}}) - \Phi\qty(\frac{k - np}{\sqrt{np(1-p)}})
+    \end{equation}
+    which is known as the De Moivre-Laplace Approximation to the Binomial distribution.
+\end{solution}
+\begin{theorem}[De Moivre-Laplace Approximation to the Binomial Distribution]
+    If $S_n$ is a binomial RV with parameters $n$ and $p$, with $n$ large and $k, l$ nonnegative integers, then
+    \begin{equation}
+        \mathbf{P}(k \leq S_n \leq l) \approx \Phi\qty(\frac{l - np}{\sqrt{np(1-p)}}) - \Phi\qty(\frac{k - np}{\sqrt{np(1-p)}})
+    \end{equation}
+\end{theorem}
+\begin{example}[Approximation to the Binomial CDF]
+    Given $n = 36$ and $p = 0.5$, find $\mathbf{P}(S_n \leq 21)$.
+\end{example}
+\begin{solution}
+    An exact calculation gives
+    \begin{equation}
+        \mathbf{P}(S_n \leq 21) = \sum_{k=0}^{21} \binom{36}{k} (0.5)^{36} = 0.8785
+    \end{equation}
+    The CLT gives
+    \begin{equation}
+        \mathbf{P}(S_n \leq 21) \approx \Phi\qty(\frac{21 - 18}{\sqrt{9}}) = 0.8413
+    \end{equation}
+\end{solution}
+
+The approximation seems simple and useful, but notice that $S_n$ is always an integer while $\Phi$ is continuous, so $\mathbf{P}(S_n \leq k) = \mathbf{P}(S_n < k + 1)$. Usually, we use the 1/2 correction to do approximation (not only for the binomial distribution).
+\begin{example}[Approximation to the Binomial PMF]
+    When the 1/2 correction is used, use the CLT to approximate $\mathbf{P}(S_n \leq 19)$, where $S_n$ is a binomial RV with parameters $n = 36$ and $p = 0.5$.
+\end{example}
+\begin{solution}
+    \begin{equation}
+        \mathbf{P}(S_n = 19) = \mathbf{P}(18.5 \leq S_n \leq 19.5) \approx \Phi\qty(\frac{19.5 - 18}{3}) - \Phi\qty(\frac{18.5 - 18}{3}) = 0.124
+    \end{equation}
+    The exact value is
+    \begin{equation}
+        \mathbf{P}(S_n = 19) = \binom{36}{19} (0.5)^{36} = 0.1251
     \end{equation}
 \end{solution}
 
