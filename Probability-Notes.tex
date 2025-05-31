@@ -153,6 +153,54 @@ The approximation seems simple and useful, but notice that $S_n$ is always an in
     \end{equation}
 \end{solution}
 
+\section{Strong Law of Large Numbers}
+\begin{theorem}[Strong Law of Large Numbers]
+    Let $X_1, X_2, \ldots$ be a sequence of i.i.d. RVs with finite mean $\mu$. Then the sample average converges almost surely to the mean $\mu$ as $n \to \infty$, i.e.
+    \begin{equation}
+        \mathbf{P}\qty(\lim_{n \to \infty} \frac{X_1 + X_2 + \cdots + X_n}{n} = \mu) = 1
+    \end{equation}
+\end{theorem}
+
+\begin{remark}
+    The differenct between WLLN and SLLN:
+    \begin{itemize}
+        \item WLLN states that the probability $\mathbf{P}(\abs{M_n - \mu})$ of a significant deviation $M_n$ from $\mu$ goes to zero as $n \to \infty$, but there's still a small probability that $M_n$ deviates significantly from $\mu$.
+        \item While SLLN states that $M_n$ converges to $\mu$ almost surely, that is to say, given any $\epsilon > 0$, the probability that the difference $\abs{M_n - \mu}$ will exceed $\epsilon$ an infinite number of times is equal to zero.
+    \end{itemize}
+\end{remark}
+
+
+
+\chapter{Elementary Stochastic Processes}
+\begin{definition}[Stochastic Processes]
+    A stochastic process is a mathematical model of a probabilistic experiment that evolves in time and generates a sequence of numerical values.
+\end{definition}
+
+
+\section{Bernoulli Process}
+\begin{definition}[Bernoulli Process]
+    Bernoulli process is a sequence $X_1, X_2, \ldots$ of i.i.d. Bernoulli RVs $X_i$ with
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{P}(\text{success}) &= \mathbf{P}(X_i = 1) = p \\ 
+        \mathbf{P}(\text{failure}) &= \mathbf{P}(X_i = 0) = 1 - p 
+    \end{aligned}
+    \end{equation}
+    for each $i$.
+\end{definition}
+\begin{example}[Examples of Bernoulli Process]
+    \begin{itemize}
+        \item xxx
+    \end{itemize}
+\end{example}
+\begin{property}[Property of Bernoulli Process]
+    \begin{itemize}
+        \item \textbf{Independence:} For any given time $n$, the sequence of $X_{n+1}, X_{n+2}, \ldots$ is also a Bernoulli process, and is independent from $X_1, \ldots , X_n$.
+        \item \textbf{Memoryless:}  Let $n$ be a given time and let $\overline{T}$ be the time of the first success after time $n$. Then $\overline{T} - n$ has a geometric distribution with parameter $p$, and is independent of the RVs $X_1, \ldots X_n$.
+    \end{itemize}
+\end{property}
+
+
 \appendix
 \input{chaps/app_Problem_Solutions.tex}
 
