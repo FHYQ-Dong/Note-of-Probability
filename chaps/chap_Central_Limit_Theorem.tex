@@ -1,0 +1,200 @@
+\chapter{Central Limit Theorem}
+
+
+\section{Central Limit Theorem}
+Let $X_1, X_2, \ldots, X_n$ be i.i.d. RVs with finite mean $\mu$ and finite variance $\sigma^2$. Standardize the sum $S_n = X_1 + X_2 + \cdots + X_n$ by
+\begin{equation}
+    Z_n = \frac{S_n - \E[S_n]}{\sqrt{\var(S_n)}} = \frac{S_n - n\mu}{\sqrt{n}\sigma}
+\end{equation}
+then $\E[Z_n] = 0$ and $\var(Z_n) = 1$. 
+
+\begin{theorem}[Central Limit Theorem]
+    Let $X_1, X_2, \ldots, X_n$ be i.i.d. RVs with finite mean $\mu$ and finite variance $\sigma^2$. Then the distribution of $Z_n$ converges to the standard normal distribution as $n \to \infty$, i.e.
+    \begin{equation}
+        Z_n \xrightarrow{D} N(0, 1)
+    \end{equation}
+    or equivalently
+    \begin{equation}
+        \frac{S_n - n\mu}{\sqrt{n}\sigma} \xrightarrow{D} N(0, 1)
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    For simplicity, assume $X_1, X_2, \ldots, X_n$ are i.i.d. RVs with mean $\mu = 0$, variance $\sigma^2$ and transform $M_X(s)$. The transform of $Z_n$ is 
+    \begin{equation}
+        M_{Z_n}(s) = \E[\e^{sZ_n}] = \E\qty[\e^{\frac{s}{\sqrt{n}\sigma}S_n}] = \prod_{i=1}^{n} M_X\qty(\frac{s}{\sqrt{n}\sigma}) = \qty(M_X\qty(\frac{s}{\sqrt{n}\sigma}))^n
+    \end{equation}
+    By the Taylor expansion of $M_X(s)$ around $s = 0$
+    \begin{equation}
+        M_X\qty(\frac{s}{\sqrt{n}\sigma}) = 1 + \frac{s^2}{2n} + o\qty(\frac{s^2}{n\sigma^2}), \quad \text{as } n \to \infty
+    \end{equation}
+    Therefore
+    \begin{equation}
+        M_{Z_n}(s) = \qty(1 + \frac{s^2}{2n} + o\qty(\frac{s^2}{n\sigma^2}))^n \xrightarrow{n \to \infty} \e^{\frac{s^2}{2}} = M_{N(0, 1)}(s)
+    \end{equation}
+\end{proof}
+
+\begin{example}[The Pollster's problem]
+    Let $f$ denote the fraction of the entire voter population, $X_i$ be the indicator RV that the $i$-th voter polls, and $M_n = (X_1 + \cdots + X_n) / n$. Find $n$ such that
+    \begin{equation}
+        \mathbf{P}(\abs{M_n - f} \geq 0.01) \leq 0.05
+    \end{equation}
+\end{example}
+\begin{solution}
+    \begin{equation}
+        \abs{M_n - f} \geq 0.01 \quad\Leftrightarrow\quad \abs{\frac{X_1 + \cdots + X_n - nf}{\sqrt{n}\sigma}} \geq \frac{0.01 \sqrt{n}}{\sigma}
+    \end{equation}
+    where LHS follows a standard normal distribution. Let $Z \sim N(0, 1)$, then
+    \begin{equation}
+        \mathbf{P}(\abs{M_n - f} \geq 0.01) \approx \mathbf{P}\qty(\abs{Z} \geq \frac{0.01 \sqrt{n}}{\sigma}) \leq \mathbf{P}(\abs{Z} \geq 0.02\sqrt{n}) = 2(1 - \Phi(0.02\sqrt{n})) \leq 0.05
+    \end{equation}
+    which yields $n \geq 9604$.
+\end{solution}
+
+\begin{example}[Binomial RV]
+    A binomial RV $S_n$ with parameters $n$ and $p$ can be viewed as the sum of $n$ independent Bernoulli RVs $X_1, \ldots, X_n$ with parameter $p$
+    \begin{equation}
+        S_n = X_1 + X_2 + \cdots + X_n
+    \end{equation}
+    Find $\mathbf{P}(k \leq S_n \leq l)$.
+\end{example}
+\begin{solution}
+    For Bernoulli RV $X_i$
+    \begin{equation}
+        \mu = \E[X_i] = p, \quad \sigma = \sqrt{\var(X_i)} = \sqrt{p(1-p)}
+    \end{equation}
+    and the inequality suggests
+    \begin{equation}
+        k \leq S_n \leq l \quad\Rightarrow\quad \frac{k - nq}{\sqrt{np(1-p)}} \leq Z_n \leq \frac{l - nq}{\sqrt{np(1-p)}}
+    \end{equation}
+    According to the CLT,$Z_n$ approximately follows a standard normal distribution, therefore
+    \begin{equation}
+        \mathbf{P}(k \leq S_n \leq l) = \mathbf{P}\qty(\frac{k - np}{\sqrt{np(1-p)}} \leq Z_n \leq \frac{l - np}{\sqrt{np(1-p)}}) \approx \Phi\qty(\frac{l - np}{\sqrt{np(1-p)}}) - \Phi\qty(\frac{k - np}{\sqrt{np(1-p)}})
+    \end{equation}
+    which is known as the De Moivre-Laplace Approximation to the Binomial distribution.
+\end{solution}
+\begin{theorem}[De Moivre-Laplace Approximation to the Binomial Distribution]
+    If $S_n$ is a binomial RV with parameters $n$ and $p$, with $n$ large and $k, l$ nonnegative integers, then
+    \begin{equation}
+        \mathbf{P}(k \leq S_n \leq l) \approx \Phi\qty(\frac{l - np}{\sqrt{np(1-p)}}) - \Phi\qty(\frac{k - np}{\sqrt{np(1-p)}})
+    \end{equation}
+\end{theorem}
+\begin{example}[Approximation to the Binomial CDF]
+    Given $n = 36$ and $p = 0.5$, find $\mathbf{P}(S_n \leq 21)$.
+\end{example}
+\begin{solution}
+    An exact calculation gives
+    \begin{equation}
+        \mathbf{P}(S_n \leq 21) = \sum_{k=0}^{21} \binom{36}{k} (0.5)^{36} = 0.8785
+    \end{equation}
+    The CLT gives
+    \begin{equation}
+        \mathbf{P}(S_n \leq 21) \approx \Phi\qty(\frac{21 - 18}{\sqrt{9}}) = 0.8413
+    \end{equation}
+\end{solution}
+
+The approximation seems simple and useful, but notice that $S_n$ is always an integer while $\Phi$ is continuous, so $\mathbf{P}(S_n \leq k) = \mathbf{P}(S_n < k + 1)$. Usually, we use the 1/2 correction to do approximation (not only for the binomial distribution).
+\begin{example}[Approximation to the Binomial PMF]
+    When the 1/2 correction is used, use the CLT to approximate $\mathbf{P}(S_n \leq 19)$, where $S_n$ is a binomial RV with parameters $n = 36$ and $p = 0.5$.
+\end{example}
+\begin{solution}
+    \begin{equation}
+        \mathbf{P}(S_n = 19) = \mathbf{P}(18.5 \leq S_n \leq 19.5) \approx \Phi\qty(\frac{19.5 - 18}{3}) - \Phi\qty(\frac{18.5 - 18}{3}) = 0.124
+    \end{equation}
+    The exact value is
+    \begin{equation}
+        \mathbf{P}(S_n = 19) = \binom{36}{19} (0.5)^{36} = 0.1251
+    \end{equation}
+\end{solution}
+
+\section{Strong Law of Large Numbers}
+\begin{theorem}[Strong Law of Large Numbers]
+    Let $X_1, X_2, \ldots$ be a sequence of i.i.d. RVs with finite mean $\mu$. Then the sample average converges almost surely to the mean $\mu$ as $n \to \infty$, i.e.
+    \begin{equation}
+        \mathbf{P}\qty(\lim_{n \to \infty} \frac{X_1 + X_2 + \cdots + X_n}{n} = \mu) = 1
+    \end{equation}
+\end{theorem}
+
+\begin{remark}
+    The differenct between WLLN and SLLN:
+    \begin{itemize}
+        \item WLLN states that the probability $\mathbf{P}(\abs{M_n - \mu})$ of a significant deviation $M_n$ from $\mu$ goes to zero as $n \to \infty$, but there's still a small probability that $M_n$ deviates significantly from $\mu$.
+        \item While SLLN states that $M_n$ converges to $\mu$ almost surely, that is to say, given any $\epsilon > 0$, the probability that the difference $\abs{M_n - \mu}$ will exceed $\epsilon$ an infinite number of times is equal to zero.
+    \end{itemize}
+\end{remark}
+\begin{remark}
+    For \textbf{i.i.d RVs}, the conditions required by WLLN and SLLN are the same (Kolmogorov SLLN for i.i.d RVs), but for \textbf{independent RVs} (not necessarily identically distributed), a commonly used condition is
+    \begin{itemize}
+        \item WLLN requires (WLLN for independent RVs)
+        \begin{equation}
+            \label{eq:wlln-independent}
+            \lim_{n \to \infty} \frac{1}{n^2} \sum_{i=1}^{n} \var(X_i) = 0
+        \end{equation}
+        which is to say, the average variance of the RVs goes to zero as $n$ increases, or i.e., the sum of the variances grows slower than $n^2$.
+        \item SLLN requires (Kolmogorov SLLN for independent RVs)
+        \begin{equation}
+            \label{eq:slln-independent}
+            \sum_{n=1}^{\infty} \frac{\var(X_n)}{n^2} < \infty
+        \end{equation}
+        which requires the series to converge, meaning that every individual variance $\var(X_n)$ must be small enough relative to $n^2$.
+    \end{itemize}
+    From the form of Eq.~\ref{eq:wlln-independent} and Eq.~\ref{eq:slln-independent} (insert $1/n^2$ into the series), one can easily observe that the condition for SLLN is stronger than that for WLLN.
+\end{remark}
+\begin{remark}
+    Note that all these require the expectation to be finite. For $\E[X_i] = \infty$, a commonly used strategy is to consider the truncated RVs $Y_i^{(c_i)} = X_i \cdot \mathbf{1}_{\{\abs{X_i} \leq c_i\}}$ where $c_i$ is a truncation series satisfying 
+    \begin{itemize}
+        \item $c_i \uparrow \infty$ as $i \to \infty$
+        \item $\E\qty[Y_i^{(c_i)}]$ is finite for each $i$.
+        \item $\mathbf{P}(\abs{X_i} > c_i) \to 0$ as $i \to \infty$.
+    \end{itemize}
+    Under such conditions, one can apply WLLN or SLLN to the truncated RVs $Y_i^{(c_i)}$ and then take the limit as $c_i \to \infty$.
+    \begin{itemize}
+        \item WLLN requires
+        \begin{equation}
+            \lim_{n \to \infty} \frac{1}{n^2} \sum_{i=1}^{n} \var\qty(Y_i^{(c_i)}) = 0 \quad\Rightarrow\quad \frac{1}{n} \sum_{i=1}^{n} \qty(Y_i^{(c_i)} - \E\qty[Y_i^{(c_i)}]) \xrightarrow{P} 0
+        \end{equation}
+        \item SLLN requires Kolmogorov's three series theorem: \begin{itemize}
+            \item $\sum_{i=1}^{\infty} \mathbf{P}(\abs{X_i} > c_i) < \infty$
+            \item $\sum_{i=1}^{\infty} \abs{\E\qty[Y_i^{(c_i)}]} < \infty$
+            \item $\sum_{i=1}^{\infty} \var\qty(Y_i^{(c_i)}) < \infty$
+        \end{itemize}
+        which implies $\sum_{n=1}^{\infty} \qty(X_n - \E\qty[Y_n^{(c_n)}]) < \infty$ almost surely, and thus
+        \begin{equation}
+            \frac{1}{n} \sum_{i=1}^{n} \qty(Y_i^{(c_i)} - \E\qty[Y_i^{(c_i)}]) \xrightarrow{a.s.} 0
+        \end{equation}
+    \end{itemize}
+    However, sometimes one of these series may not converge, then we can use another series to normalize the truncated RVs
+    \begin{itemize}
+        \item WLLN
+        \begin{equation}
+            \lim_{n \to \infty} \frac{1}{b_n^2} \sum_{i=1}^{n} \var\qty(Y_i^{(c_i)}) = 0 \quad\Rightarrow\quad \frac{1}{b_n} \sum_{i=1}^{n} \qty(Y_i^{(c_i)} - \E\qty[Y_i^{(c_i)}]) \xrightarrow{P} 0
+        \end{equation}
+        \item SLLN \begin{itemize}
+            \item If only $\sum_{i=1}^{\infty} \abs{\E\qty[Y_i^{(c_i)}]}$ do not converge, then we can normalize the truncated RVs by
+            \begin{equation}
+                \sum_{i=1}^{\infty} \frac{\abs{\E\qty[Y_i^{(c_i)}]}}{b_n} < \infty \quad\Rightarrow\quad \frac{1}{b_n} \sum_{i=1}^{n} \qty(Y_i^{(c_i)} - \E\qty[Y_i^{(c_i)}]) \xrightarrow{a.s.} 0
+            \end{equation}
+            \item If only $\sum_{i=1}^{\infty} \var\qty(Y_i^{(c_i)})$ do not converge, then we can normalize the truncated RVs by
+            \begin{equation}
+                \sum_{i=1}^{\infty} \frac{\var\qty(Y_i^{(c_i)})}{b_n^2} < \infty \quad\Rightarrow\quad \frac{1}{b_n} \sum_{i=1}^{n} \qty(Y_i^{(c_i)} - \E\qty[Y_i^{(c_i)}]) \xrightarrow{a.s.} 0
+            \end{equation}
+        \end{itemize}
+    \end{itemize}
+\end{remark}
+
+\begin{example}[Convergence of the Minimum of a Sequence of RVs ]
+    Let $X_1, X_2, \ldots$ be a sequence of independent RVs that are uniformly distributed in $[0, 1]$, and $Y_n = \min\{X_1, \ldots, X_n\}$. Prove that $Y_n$ converges to 0 with probability 1.
+\end{example}
+\begin{proof}
+    \label{ex:convergence-minimum}
+    Let $\Omega$ be the sample space of the sequence of RVs $X_1, X_2, \ldots$. For each $\omega \in \Omega$, $Y_n(\omega)$ is non-increasing. Notice that $Y_n(\omega) \geq 0$, so there exists a limit $Y(\omega)$ for $Y_n(\omega)$ as $n \to \infty$, i.e. $Y_n \xrightarrow{a.s.} Y$.
+
+    We then need to show that $Y = 0$ with probability 1. Consider the event $\{Y > 0\}$, which is equivalent to the event $\bigcup_{k=1}^{\infty} \{Y > 1/k\}$. For event $\{Y > 1/k\}$, it means that all $X_i$ are greater than $1/k$, i.e. $\{Y > 1/k\} = \bigcap_{i=1}^{\infty} \{X_i > 1/k\}$. Since $X_i$ are independent and uniformly distributed in $[0, 1]$, we have
+    \begin{equation}
+        \mathbf{P}\qty(X_i > \frac{1}{k}) = 1 - \frac{1}{k}, \quad \mathbf{P}\qty(\qty{Y > \frac{1}{k}}) = \qty(1 - \frac{1}{k})^\infty = 0
+    \end{equation}
+    Therefore, we have
+    \begin{equation}
+        \mathbf{P}\qty(Y > 0) = \mathbf{P}\qty(\bigcup_{k=1}^{\infty} \{Y > 1/k\}) = 0 \quad\Rightarrow\quad \mathbf{P}\qty(Y = 0) = 1, \quad\text{i.e. } Y \xrightarrow{a.s.} 0
+    \end{equation}
+    Thus, we conclude that $Y_n \xrightarrow{a.s.} Y \xrightarrow{a.s.} 0$.
+\end{proof}
