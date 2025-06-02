@@ -30,6 +30,8 @@ jobs:
           root_file: |
             Probability-Notes.tex
             HW/HW-*.tex
+          # extra_system_packages: "inkscape" # Uncomment if there's svg images to compile
+          # latexmk_shell_escape: true
           
       - name: Stash PDF
         id: stash-pdf

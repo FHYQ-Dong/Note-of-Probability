@@ -5,6 +5,8 @@
 \usepackage{extarrows}
 \usepackage{physics}
 \usepackage{mathtools}
+\usepackage{tikz}
+\usepackage[inkscapelatex=false]{svg}
 
 \input{math_cmds.tex}
 
@@ -18,7 +20,7 @@
 \title{Probability Notes}
 \author{FHYQ-Dong}
 \date{\today}
-\version{12.0}
+\version{13.0}
 \cover{images/Note-cover.png}
 \definecolor{customcoverlinecolor}{RGB}{82, 59, 148}
 \colorlet{coverlinecolor}{customcoverlinecolor}
@@ -51,6 +53,14 @@
 \begin{definition}[Stochastic Processes]
     A stochastic process is a mathematical model of a probabilistic experiment that evolves in time and generates a sequence of numerical values.
 \end{definition}
+
+\begin{figure}[H]
+    \centering
+    \resizebox{!}{0.3\linewidth}
+    {\input{images/Note-13.1.tex}}
+    \caption{A Sample Space for a Stochastic Process}
+\end{figure}
+
 \begin{remark}
     \textbf{In the following two process, it is essential to distinguish ``measure by time'' and ``measure by successes'', e.g., given a number of successes, how long does it take to achieve them, or given a time interval, how many successes are achieved.}
 \end{remark}
@@ -146,7 +156,7 @@ meaning that the time until the $k$-th success is distributed as a negative bino
 For a Bernoulli process with parameter $p$, whenever there is a success, we can split success into process $A$ or process $B$ (mutually exclusively) with probabilities $p_A$ and $p_B$, respectively, where $p_A + p_B = 1$; whenever there is a failure, we record it as a failure in both processes. The resulting processes $A$ and $B$ are also Bernoulli processes with parameters $p\cdot p_A$ and $p \cdot p_B$, respectively. The proof is obvious. \textbf{Non of the three processes are independent point-wise, but the two resulting processes $A$ and $B$ are independent as a whole. (Futher studying in course ``Probability and Stochastic Processes (2)'')}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\linewidth]{images/Note-13.1.png}
+    \includegraphics[width=0.4\linewidth]{images/Note-13.3.png}
     \caption{Splitting a Bernoulli Process}
 \end{figure}
 
@@ -182,7 +192,7 @@ For two independent Bernoulli processes $A$ and $B$ with parameters $p_A$ and $p
 By dividing the total time interval $t$ into $n$ small intervals of length $\delta = t/n$, we can use Bernoulli process to approximate the Poisson process. Finally, we can take the limit as $n \to \infty$ to obtain $\mathbf{P}(k, t)$.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{images/Note-13.3.png}
+    \includegraphics[width=0.6\linewidth]{images/Note-13.4.png}
     \caption{Poisson Process as a Limit of Bernoulli Process}
 \end{figure}
 
@@ -289,7 +299,7 @@ For a Poisson process with parameter $\lambda$, whenever there is an arrival, we
 For two independent Poisson processes $A$ and $B$ with parameters $\lambda_A$ and $\lambda_B$, respectively, whenever there is an arrival in either process, we record it as an arrival in the merged process $C$, otherwise we record it as a failure. The resulting process $C$ is also a Poisson process with parameter $\lambda_A + \lambda_B$. The proof is also obvious by definition. \textbf{The resulting process $C$ is not independent point-wise from the two original processes $A$ and $B$, but it is independent as a whole. (Futher studying in course ``Probability and Stochastic Processes (2)'')}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\linewidth]{images/Note-13.4.png}
+    \includegraphics[width=0.4\linewidth]{images/Note-13.5.png}
     \caption{Merging Two Poisson Processes}
 \end{figure}
 

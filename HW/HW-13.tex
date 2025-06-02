@@ -1,0 +1,223 @@
+\documentclass[utf8]{article}
+% \usepackage{ctex}
+% \usepackage{circuitikz}
+% \usepackage{tikz}
+% \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% math font
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{physics}
+\usepackage{mathtools}
+
+\theoremstyle{definition}% default
+\newtheorem{question}{Question} %
+\theoremstyle{plain}% 
+\newtheorem{answer}{Answer} %
+\newtheorem{theorem}{Theorem} % Define the theorem environment
+
+\input{math_cmds.tex}
+
+\title{Problem Set 13}
+\author{ FHYQ-Dong, Class **********, Student ID: ********** }
+\date{\today}
+
+\geometry{a4paper, scale=0.8}
+\setlength{\columnsep}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\lhead{Problem Set 13}
+\rhead{ FHYQ-Dong }
+\cfoot{---~\thepage~---}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,   
+    urlcolor=black,
+    citecolor=black,
+}
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\begin{question}
+    Each of $n$ packages is loaded independently onto either a red truck (with probability $p$) or onto a green truck (with probability $1 - p$). Let $R$ be the total number of items selected for the red truck and let $G$ be the total number of items selected for the green truck.
+    \begin{enumerate}[label=(\alph*)]
+        \item Determine the PMF, expected value, and variance of the random variable $R$.
+        \item Evaluate the probability that the first item to be loaded ends up being the only one on its truck.
+        \item Evaluate the probability that at least one truck ends up with a total of exactly one package.
+        \item Evaluate the expected value and the variance of the difference $R - G$.
+        \item Assume that $n \geq 2$. Given that both of the first two packages to be loaded go onto the red truck, find the conditional expectation, variance, and PMF of the random variable $R$.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item \label{a:1.a} The random variable $R$ follows a binomial distribution with parameters $n$ and $p$. Thus, the PMF, expectation and variance of $R$ are given by
+        \begin{equation}
+        \begin{aligned}
+            p_R(r) &= \binom{n}{r} p^r (1 - p)^{n - r}, \quad r = 0, 1, \ldots, n \\ 
+            \E[R] &= np, \quad \var(R) = np(1 - p)
+        \end{aligned}
+        \end{equation}
+        \item Divide the original event into two disjoint events: \begin{itemize}
+            \item The first package is loaded onto the red truck and the rest are loaded onto the green truck, with probability $p(1 - p)^{n - 1}$.
+            \item The first package is loaded onto the green truck and the rest are loaded onto the red truck, with probability $(1 - p)p^{n - 1}$.
+        \end{itemize}
+        Therefore, the probability of the original event is
+        \begin{equation}
+            \mathbf{P}(\text{the first item to be loaded ends up being the only one on its truck}) = p(1 - p)^{n - 1} + (1 - p)p^{n - 1}
+        \end{equation}
+        \item For different $n$: \begin{itemize}
+            \item $n = 0$: The probability is $0$.
+            \item $n = 1$: The probability is $1$.
+            \item $n \geq 2$: The probability is $np(1-p)^{n-1} + n(1-p)p^{n-1}$
+        \end{itemize}
+        \item $R - G = R - (n - R) = 2R - n$. According to \ref{a:1.a}, we have
+        \begin{equation}
+            \E[R - G] = 2\E[R] - n = 2np - n, \quad \var(R - G) = 4\var(R) = 4np(1 - p)
+        \end{equation}
+        \item Given the independence between each package, the rest of the first two packages follow a binomial distribution with parameters $n - 2$ and $p$. Thus, the conditional expectation, variance, and PMF of $R$ are given by (denote event A as "first two packages on red truck")
+        \begin{equation}
+        \begin{aligned}
+            p_{R \mid A}(r) &= \binom{n - 2}{r - 2} p^{r - 2} (1 - p)^{n - r}, \quad r = 2, 3, \ldots, n \\ 
+            \E[R \mid A] &= 2 + (n - 2)p, \quad \var(R \mid A) = (n - 2)p(1 - p)
+        \end{aligned}
+        \end{equation}
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    A computer system carries out tasks submitted by two users. Time is divided into slots. A slot can be idle, with probability $p_I = 1/6$, and busy with probability $p_B = 5/6$. During a busy slot, there is probability $p_{1|B} = 2/5$ (respectively, $p_{2|B} = 3/5$) that a task from user 1 (respectively, 2) is executed. We assume that events related to different slots are independent.
+    \begin{enumerate}[label=(\alph*)]
+        \item Find the probability that a task from user 1 is executed for the first time during the 4-th slot.
+        \item Given that exactly 5 out of the first 10 slots were idle, find the probability that the 6-th idle slot is slot 12.
+        \item Find the expected number of slots up to and including the 5-th task from user 1.
+        \item Find the expected number of busy slots up to and including the 5-th task from user 1.
+        \item Find the PMF, mean, and variance of the tasks from user 2 until the time of the 5-th task from user 1.
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item The original event occurs if and only if the following two events occur: \begin{itemize}
+            \item The 4-th slot is busy and a task from user 1 is executed, with probability $p_B p_{1|B} = 1/3$.
+            \item There's no task from user 1 executed in the first three slots, with probability $(1 - p_B p_{1|B})^3 = 8/27$
+        \end{itemize}
+        Therefore, the probability of the original event is
+        \begin{equation}
+            \mathbf{P}(\text{task from user 1 executed for the first time during the 4-th slot}) = \frac{1}{3} \cdot \left(\frac{8}{27}\right) = \frac{8}{81}
+        \end{equation}
+        \item View the slots are busy or idle as a Bernoulli process. According to the memoryless property, the required probability is the same as the probability that the first idle slot is slot 2, which is 
+        \begin{equation}
+        \begin{aligned}
+            &\mathbf{P}(\text{the 6-th idle slot is slot 12} \mid \text{exactly 5 out of the first 10 slots were idle}) \\ 
+            =~ &\mathbf{P}(\text{the first idle slot is slot 2}) = p_B \cdot p_I = \frac{5}{36}
+        \end{aligned}
+        \end{equation}
+        \item View the slots contain tasks from user 1 or not as a Bernoulli process with parameter $p = p_B \cdot p_{1|B} = 1/3$. The expected number of slots up to and including the 5-th task from user 1 follows a negative binomial distribution with parameters $k = 5$ and $p = 1/3$. Thus, the expected number of slots is 
+        \begin{equation}
+            \E[\text{slots up to and including the 5-th task from user 1}] = \frac{5}{p} = 15
+        \end{equation}
+        \item \label{a:2.d} Discard all the idle slots. View all the busy slots contain tasks from user 1 or not as a Bernoulli process with parameter $p = p_{1|B} = 2/5$. The expected number of busy slots up to and including the 5-th task from user 1 follows a negative binomial distribution with parameters $k = 5$ and $p = 2/5$. Thus, the expected number of busy slots is
+        \begin{equation}
+            \E[\text{busy slots up to and including the 5-th task from user 1}] = \frac{5}{p} = 12.5
+        \end{equation}
+        \item Let $T$ be the number of busy slots up to and including the 5-th task from user 1, and $N$ be the number of tasks from user 2 until the time of the 5-th task from user 1. Then $N = T - 5$. According to \ref{a:2.d}, $T$ follows a negative binomial distribution with parameters $k = 5$ and $p = 2/5$. Therefore, the PMF, expectation and variance of $N$ are given by
+        \begin{equation}
+        \begin{aligned}
+            p_N(n) &= \binom{n + 4}{4} \left(\frac{2}{5}\right)^5 \left(\frac{3}{5}\right)^n, \quad n = 0, 1, 2, \ldots \\ 
+            \E[N] &= \E[T] - 5 = 7.5, \quad \var(N) = \var(T) = \frac{75}{4}
+        \end{aligned}
+        \end{equation}
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    Transmitters $A$ and $B$ independently send messages to a single receiver in a Poisson manner, with rates of $\lambda_A$ and $\lambda_B$, respectively. All messages are so brief that we may assume that they occupy single points in time. The number of words in a message, regardless of the source that is transmitting it, is a random variable with PMF
+    \begin{equation}
+        p_W(w) = \left\{\begin{aligned}
+            &2/6 \quad& \text{if } w = 1 \\ 
+            &3/6 \quad& \text{if } w = 2 \\
+            &1/6 \quad& \text{if } w = 3 \\
+            &0 \quad& \text{otherwise}
+        \end{aligned}\right.
+    \end{equation}
+    and is independent of everything else.
+    \begin{enumerate}[label=(\alph*)]
+        \item What is the probability that during an interval of duration $t$, a total of exactly nine messages will be received?
+        \item Let $N$ be the total number of words received during an interval of duration $t$. Determine the expected value of $N$.
+        \item Determine the PDF of the time from $t = 0$ until the receiver has received exactly eight three-word messages from transmitter $A$.
+        \item What is the probability that exactly eight of the next twelve messages received will be from transmitter $A$?
+    \end{enumerate}
+\end{question}
+\begin{answer} ~
+    \begin{enumerate}[label=(\alph*)]
+        \item The receiver receives messages or not is a Poisson process with rate $\lambda = \lambda_A + \lambda_B$. Let $N_t$ be the number of messages received during an interval of duration $t$, then $N_t$ follows a Poisson distribution with parameter $\lambda t$. The probability that during an interval of duration $t$, a total of exactly nine messages will be received is given by
+        \begin{equation}
+            \mathbf{P}(N_t = 9) = \frac{(\lambda_A + \lambda_B)^9 t^9}{9!} \exp\qty(-\lambda_A t - \lambda_B t)
+        \end{equation}
+        \item Applying the law of total expectation
+        \begin{equation}
+            \E[N] = \sum_{n=0}^{\infty} n \cdot \E[W] \cdot p_{N_t}(n) = \E[W] \cdot \E[N_t] = \frac{11}{6} \qty(\lambda_A + \lambda_B)t
+        \end{equation}
+        \item View receiving a three-word message as a spliting Poisson process with rate $\lambda_A / 6$. Let $Y_k$ be the time from $t = 0$ until the receiver has received exactly $k$ three-word messages from transmitter $A$. Then $Y_k$ follows an Erlang distribution with parameters $k$ and $\lambda_A / 6$. The PDF of $Y_k$ is given by
+        \begin{equation}
+            f_{Y_k}(y) = \frac{(\lambda_A / 6)^k y^{k - 1} e^{-\lambda_A y / 6}}{(k - 1)!}, \quad y \geq 0
+        \end{equation}
+        Substituting $k = 8$, we have
+        \begin{equation}
+            f_{Y_8}(y) = \frac{(\lambda_A / 6)^8 y^7 e^{-\lambda_A y / 6}}{7!}, \quad y \geq 0
+        \end{equation}
+        \item Given there's a message received, the probability that it is from transmitter $A$ is $\lambda_A / (\lambda_A + \lambda_B)$. Given the independence, the probability that exactly eight of the next twelve messages received will be from transmitter $A$ is given by (denote event $A$ as "exactly 8 of the next 12 messages received will be from transmitter A")
+        \begin{equation}
+            \mathbf{P}(A) = \binom{12}{8} \left(\frac{\lambda_A}{\lambda_A + \lambda_B}\right)^8 \left(\frac{\lambda_B}{\lambda_A + \lambda_B}\right)^4
+        \end{equation}
+    \end{enumerate}
+\end{answer}
+
+\begin{question}
+    Suppose a bank has 2 tellers. When you enter the bank, you find that both tellers are busy serving other customers, and there are no other customers in queue. The service times of the two tellers are independent distributed exponential random variables, with parameters $\lambda_1$ and $\lambda_2$ respectively. What is the probability that you will be the last to leave?
+\end{question}
+\begin{answer}
+    Teller 1 (respectively, teller 2) finishes serving the customer before you before teller 2 (respectively, teller 1) finishes serving the customer before you with probability $\lambda_2 / (\lambda_1 + \lambda_2)$ (respectively, $\lambda_1 / (\lambda_1 + \lambda_2)$). And then you go to teller 1 (respectively, teller 2). According to the memoryless property, now teller 1 (respectively, teller 2) finishes serving you before teller 2 (respectively, teller 1) with probability $\lambda_2 / (\lambda_1 + \lambda_2)$ (respectively, $\lambda_1 / (\lambda_1 + \lambda_2)$). Therefore, the probability that you will not be the last to leave is given by (use total probability theorem)
+    \begin{equation}
+        \mathbf{P}(\text{you will not be the last to leave}) = \qty(\frac{\lambda_1}{\lambda_1 + \lambda_2})^2 + \qty(\frac{\lambda_2}{\lambda_1 + \lambda_2})^2
+    \end{equation}
+    Thus, the probability that you will be the last to leave is
+    \begin{equation}
+        \mathbf{P}(\text{you will be the last to leave}) = 1 - \mathbf{P}(\text{you will not be the last to leave}) = \frac{2 \lambda_1 \lambda_2}{(\lambda_1 + \lambda_2)^2}
+    \end{equation}
+\end{answer}
+
+\begin{question}
+    Customers arrive at a certain retail establishment according to a Poisson process with rate $\lambda$ per hour. Suppose that two customers arrive during the first hour. Find the probability that both arrived in the first 20 minutes.
+\end{question}
+\begin{answer}
+    Let $N_t$ be the number of customers arriving during the first $t$ hours. Then $N_t$ follows a Poisson distribution with parameter $\lambda t$. So the probability that exactly two customers arrive during the first hour is
+    \begin{equation}
+        \mathbf{P}(N_1 = 2) = \frac{\lambda^2}{2} \e^{-\lambda}
+    \end{equation}
+    And the probability that both arrived in the first 20 minutes is (2 customers arrive in the first 20 minutes and no customer arrives in the next 40 minutes)
+    \begin{equation}
+        \mathbf{P}(N_{1/3} = 2, N_{2/3} = 0 \mid N_1 = 2) = \dfrac{\dfrac{\lambda^2 \e^{-\lambda/3}}{18} \cdot \e^{-2\lambda/3}}{\dfrac{\lambda^2 \e^{-\lambda}}{2}} = \frac{1}{9}
+    \end{equation}
+\end{answer}
+
+\end{document}
