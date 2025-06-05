@@ -1,0 +1,95 @@
+\chapter{*Borel-Cantelli Lemma}
+
+\section{Limit of Sets}
+\begin{definition}[Upper and Lower Limit of a Sequence of Sets]
+    Consider a sequence of sets $\{A_1, A_2, \ldots\}$
+    \begin{itemize}
+        \item Upper Limit:
+        \begin{equation}
+            \limsup_n A_n = \bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k
+        \end{equation}
+        \item Lower Limit:
+        \begin{equation}
+            \lim_{n \to \infty} \inf A_n = \bigcup_{n=1}^{\infty} \bigcap_{k=n}^{\infty} A_k
+        \end{equation}
+    \end{itemize}
+\end{definition}
+\begin{remark}
+    In upper limit, if we denote $B_n = \bigcup_{n=k}^{\infty} A_k$, then $B_n \downarrow$ as $n \uparrow$. If we denote $C_n = \bigcap_{n=k}^{\infty} A_k$, then $C_n \uparrow$ as $n \uparrow$.
+    \begin{itemize}
+        \item Elements in the upper limit: those that are in infinitely many of the sets $A_n$.
+        \item Elements in the lower limit: those that are in all but finitely many of the sets $A_n$ (contained in the upper limit).
+    \end{itemize}
+\end{remark}
+
+\begin{example}[Example 1 of Upper and Lower Limit of Sets]
+    Let $\Omega = (0, 1]$ and $\{A_n\}$ be a sequence of sets defined as follows:
+    \begin{equation}
+        A_n = \left\{\begin{aligned}
+            &\left(0, \frac{1}{2}\right], &\quad n = 2k \\ 
+            &\left(\frac{1}{2}, 1\right], &\quad n = 2k + 1
+        \end{aligned}\right.
+    \end{equation}
+    Upper limit:
+    \begin{equation}
+        \limsup_n A_n = \bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k = \bigcap_{n=1}^{\infty} (0, 1] = (0, 1]
+    \end{equation}
+    Lower limit:
+    \begin{equation}
+        \lim_{n \to \infty} \inf A_n = \bigcup_{n=1}^{\infty} \bigcap_{k=n}^{\infty} A_k = \bigcup_{n=1}^{\infty} \emptyset = \emptyset
+    \end{equation}
+\end{example}
+\begin{example}[Example 2 of Upper and Lower Limit of Sets]
+    Let $\Omega = (0, 1]$ and $\{A_n\}$ be a sequence of sets defined as follows:
+    \begin{equation}
+        A_n = \left(1 - \frac{1}{n}, 1\right], \quad A_1 \supset A_2 \supset \cdots
+    \end{equation}
+    Upper limit:
+    \begin{equation}
+        \limsup_n A_n = \bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k = \bigcap_{n=1}^{\infty} \left(1 - \frac{1}{n}, 1\right] = \{1\}
+    \end{equation}
+    Lower limit:
+    \begin{equation}
+        \lim_{n \to \infty} \inf A_n = \bigcup_{n=1}^{\infty} \bigcap_{k=n}^{\infty} A_k = \bigcup_{n=1}^{\infty} \{1\} = \{1\}
+    \end{equation}
+\end{example}
+
+\section{Borel-Cantelli Lemma}
+\begin{theorem}[Borel-Cantelli Lemma (I)]
+    Let $\{A_n\}$ be a sequence of events in a probability space $(\Omega, \mathcal{F}, \mathbf{P})$, then
+    \begin{equation}
+        \sum_{n=1}^{\infty} \mathbf{P}(A_n) < \infty \implies \mathbf{P}\qty(\limsup_n A_n) = 0
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    \begin{equation}
+        \mathbf{P}\qty(\limsup_n A_n) = \mathbf{P}\qty(\bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k) \leq \mathbf{P}\qty(\bigcup_{i=1}^{\infty} A_i) \leq \sum_{i=k}^{\infty} \mathbf{P}(A_i), \quad \text{for } k = 1, 2, \cdots
+    \end{equation}
+    According to the Cauchy convergence theorem, we have
+    \begin{equation}
+        \sum_{n=1}^{\infty} \mathbf{P}(A_n) < \infty \implies \lim_{k \to \infty} \sum_{i=k}^{\infty} \mathbf{P}(A_i) = 0 \implies \mathbf{P}\qty(\limsup_n A_n) = 0
+    \end{equation}
+\end{proof}
+\begin{theorem}[Borel-Cantelli Lemma (II)]
+    Let $\{A_n\}$ be a sequence of \textbf{independent} events in a probability space $(\Omega, \mathcal{F}, \mathbf{P})$, then
+    \begin{equation}
+        \sum_{n=1}^{\infty} \mathbf{P}(A_n) = \infty \implies \mathbf{P}\qty(\limsup_n A_n) = 1
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    \begin{equation}
+        \mathbf{P}\qty(\limsup_n A_n) = \mathbf{P}\qty(\bigcap_{n=1}^{\infty} \bigcup_{k=n}^{\infty} A_k) = 1 - \mathbf{P}\qty(\bigcup_{n=1}^{\infty} \bigcap_{k=n}^{\infty} A_k^c) = 1 - \mathbf{P}\qty(\bigcup_{n=1}^{\infty} B_n)
+    \end{equation}
+    where the second equality is because the De Morgan's law, and let $B_n = \bigcap_{k=n}^{\infty} A_k^c$. With independence, we have
+    \begin{equation}
+        \mathbf{P}(B_n) = \prod_{k=n}^{\infty} \mathbf{P}\qty(A_k^c) = \prod_{k=n}^{\infty} (1 - \mathbf{P}(A_k)) = \exp\qty(- \sum_{k=n}^{\infty} \ln\qty(1 - \mathbf{P}(A_k))) \leq \exp\qty(- \sum_{k=n}^{\infty} \mathbf{P}(A_k))
+    \end{equation}
+    the last inequality is because $\ln(1 - x) \leq -x$ for $x \in [0, 1]$. Therefore
+    \begin{equation}
+        \sum_{n=1}^{\infty} \mathbf{P}(A_n) = \infty \implies \sum_{n=k}^{\infty} \mathbf{P}(A_n) = \infty \implies \mathbf{P}(B_k) = 0, \quad \forall k
+    \end{equation}
+    Thus
+    \begin{equation}
+        \mathbf{P}(\limsup_n A_n) = 1 - \mathbf{P}\qty(\bigcup_{n=1}^{\infty} B_n) = 1
+    \end{equation}
+\end{proof}
